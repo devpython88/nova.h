@@ -6,7 +6,7 @@ Those features include: Built-in animations (both manual and automatic), Basic l
 
 Here is a example code written in nova.h:
 ```cpp
-#include "nova.h"
+#include <nova.h>
 
 
 int main(int argc, char const *argv[])
