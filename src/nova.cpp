@@ -57,6 +57,11 @@ void NovaRenderDevice::framerateLimit(int limit)
     SetTargetFPS(limit);
 }
 
+float NovaRenderDevice::deltaTime()
+{
+    return GetFrameTime();
+}
+
 // RECTANGLE
 
 bool NovaRectangle::checkCollision(NovaRectangle other)
@@ -127,6 +132,8 @@ void NovaSpritesheet::render()
     );
 }
 
+// INPUT
+
 bool NovaInputDevice::keyHit(int key)
 {
     return IsKeyPressed(key);
@@ -155,4 +162,20 @@ bool NovaInputDevice::mouseButtonHeld(int btn)
 bool NovaInputDevice::mouseButtonUp(int btn)
 {
     return IsMouseButtonUp(btn);
+}
+
+// BACK TO SPRITESHEET
+
+void NovaAnimation::play()
+{
+    if (frameTime -= GetFrameTime() <= maxFrameTime){
+        frameTime = maxFrameTime;
+        column++;
+        if (column >= columns && loop){
+            column = 0;
+            return;
+        }
+
+        column = columns - 1;
+    }    
 }

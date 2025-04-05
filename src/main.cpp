@@ -6,11 +6,16 @@ int main(int argc, char const *argv[])
     NovaWindow window;
     NovaRenderDevice::framerateLimit(30);
 
-    NovaSpritesheet sheet("glob.png", 20, 20, 32, 32);
+    NovaAnimation sheet("glob.png", 20, 20, 32, 32);
+    sheet.maxFrameTime = 3.0f;
+    sheet.loop = true;
+
     sheet.row = 1;
     sheet.column = 1;
     
     while (window.open()){
+        sheet.play();
+
         if (NovaInputDevice::keyHit(KEY_A)){
             sheet.column++;
         }

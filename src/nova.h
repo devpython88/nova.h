@@ -114,6 +114,22 @@ class NovaSpritesheet {
 };
 
 
+class NovaAnimation : public NovaSpritesheet {
+    protected:
+    float frameTime;
+
+    public:
+    float maxFrameTime;
+    bool loop;
+
+    NovaAnimation(std::string path, float x, float y, float frameWidth, float frameHeight):
+    NovaSpritesheet(path, x, y, frameWidth, frameHeight), maxFrameTime(1.0f), loop(false){}
+
+    void play();
+};
+
+
+
 
 
 
@@ -133,6 +149,7 @@ class NovaRenderDevice {
     static bool imageLoaded(NovaRenderImage image);
 
     static void framerateLimit(int limit);
+    static float deltaTime();
 };
 
 
