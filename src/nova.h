@@ -81,6 +81,10 @@ class NovaRenderImage {
     bool checkCollision(NovaRenderImage image);
     bool checkCollision(NovaCircle circle);
     bool checkCollision(NovaRectangle rectangle);
+    
+    ~NovaRenderImage(){
+        UnloadTexture(texture);
+    }
 };
 
 
@@ -105,6 +109,8 @@ class NovaSpritesheet {
 
 
     void render();
+
+
 };
 
 
