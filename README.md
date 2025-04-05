@@ -35,5 +35,7 @@ int main(int argc, char const *argv[])
 }
 ```
 Compilation:
-If you have raylib and nova in global compiler directories: g++ -o main main.cpp -lraylib -lnova
-If you do not: g++ -o main main.cpp -Ipath/to/nova/include -Ipath/to/raylib/include -Lpath/to/nova/lib -Lpath/to/raylib/lib -lraylib -lnova
+
+If you have raylib and nova in global compiler directories: `g++ -o main main.cpp -lraylib -lnova`
+
+If you do not: `g++ -o main main.cpp -Ipath/to/nova/include -Ipath/to/raylib/include -Lpath/to/nova/lib -Lpath/to/raylib/lib -lraylib -lnova`
