@@ -92,3 +92,37 @@ bool NovaRenderImage::checkCollision(NovaRectangle rectangle)
 {
     return rectangle.checkCollision(NovaRectangle(x, y, width, height, WHITE));
 }
+
+// SPRITESHEET
+
+void NovaSpritesheet::recalculateRows()
+{
+    rows = image.height / frameHeight;
+}
+
+void NovaSpritesheet::recalculateColumns()
+{
+    columns = image.width / frameWidth;
+}
+
+void NovaSpritesheet::render()
+{
+    DrawTexturePro(
+        image.texture,
+        Rectangle{
+            column * frameWidth,
+            row * frameHeight,
+            frameWidth,
+            frameHeight
+        },
+        Rectangle{
+            x,
+            y,
+            frameWidth,
+            frameHeight
+        },
+        Vector2{frameWidth / 2, frameHeight / 2},
+        image.rotation,
+        WHITE
+    );
+}

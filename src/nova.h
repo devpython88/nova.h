@@ -70,8 +70,8 @@ class NovaRenderImage {
     float x, y;
     float width, height;
     float rotation;
-
-
+    
+    
     NovaRenderImage(float x, float y, std::string path, float rotation = 0.0f):
     x(x), y(y), width(0), height(0), texture(LoadTexture(path.c_str())), rotation(rotation) {
         width = texture.width;
@@ -84,6 +84,28 @@ class NovaRenderImage {
 };
 
 
+
+class NovaSpritesheet {
+    public:
+    NovaRenderImage image;
+    const float frameWidth, frameHeight;
+    float rows, columns;
+    float row, column;
+    float x, y;
+
+    NovaSpritesheet(std::string path, float x, float y, float frameWidth, float frameHeight):
+    x(x), y(y), image(x, y, path), frameWidth(frameWidth), frameHeight(frameHeight),
+    row(0), column(0){
+        recalculateRows();
+        recalculateColumns();
+    }
+
+    void recalculateRows();
+    void recalculateColumns();
+
+
+    void render();
+};
 
 
 
@@ -106,3 +128,9 @@ class NovaRenderDevice {
 
     static void framerateLimit(int limit);
 };
+
+
+
+
+
+
