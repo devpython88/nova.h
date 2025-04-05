@@ -1,5 +1,7 @@
 <img src="/nova_icon.png" width="300"/>
 
+## WARNING: This project is in alpha-alpha 💀💀💀⚠⚠⚠⚠⚠⚠
+
 Nova.h is a simple single header library that is designed to user friendly and is built on top of raylib.
 
 As of now, I will admit it, Nova.h is useless but I have planned to add new features into nova.h
