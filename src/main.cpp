@@ -11,6 +11,10 @@ int main(int argc, char const *argv[])
     sheet.column = 1;
     
     while (window.open()){
+        if (NovaInputDevice::keyHit(KEY_A)){
+            sheet.column++;
+        }
+
         window.start();
         
         NovaRenderDevice::fill(WHITE);

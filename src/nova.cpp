@@ -126,3 +126,33 @@ void NovaSpritesheet::render()
         WHITE
     );
 }
+
+bool NovaInputDevice::keyHit(int key)
+{
+    return IsKeyPressed(key);
+}
+
+bool NovaInputDevice::keyHeld(int key)
+{
+    return IsKeyDown(key);
+}
+
+bool NovaInputDevice::keyUp(int key)
+{
+    return IsKeyUp(key);
+}
+
+bool NovaInputDevice::mouseButtonHit(int btn)
+{
+    return IsMouseButtonPressed(btn);
+}
+
+bool NovaInputDevice::mouseButtonHeld(int btn)
+{
+    return IsMouseButtonDown(btn);
+}
+
+bool NovaInputDevice::mouseButtonUp(int btn)
+{
+    return IsMouseButtonUp(btn);
+}

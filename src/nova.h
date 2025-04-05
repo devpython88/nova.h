@@ -81,7 +81,7 @@ class NovaRenderImage {
     bool checkCollision(NovaRenderImage image);
     bool checkCollision(NovaCircle circle);
     bool checkCollision(NovaRectangle rectangle);
-    
+
     ~NovaRenderImage(){
         UnloadTexture(texture);
     }
@@ -140,3 +140,18 @@ class NovaRenderDevice {
 
 
 
+
+
+
+
+class NovaInputDevice {
+    public:
+
+    static bool keyHit(int key);
+    static bool keyHeld(int key);
+    static bool keyUp(int key);
+
+    static bool mouseButtonHit(int btn);
+    static bool mouseButtonHeld(int btn);
+    static bool mouseButtonUp(int btn);
+};
