@@ -1,4 +1,0 @@
-/c/sadik/nova.h/build/CMakeFiles/test.dir
-/c/sadik/nova.h/build/CMakeFiles/nova.dir
-/c/sadik/nova.h/build/CMakeFiles/edit_cache.dir
-/c/sadik/nova.h/build/CMakeFiles/rebuild_cache.dir
