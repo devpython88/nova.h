@@ -6,6 +6,7 @@
 
 #include <string>
 #include <raylib.h>
+#include <stdexcept>
 
 class NovaWindow {
     public:
@@ -15,9 +16,11 @@ class NovaWindow {
     NovaWindow(int w = DEFAULT_WIDTH, int h = DEFAULT_HEIGHT, const std::string& c = DEFAULT_CAPTION)
         : width(w), height(h), caption(c) {
         InitWindow(width, height, caption.c_str());
+        InitAudioDevice();
     }
 
     ~NovaWindow(){
+        CloseAudioDevice();
         CloseWindow();
     }
 
@@ -70,10 +73,11 @@ class NovaRenderImage {
     float x, y;
     float width, height;
     float rotation;
+    const std::string path;
     
     
     NovaRenderImage(float x, float y, std::string path, float rotation = 0.0f):
-    x(x), y(y), width(0), height(0), texture(LoadTexture(path.c_str())), rotation(rotation) {
+    x(x), y(y), width(0), height(0), texture(LoadTexture(path.c_str())), path(path), rotation(rotation) {
         width = texture.width;
         height = texture.height;
     }
@@ -171,4 +175,41 @@ class NovaInputDevice {
     static bool mouseButtonHit(int btn);
     static bool mouseButtonHeld(int btn);
     static bool mouseButtonUp(int btn);
+};
+
+
+
+
+
+
+
+
+/*********************************************/
+/******************* AUDIO *******************/
+/*********************************************/
+
+
+class NovaSound {
+    public:
+    Sound sound;
+    const std::string path;
+
+
+    /****
+     * @brief Volume in 0 to 100
+     */
+    void volume(int volume);
+
+    /**
+     * @brief Volume in 0.0f to 1.0f
+     */
+    void volume(float volume);
+
+    bool loaded();
+
+    NovaSound(std::string path):
+    path(path), sound(LoadSound(path.c_str())){}
+
+
+    void play();
 };

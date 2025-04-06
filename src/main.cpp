@@ -12,6 +12,8 @@ int main(int argc, char const *argv[])
 
     sheet.row = 1;
     sheet.column = 1;
+
+    NovaSound sound("test.wav");
     
     while (window.open()){
         sheet.play();

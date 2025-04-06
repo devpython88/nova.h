@@ -168,7 +168,7 @@ bool NovaInputDevice::mouseButtonUp(int btn)
 
 void NovaAnimation::play()
 {
-    if (frameTime -= GetFrameTime() <= maxFrameTime){
+    if ((frameTime -= GetFrameTime()) <= 0.0f){
         frameTime = maxFrameTime;
         column++;
         if (column >= columns && loop){
@@ -178,4 +178,32 @@ void NovaAnimation::play()
 
         column = columns - 1;
     }    
+}
+
+// AUDIO
+
+void NovaSound::volume(int volume)
+{
+    SetSoundVolume(sound, ((float) volume) / 100.0f); // Convert integer to valid 1.0f volume
+}
+
+void NovaSound::volume(float volume)
+{
+    if (volume > 1.0f || volume < 0.0f){
+        throw new std::runtime_error("Sound volume mustn't be over 1.0f or below 0.0f");
+    }
+
+    SetSoundVolume(sound, volume);
+}
+
+bool NovaSound::loaded()
+{
+    return IsSoundValid(sound);
+}
+
+void NovaSound::play()
+{
+    if (!IsSoundPlaying(sound)){
+        PlaySound(sound);
+    }
 }
