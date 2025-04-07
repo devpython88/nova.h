@@ -214,3 +214,28 @@ void NovaSound::play()
         PlaySound(sound);
     }
 }
+
+// MUSIC
+
+void NovaMusic::volume(int volume)
+{
+    SetMusicVolume(music, volume / 100.0f);
+}
+
+void NovaMusic::volume(float volume)
+{
+    SetMusicVolume(music, volume);
+}
+
+void NovaMusic::update()
+{
+    UpdateMusicStream(music);
+    if (loop && !IsMusicStreamPlaying(music)){
+        PlayMusicStream(music);
+    }
+}
+
+void NovaMusic::play()
+{
+    PlayMusicStream(music);
+}

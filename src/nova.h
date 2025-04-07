@@ -214,3 +214,38 @@ class NovaSound {
 
     void play();
 };
+
+
+
+
+class NovaMusic {
+    public:
+    Music music;
+    bool loop;
+    std::string path;
+    
+
+    /****
+     * @brief Volume in 0 to 100
+     */
+    void volume(int volume);
+
+    /**
+     * @brief Volume in 0.0f to 1.0f
+     */
+    void volume(float volume);
+
+
+    NovaMusic(std::string path, bool loop = true):
+    path(path), loop(loop), music(LoadMusicStream(path.c_str())){
+    }
+
+
+    void update();
+    void play();
+
+
+    ~NovaMusic(){
+        UnloadMusicStream(music);
+    }
+};
