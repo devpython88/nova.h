@@ -135,8 +135,6 @@ class NovaAnimation : public NovaSpritesheet {
 
 
 
-
-
 class NovaRenderDevice {
     public:
 
@@ -154,6 +152,9 @@ class NovaRenderDevice {
 
     static void framerateLimit(int limit);
     static float deltaTime();
+
+
+    static void text(std::string text, float x, float y, int fontSize, Color color);
 };
 
 

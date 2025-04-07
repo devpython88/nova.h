@@ -62,6 +62,13 @@ float NovaRenderDevice::deltaTime()
     return GetFrameTime();
 }
 
+// TEXT
+
+void NovaRenderDevice::text(std::string text, float x, float y, int fontSize, Color color)
+{
+    DrawText(text.c_str(), x, y, fontSize, color);
+}
+
 // RECTANGLE
 
 bool NovaRectangle::checkCollision(NovaRectangle other)
