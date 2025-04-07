@@ -7,6 +7,7 @@
 #include <string>
 #include <raylib.h>
 #include <stdexcept>
+#include <cmath>
 
 class NovaWindow {
     public:
@@ -176,6 +177,10 @@ class NovaInputDevice {
     static bool mouseButtonHit(int btn);
     static bool mouseButtonHeld(int btn);
     static bool mouseButtonUp(int btn);
+
+    static bool mouseMoved();
+    static float getScroll();
+    static int getScrollEx();
 };
 
 

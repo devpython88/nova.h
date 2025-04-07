@@ -171,6 +171,16 @@ bool NovaInputDevice::mouseButtonUp(int btn)
     return IsMouseButtonUp(btn);
 }
 
+float NovaInputDevice::getScroll()
+{
+    return GetMouseWheelMove();
+}
+
+int NovaInputDevice::getScrollEx()
+{
+    return (int) (std::round(GetMouseWheelMove()));
+}
+
 // BACK TO SPRITESHEET
 
 void NovaAnimation::play()
