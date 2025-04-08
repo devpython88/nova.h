@@ -9,12 +9,19 @@ int main(int argc, char const *argv[])
     std::string text = "Hello!";
 
     while (window.open()){
-        if (NovaInputDevice::getScrollEx() < 0){
-            text = "Down!";
+        if (NovaInputDevice::keyHeld(KEY_A)){
+            window.target()->x--;
         }
-        else if (NovaInputDevice::getScroll() > 0.0f){
-            text = "Up!";
+
+        if (NovaInputDevice::keyHeld(KEY_D)){
+            window.target()->x++;
         }
+
+
+        if (NovaInputDevice::mouseButtonHit(MOUSE_BUTTON_LEFT)){
+            window.centerCamera(20, 20);
+        }
+        
 
         window.start();
         

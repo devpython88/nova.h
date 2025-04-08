@@ -10,6 +10,9 @@
 #include <cmath>
 
 class NovaWindow {
+    private:
+    Camera2D camera;
+
     public:
     int width, height;
     std::string caption;
@@ -18,6 +21,12 @@ class NovaWindow {
         : width(w), height(h), caption(c) {
         InitWindow(width, height, caption.c_str());
         InitAudioDevice();
+
+        camera = { 0 };
+        camera.zoom = 1.0f;
+        camera.target = { 0, 0 };
+        camera.rotation = 0;
+        camera.offset = { 0, 0 };
     }
 
     ~NovaWindow(){
@@ -28,7 +37,19 @@ class NovaWindow {
 
     bool open();
     void start();
+    void uiMode();
     void end();
+
+
+    void centerCamera(float x, float y);
+
+
+    Vector2* target();
+    float getCameraZoom();
+    void setCameraZoom(float zoom);
+
+    void setCameraRotation(float rotation);
+    float getCameraRotation();
 };
 
 
@@ -178,7 +199,6 @@ class NovaInputDevice {
     static bool mouseButtonHeld(int btn);
     static bool mouseButtonUp(int btn);
 
-    static bool mouseMoved();
     static float getScroll();
     static int getScrollEx();
 };

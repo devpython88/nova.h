@@ -8,11 +8,49 @@ bool NovaWindow::open()
 void NovaWindow::start()
 {
     BeginDrawing();
+    BeginMode2D(camera);
+}
+
+void NovaWindow::uiMode()
+{
+    EndMode2D();
 }
 
 void NovaWindow::end()
 {
     EndDrawing();
+}
+
+void NovaWindow::centerCamera(float x, float y)
+{
+    camera.target.x = x - (GetScreenWidth() / 2);
+    camera.target.y = y - (GetScreenHeight() / 2);
+}
+
+Vector2 *NovaWindow::target()
+{
+    return &camera.target;
+}
+
+float NovaWindow::getCameraZoom()
+{
+    return camera.zoom;
+}
+
+void NovaWindow::setCameraZoom(float zoom)
+{
+    camera.zoom = zoom;
+}
+
+void NovaWindow::setCameraRotation(float rotation)
+{
+    camera.rotation = rotation;
+
+}
+
+float NovaWindow::getCameraRotation()
+{
+    return camera.rotation;
 }
 
 // RENDER DEVICE
