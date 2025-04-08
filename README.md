@@ -2,9 +2,6 @@
 
 Nova.h is a simple single header library that is designed to user friendly and is built on top of raylib.
 
-As of now, I will admit it, Nova.h is useless but I have planned to add new features into nova.h
-Those features include: Built-in animations (both manual and automatic), Basic lighting, File tools, Cross-compilation improvements.
-
 Here is a example code written in nova.h:
 ```cpp
 #include <nova.h>
