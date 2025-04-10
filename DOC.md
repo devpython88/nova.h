@@ -18,6 +18,7 @@
     - [Sounds](#sounds)
     - [Music](#music)
 - [Keyboard and Mouse](#keyboard-and-mouse)
+- [Input Manager](#input-manager)
 
 ## Window initialization
 
@@ -197,3 +198,19 @@ Nova uses raylib constants (e.g, KEY_D, MOUSE_BUTTON_RIGHT)
 - `NovaInputDevice::mouseButtonUp(int)`: Mouse not being pressed
 - `int NovaInputDevice::getScrollEx()`: Get mouse scroll in integer
 - `float NovaInputDevice::getScroll()`: Get mouse scroll in floating point.
+
+## Input Manager
+Nova has an INput manager
+if you do not know wat an Input manager is, basically it is a little library of key bindings
+and mouse bindings.
+
+How to use:
+Constructor: ()
+
+Adding key binds: {instance}.bindKey(identifer: str, code: int)
+Adding mouse binds: {instance}.bindMouse(identifier: str, code: int)
+
+Checking bindings:
+`.held(identifer)`: Check if binding held
+`.hit(identifer)`: Check if binding hit
+`.up(identifer)`: Check if binding not hit
