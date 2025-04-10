@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test.dir/src/main.cpp.o CMakeFiles/test.dir/src/nova.cpp.o -o test  -lraylib -lstdc++ 

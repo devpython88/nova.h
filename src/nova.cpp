@@ -244,6 +244,18 @@ bool NovaInputDevice::mouseButtonUp(int btn)
     return IsMouseButtonUp(btn);
 }
 
+bool NovaInputDevice::mouseHover(float left, float top, float width, float height)
+{
+    NovaRectangle hitbox(GetMouseX(), GetMouseY(), 1, 1, RED);
+
+    return hitbox.checkCollision(NovaRectangle(left, top, width, height, RED));
+}
+
+bool NovaInputDevice::mouseClick(float left, float top, float width, float height)
+{
+    return NovaInputDevice::mouseHover(left, top, width, height) && NovaInputDevice::mouseButtonHeld(MOUSE_BUTTON_LEFT);
+}
+
 // Get the mouse scroll wheel movement
 float NovaInputDevice::getScroll()
 {
@@ -332,4 +344,64 @@ void NovaMusic::update()
 void NovaMusic::play()
 {
     PlayMusicStream(music);
+}
+
+bool NovaBinding::held()
+{
+    if (type == KEYBIND) return IsKeyDown(code);
+
+    return IsMouseButtonDown(code);
+}
+
+bool NovaBinding::hit()
+{
+    if (type == KEYBIND) return IsKeyPressed(code);
+
+    return IsMouseButtonPressed(code);
+}
+
+bool NovaBinding::up()
+{
+    if (type == KEYBIND) return IsKeyUp(code);
+
+    return IsMouseButtonUp(code);
+}
+
+void NovaInputManager::bindKey(std::string name, int code)
+{
+    NovaBinding bind(NovaBinding::KEYBIND, code);
+    bindings[name] = bind;
+}
+
+void NovaInputManager::bindMouse(std::string name, int code)
+{
+    NovaBinding bind(NovaBinding::MOUSEBIND, code);
+    bindings[name] = bind;
+}
+
+bool NovaInputManager::held(std::string name)
+{
+    auto it = bindings.find(name);
+    if (it != bindings.end()){
+        return bindings[name].held();
+    }
+    return false;
+}
+
+bool NovaInputManager::hit(std::string name)
+{
+    auto it = bindings.find(name);
+    if (it != bindings.end()){
+        return bindings[name].hit();
+    }
+    return false;
+}
+
+bool NovaInputManager::up(std::string name)
+{
+    auto it = bindings.find(name);
+    if (it != bindings.end()){
+        return bindings[name].up();
+    }
+    return false;
 }

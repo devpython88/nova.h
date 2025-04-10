@@ -8,7 +8,6 @@
 #include <string>
 #include <raylib.h>
 #include <stdexcept>
-#include <map>
 #include <cmath>
 
 // Class representing a game window
@@ -197,10 +196,6 @@ class NovaInputDevice {
     static bool mouseButtonHeld(int btn);
     static bool mouseButtonUp(int btn);
 
-    // Mouse UI methods
-    static bool mouseHover(float left, float top, float width, float height);
-    static bool mouseClick(float left, float top, float width, float height);
-    
     // Mouse scroll methods
     static float getScroll();
     static int getScrollEx();
@@ -260,39 +255,4 @@ class NovaMusic {
     ~NovaMusic(){
         UnloadMusicStream(music);
     }
-};
-
-
-
-class NovaBinding {
-    public:
-    static const int KEYBIND   = 0;
-    static const int MOUSEBIND = 1;
-    
-
-    int type;
-    int code;
-
-
-    NovaBinding(int type, int code): type(type), code(code){}
-    NovaBinding(){}
-    
-    bool held();
-    bool hit();
-    bool up();
-};
-
-
-class NovaInputManager {
-    public:
-    std::map<std::string, NovaBinding> bindings;
-
-    NovaInputManager(): bindings(){}
-
-    void bindKey(std::string name, int code);
-    void bindMouse(std::string name, int code);
-
-    bool held(std::string name);
-    bool hit(std::string name);
-    bool up(std::string name);
 };

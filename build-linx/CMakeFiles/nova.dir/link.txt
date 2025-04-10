@@ -1,0 +1,2 @@
+/usr/bin/ar qc libnova.a CMakeFiles/nova.dir/src/nova.cpp.o
+/usr/bin/ranlib libnova.a
