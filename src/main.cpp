@@ -11,11 +11,12 @@ int main(int argc, char const *argv[])
     manager.bindKey("Hello", KEY_A);
     manager.bindMouse("Hello v2.0", MOUSE_BUTTON_LEFT);
 
-    while (window.open()){
+    NovaAxis axis = window.axis();
 
-        if (manager.held("Hello")) std::cout << "Hello\n";
-        if (manager.hit("Hello v2.0")) std::cout << "Hello v2.0\n";
-        
+    while (window.open()){
+        if (axis.overflowX(-30)){
+            std::cout << "fr\n";
+        }
 
         window.start();
         

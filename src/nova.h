@@ -11,6 +11,33 @@
 #include <map>
 #include <cmath>
 
+class NovaWindow;
+
+// Class required for checking positions. 
+class NovaAxis {
+    private:
+    friend class NovaWindow;
+
+    int width, height;
+    NovaAxis(int width, int height): width(width), height(height){}
+
+    public:
+
+    NovaAxis(){}
+
+    inline bool overflowX(float x){ return x < 0 || x > width; }
+    inline bool overflowY(float y){ return y < 0 || y > height; }
+    inline bool overflow(float x, float y) { return overflowX(x) || overflowY(y); }
+
+
+    inline bool atTop(float y){ return y < 0; }
+    inline bool atBottom(float y){ return y > height; }
+    inline bool atLeft(float x){ return x < 0; }
+    inline bool atRight(float x){ return x > width; }
+    inline bool atMiddle(float x){ return ((int) x) == width / 2; }
+    inline bool atMiddleY(float y){ return ((int) y) == height / 2; }
+};
+
 // Class representing a game window
 class NovaWindow {
     private:
@@ -52,6 +79,9 @@ class NovaWindow {
     void setCameraZoom(float zoom);
     void setCameraRotation(float rotation);
     float getCameraRotation();
+
+    // Axis
+    NovaAxis axis();
 };
 
 // Class representing a rectangle

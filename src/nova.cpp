@@ -63,6 +63,11 @@ float NovaWindow::getCameraRotation()
     return camera.rotation;
 }
 
+NovaAxis NovaWindow::axis()
+{
+    return NovaAxis(width, height);
+}
+
 // RENDER DEVICE
 
 // Fill the screen with a specific color
