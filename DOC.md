@@ -214,3 +214,20 @@ Checking bindings:
 `.held(identifer)`: Check if binding held
 `.hit(identifer)`: Check if binding hit
 `.up(identifer)`: Check if binding not hit
+
+## Axis
+NovaAxis allows for positioning controls, It allows you to easily check if a position is at somewhere.
+Example: Check if this position is top left
+
+Constructor: Private, Use window.axis() to get the window axis
+
+Functions:
+`.atTop(y)`: Checks if y is at top
+`.atLeft(x)`: Checks if x is at left
+`.atBottom(y)`: Checks if y is at bottom
+`.atRight(x)`: check if x is at right
+`.atMiddle(x)`: Checks if x is middle
+`.atMiddleY(y)`: Checks if y is at middle
+`.overflowX(x)`: Checks if x is beyond the window boundaries (both sides)
+`.overflowY(y)`: Checks if y is beyond the window boundaries (both sides)
+`.overflow(x, y)`: Checks if either one of the positions, or both of the positions are beyond the window boundaries

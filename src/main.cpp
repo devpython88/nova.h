@@ -14,9 +14,6 @@ int main(int argc, char const *argv[])
     NovaAxis axis = window.axis();
 
     while (window.open()){
-        if (axis.overflowX(-30)){
-            std::cout << "fr\n";
-        }
 
         window.start();
         
