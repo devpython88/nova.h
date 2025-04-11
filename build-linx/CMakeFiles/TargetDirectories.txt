@@ -1,4 +1,0 @@
-/mnt/c/sadik/nova.h/build-linx/CMakeFiles/test.dir
-/mnt/c/sadik/nova.h/build-linx/CMakeFiles/nova.dir
-/mnt/c/sadik/nova.h/build-linx/CMakeFiles/edit_cache.dir
-/mnt/c/sadik/nova.h/build-linx/CMakeFiles/rebuild_cache.dir
