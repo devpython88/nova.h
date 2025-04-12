@@ -5,6 +5,16 @@
 
 ## Table of contents
 
+> NOTE: v1.2 has deprecated the old .checkCollision methods for all objects, Set to be removed in 1.5
+> Use NovaRenderDevice::checkCollision(NovaObject4, NovaObject4/NovaCircle) instead.
+
+## Hot (new) 🔥
+
+- [Randomization](#novarandomdevice)
+- [Object Base Class](#novaobject4)
+
+------------------------------------------------------------------
+
 - [Window initialization](#window-initialization)
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
@@ -198,6 +208,8 @@ Nova uses raylib constants (e.g, KEY_D, MOUSE_BUTTON_RIGHT)
 - `NovaInputDevice::mouseButtonUp(int)`: Mouse not being pressed
 - `int NovaInputDevice::getScrollEx()`: Get mouse scroll in integer
 - `float NovaInputDevice::getScroll()`: Get mouse scroll in floating point.
+- `NovaInputDevice::mouseHover(float x, float y, float width, float height)`: Mouse hovering the corresponding area
+- `NovaInputDevice::mouseClick(float x, float y, float width, float height)`: Mouse clicking the corresponding area
 
 ## Input Manager
 Nova has an INput manager
@@ -231,3 +243,25 @@ Functions:
 `.overflowX(x)`: Checks if x is beyond the window boundaries (both sides)
 `.overflowY(y)`: Checks if y is beyond the window boundaries (both sides)
 `.overflow(x, y)`: Checks if either one of the positions, or both of the positions are beyond the window boundaries
+
+
+
+# Hot (new) 🔥
+
+## NovaRandomDevice
+This class allows for easy randomization.
+Constructor: ()
+
+Methods (not static):
+`.randomInt(start, end)`: Get random integer
+`.randomFloat(start, end)`: Get random float
+`.randomIndex(std::string)`, `.randomIndex<T>(std::vector<T>)`: Get random index from vector or string
+`.randomItem<T>(std::vector<T>)`: Get random item
+`std::vector<T> shuffle<T>(std::vector<T> src, std::vector<T> vals)`: Puts a random element from values in each non-empty slot of `src`
+
+# NovaObject4
+Base class for all objects (excluding NovaCircle)
+
+Has `.x`, `.y`, `.width`, `.height`
+
+No methods

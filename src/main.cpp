@@ -4,22 +4,18 @@
 
 int main(int argc, char const *argv[])
 {
-    NovaWindow window;
-    NovaRenderDevice::framerateLimit(30);
+    NovaWindow win;
 
-    NovaInputManager manager;
-    manager.bindKey("Hello", KEY_A);
-    manager.bindMouse("Hello v2.0", MOUSE_BUTTON_LEFT);
+    NovaRectangle rect(20, 20, 40, 40, RED);
+    NovaRectangle rect2(20, 20, 40, 40, RED);
 
-    NovaAxis axis = window.axis();
+    while (win.open()){
+        if (NovaRenderDevice::checkCollision(rect, rect2));
 
-    while (window.open()){
-
-        window.start();
-        
+        win.start();
         NovaRenderDevice::fill(WHITE);
 
-        window.end();
+        win.end();
     }
     return 0;
 }

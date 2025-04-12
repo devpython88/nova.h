@@ -10,8 +10,53 @@
 #include <stdexcept>
 #include <map>
 #include <cmath>
+#include <random>
 
 class NovaWindow;
+
+// Class for randomization
+class NovaRandomDevice {
+    public:
+
+    std::random_device rd;
+    std::mt19937 gen;
+
+    NovaRandomDevice(): rd(), gen(rd()){}
+
+    int randomInt(int s, int e);
+    float randomFloat(float s, float e);
+    int randomIndex(std::string str);
+
+    template <typename T>
+    int randomIndex(std::vector<T> v){
+        int start = 0;
+        int end = v.size() - 1;
+
+        return randomInt(start, end);
+    }
+
+    // Template functions cannot be implemented seperately
+    template <typename T>
+    T randomItem(std::vector<T> v){
+        int s = 0;
+        int e = v.size() - 1;
+        
+        return v.at(randomInt(s, e));
+    }
+
+
+    // Shuffler function
+    template <typename T>
+    std::vector<T> shuffle(std::vector<T> source, std::vector<T> values){
+        std::vector<T> shuffled;
+
+        for (int i = 0; i < source.size(); i++){
+            shuffled.push_back(values.at(randomIndex<T>(values)));
+        }
+
+        return shuffled;
+    }
+};
 
 // Class required for checking positions. 
 class NovaAxis {
@@ -84,20 +129,27 @@ class NovaWindow {
     NovaAxis axis();
 };
 
-// Class representing a rectangle
-class NovaRectangle {
+// Base class for all objects
+class NovaObject4 {
     public:
-    float x, y; // Position
-    float width, height; // Dimensions
-    float rotation; // Rotation angle
+    float x, y;
+    float width, height;
+    float rotation;
+
+    NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y), width(width), height(height), rotation(rotation){}
+};
+
+// Class representing a rectangle
+class NovaRectangle : public NovaObject4 {
+    public:
     Color color; // Color of the rectangle
 
     // Constructor to initialize rectangle properties
     NovaRectangle(float x, float y, float width, float height, Color color, float rotation = 0.0f)
-        : x(x), y(y), width(width), height(height), color(color), rotation(rotation) {}
+        : NovaObject4(x, y, width, height, rotation), color(color) {}
     
     // Check collision with another rectangle
-    bool checkCollision(NovaRectangle other);
+    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRectangle other);
 };
 
 // Class representing a circle
@@ -111,30 +163,27 @@ class NovaCircle {
     NovaCircle(float x, float y, float radius, Color color): x(x), y(y), radius(radius), color(color) {}
     
     // Collision detection methods
-    bool checkCollision(NovaRectangle other);
-    bool checkCollision(NovaCircle other);
+    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaObject4 other);
+    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaCircle other);
 };
 
 // Class representing a renderable image
-class NovaRenderImage {    
+class NovaRenderImage : public NovaObject4 {    
     public:
     Texture texture; // Texture of the image
-    float x, y; // Position
-    float width, height; // Dimensions
-    float rotation; // Rotation angle
     const std::string path; // File path of the image
     
     // Constructor to load the image texture
     NovaRenderImage(float x, float y, std::string path, float rotation = 0.0f):
-    x(x), y(y), width(0), height(0), texture(LoadTexture(path.c_str())), path(path), rotation(rotation) {
+    NovaObject4(x, y, 0, 0, rotation), texture(LoadTexture(path.c_str())), path(path) {
         width = texture.width;
         height = texture.height;
     }
 
     // Collision detection methods
-    bool checkCollision(NovaRenderImage image);
-    bool checkCollision(NovaCircle circle);
-    bool checkCollision(NovaRectangle rectangle);
+    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRenderImage image);
+    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaCircle circle);
+    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRectangle rectangle);
 
     // Destructor to unload the texture
     ~NovaRenderImage(){
@@ -211,6 +260,11 @@ class NovaRenderDevice {
 
     // Draw text
     static void text(std::string text, float x, float y, int fontSize, Color color);
+
+    // Modern collision
+
+    static bool checkCollision(NovaObject4 obj, NovaObject4 obj2);
+    static bool checkCollision(NovaObject4 obj, NovaCircle circ);
 };
 
 // Class for handling input devices
@@ -326,3 +380,4 @@ class NovaInputManager {
     bool hit(std::string name);
     bool up(std::string name);
 };
+

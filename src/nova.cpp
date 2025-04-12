@@ -1,3 +1,4 @@
+
 #include "nova.h"
 
 // Check if the window is open
@@ -132,6 +133,16 @@ void NovaRenderDevice::text(std::string text, float x, float y, int fontSize, Co
     DrawText(text.c_str(), x, y, fontSize, color);
 }
 
+bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaObject4 obj2)
+{
+    return CheckCollisionRecs(Rectangle{obj.x, obj.y, obj.width, obj.height}, Rectangle{obj2.x, obj2.y, obj2.width, obj2.height});
+}
+
+bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaCircle circ)
+{
+    return CheckCollisionCircleRec(Vector2{circ.x, circ.y}, circ.radius, Rectangle{obj.x, obj.y, obj.width, obj.height});
+}
+
 // RECTANGLE
 
 // Check collision between two rectangles
@@ -143,7 +154,7 @@ bool NovaRectangle::checkCollision(NovaRectangle other)
 // CIRCLE
 
 // Check collision between a circle and a rectangle
-bool NovaCircle::checkCollision(NovaRectangle other)
+bool NovaCircle::checkCollision(NovaObject4 other)
 {
     return CheckCollisionCircleRec(Vector2{x, y}, radius, Rectangle{other.x, other.y, other.width, other.height});
 }
@@ -162,6 +173,9 @@ bool NovaRenderImage::checkCollision(NovaRenderImage image)
     return CheckCollisionRecs(Rectangle{x, y, width, height}, Rectangle{image.x, image.y, image.width, image.height});
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 // Check collision between an image and a circle
 bool NovaRenderImage::checkCollision(NovaCircle circle)
 {
@@ -173,6 +187,8 @@ bool NovaRenderImage::checkCollision(NovaRectangle rectangle)
 {
     return rectangle.checkCollision(NovaRectangle(x, y, width, height, WHITE));
 }
+
+#pragma GCC pop
 
 // SPRITESHEET
 
@@ -253,7 +269,7 @@ bool NovaInputDevice::mouseHover(float left, float top, float width, float heigh
 {
     NovaRectangle hitbox(GetMouseX(), GetMouseY(), 1, 1, RED);
 
-    return hitbox.checkCollision(NovaRectangle(left, top, width, height, RED));
+    return NovaRenderDevice::checkCollision(hitbox, NovaRectangle(left, top, width, height, RED));
 }
 
 bool NovaInputDevice::mouseClick(float left, float top, float width, float height)
@@ -409,4 +425,31 @@ bool NovaInputManager::up(std::string name)
         return bindings[name].up();
     }
     return false;
+}
+
+int NovaRandomDevice::randomInt(int s, int e)
+{
+    // Distributor
+    std::uniform_int_distribution<> dist(s, e);
+
+    return dist(gen);
+}
+
+float NovaRandomDevice::randomFloat(float s, float e)
+{
+    // Float distributor
+    std::uniform_real_distribution<> dist(s, e);
+
+    return dist(gen);
+}
+
+int NovaRandomDevice::randomIndex(std::string str)
+{
+    // Get start
+    int start = 0;
+    
+    // Get end
+    int end = str.size() - 1;
+
+    return randomInt(start, end);
 }
