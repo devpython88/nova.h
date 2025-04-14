@@ -453,3 +453,43 @@ int NovaRandomDevice::randomIndex(std::string str)
 
     return randomInt(start, end);
 }
+
+
+// NOVA MODAL
+
+float NovaModal::relX(float __x)
+{
+    return x + __x;
+}
+
+float NovaModal::relY(float __y)
+{
+    return y + __y;
+}
+
+void NovaModal::draw()
+{
+    // Skip drawing entirely if not visible
+    if (!visible) return;
+
+    
+    // Draw dialog
+    NovaRenderDevice::rect(x, y, width, height, background);
+
+
+    // Draw the close button if its availaible
+    if (closeButton){
+        float btnX = relX(width - 20);
+        float btnY = relY(0);
+
+        if (NovaInputDevice::mouseClick(btnX, btnY, 20, 20)){
+            visible = false;
+            return;
+        }
+
+        NovaRenderDevice::rect(btnX, btnY, 20, 20, RED);
+    }
+
+    // Draw title
+    NovaRenderDevice::text(title, relX(15), relY(15), 16, WHITE);
+}

@@ -12,6 +12,13 @@
 #include <cmath>
 #include <random>
 
+
+// Default color for modal
+const Color NOVA_MODAL_WINDOW_COLOR_DEFAULT = Color{20, 20, 20, 255};
+const Color NOVA_MODAL_WINDOW_COLOR_LIGHT   = Color{250, 250, 250, 255};
+const Color NOVA_MODAL_WINDOW_COLOR_NIGHT   = Color{20, 50, 20, 255};
+
+
 class NovaWindow;
 
 
@@ -473,3 +480,44 @@ class NovaInputManager {
     bool up(std::string name);
 };
 
+
+
+
+
+
+
+
+
+
+/********************************/
+/** MODAL WINDOWS               */
+/********************************/
+
+
+
+
+
+class NovaModal {
+    public:
+    bool closeButton;
+    float width, height, x, y;
+    Color background;
+    std::string title;
+    float titleBarHeight;
+    float visible;
+
+
+
+    NovaModal(std::string title, float x, float y,
+        float width = 360, float height = 180):
+        title(title), x(x), y(y), width(width), height(height), closeButton(true), background(NOVA_MODAL_WINDOW_COLOR_DEFAULT), titleBarHeight(40){}
+    
+
+    // Function to get x relative to dialog
+    float relX(float __x);
+
+    // Function to get y relative to dialog
+    float relY(float __y);
+    
+    void draw();
+};
