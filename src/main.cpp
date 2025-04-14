@@ -5,17 +5,16 @@
 int main(int argc, char const *argv[])
 {
     NovaWindow win;
-
-    NovaRectangle rect(20, 20, 40, 40, RED);
-    NovaRectangle rect2(20, 20, 40, 40, RED);
+    NovaRenderDevice::framerateLimit(60);
 
     while (win.open()){
-        if (NovaRenderDevice::checkCollision(rect, rect2));
-
+        // Obstacle
+        
         win.start();
         NovaRenderDevice::fill(WHITE);
 
         win.end();
     }
+
     return 0;
 }

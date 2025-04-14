@@ -14,6 +14,18 @@
 
 class NovaWindow;
 
+
+
+
+
+/********************************/
+/** EXTRAS                      */
+/********************************/
+
+
+
+
+
 // Class for randomization
 class NovaRandomDevice {
     public:
@@ -83,6 +95,19 @@ class NovaAxis {
     inline bool atMiddleY(float y){ return ((int) y) == height / 2; }
 };
 
+
+
+
+
+
+/********************************/
+/** WINDOW                      */
+/********************************/
+
+
+
+
+
 // Class representing a game window
 class NovaWindow {
     private:
@@ -128,6 +153,17 @@ class NovaWindow {
     // Axis
     NovaAxis axis();
 };
+
+
+
+
+/********************************/
+/** SHAPES & OBJECTS            */
+/********************************/
+
+
+
+
 
 // Base class for all objects
 class NovaObject4 {
@@ -186,10 +222,24 @@ class NovaRenderImage : public NovaObject4 {
     [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRectangle rectangle);
 
     // Destructor to unload the texture
-    ~NovaRenderImage(){
+    void dispose(){
         UnloadTexture(texture);
     }
 };
+
+
+
+
+
+/********************************/
+/** ANIMATIONS                  */
+/********************************/
+
+
+
+
+
+
 
 // Class representing a spritesheet
 class NovaSpritesheet {
@@ -214,6 +264,8 @@ class NovaSpritesheet {
 
     // Render the current frame
     void render();
+
+    void dispose() { image.dispose(); }
 };
 
 // Class representing an animation, derived from NovaSpritesheet
@@ -231,7 +283,20 @@ class NovaAnimation : public NovaSpritesheet {
 
     // Play the animation
     void play();
+    void dispose() { image.dispose(); }
 };
+
+
+
+
+/********************************/
+/** RENDERING                   */
+/********************************/
+
+
+
+
+
 
 // Class for rendering shapes and images
 class NovaRenderDevice {
@@ -267,6 +332,18 @@ class NovaRenderDevice {
     static bool checkCollision(NovaObject4 obj, NovaCircle circ);
 };
 
+
+
+
+/********************************/
+/** INPUT                       */
+/********************************/
+
+
+
+
+
+
 // Class for handling input devices
 class NovaInputDevice {
     public:
@@ -290,9 +367,16 @@ class NovaInputDevice {
     static int getScrollEx();
 };
 
-/*********************************************/
-/******************* AUDIO *******************/
-/*********************************************/
+
+
+
+
+/********************************/
+/** AUDIO                       */
+/********************************/
+
+
+
 
 // Class for handling sound effects
 class NovaSound {
@@ -345,6 +429,14 @@ class NovaMusic {
         UnloadMusicStream(music);
     }
 };
+
+
+
+
+/********************************/
+/** INPUT MANAGER               */
+/********************************/
+
 
 
 
