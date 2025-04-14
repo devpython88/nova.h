@@ -29,6 +29,8 @@ int main(int argc, char const *argv[])
 
         window.end();
     }
+
+    image.dispose();
     return 0;
 }
 ```
