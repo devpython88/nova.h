@@ -1,13 +1,13 @@
 #include "nova.h"
 #include <iostream>
-
+#include "novafile.h"
 
 int main(int argc, char const *argv[])
 {
     NovaWindow win;
     NovaRenderDevice::framerateLimit(60);
 
-    NovaModal modal("Hello", 20, 20);
+    std::cout << NovaFile::fetchContents("test.txt");
 
     while (win.open()){
         // Obstacle
@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
         win.start();
         NovaRenderDevice::fill(WHITE);
 
-        modal.draw();
+        NovaRenderDevice::poly(400, 300, 3, 20, RED);
 
         win.end();
     }

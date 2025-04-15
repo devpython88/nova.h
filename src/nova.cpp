@@ -101,6 +101,21 @@ void NovaRenderDevice::circle(NovaCircle circle)
     DrawCircle(circle.x, circle.y, circle.radius, circle.color);
 }
 
+void NovaRenderDevice::line(float x1, float y1, float x2, float y2, Color c)
+{
+    DrawLine(x1, y1, x2, y2, c);
+}
+
+void NovaRenderDevice::point(float x, float y, Color c)
+{
+    DrawLine(x, y, x, y, c);
+}
+
+void NovaRenderDevice::poly(float x, float y, float sides, float radius, Color c, float rotation)
+{
+    DrawPoly(Vector2{x, y}, sides, radius, rotation, c);
+}
+
 // Draw an image with rotation and position
 void NovaRenderDevice::image(NovaRenderImage image)
 {
@@ -454,42 +469,3 @@ int NovaRandomDevice::randomIndex(std::string str)
     return randomInt(start, end);
 }
 
-
-// NOVA MODAL
-
-float NovaModal::relX(float __x)
-{
-    return x + __x;
-}
-
-float NovaModal::relY(float __y)
-{
-    return y + __y;
-}
-
-void NovaModal::draw()
-{
-    // Skip drawing entirely if not visible
-    if (!visible) return;
-
-    
-    // Draw dialog
-    NovaRenderDevice::rect(x, y, width, height, background);
-
-
-    // Draw the close button if its availaible
-    if (closeButton){
-        float btnX = relX(width - 20);
-        float btnY = relY(0);
-
-        if (NovaInputDevice::mouseClick(btnX, btnY, 20, 20)){
-            visible = false;
-            return;
-        }
-
-        NovaRenderDevice::rect(btnX, btnY, 20, 20, RED);
-    }
-
-    // Draw title
-    NovaRenderDevice::text(title, relX(15), relY(15), 16, WHITE);
-}

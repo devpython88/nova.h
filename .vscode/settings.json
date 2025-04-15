@@ -12,6 +12,7 @@
         "initializer_list": "cpp",
         "span": "cpp",
         "text_encoding": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "fstream": "cpp"
     }
 }

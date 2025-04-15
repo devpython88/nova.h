@@ -320,6 +320,11 @@ class NovaRenderDevice {
     static void circle(float centerX, float centerY, float radius, Color color);
     static void circle(NovaCircle circle);
 
+    // Draw other shapes
+    static void line(float x1, float y1, float x2, float y2, Color c);
+    static void point(float x, float y, Color c);
+    static void poly(float x, float y, float sides, float radius, Color c, float rotation = 0.0f);
+
     // Draw images
     static void image(NovaRenderImage image);
     
@@ -488,36 +493,3 @@ class NovaInputManager {
 
 
 
-
-/********************************/
-/** MODAL WINDOWS               */
-/********************************/
-
-
-
-
-
-class NovaModal {
-    public:
-    bool closeButton;
-    float width, height, x, y;
-    Color background;
-    std::string title;
-    float titleBarHeight;
-    float visible;
-
-
-
-    NovaModal(std::string title, float x, float y,
-        float width = 360, float height = 180):
-        title(title), x(x), y(y), width(width), height(height), closeButton(true), background(NOVA_MODAL_WINDOW_COLOR_DEFAULT), titleBarHeight(40){}
-    
-
-    // Function to get x relative to dialog
-    float relX(float __x);
-
-    // Function to get y relative to dialog
-    float relY(float __y);
-    
-    void draw();
-};
