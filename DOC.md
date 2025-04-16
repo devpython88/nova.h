@@ -10,8 +10,8 @@
 
 ## Hot (new) 🔥
 
-- [Randomization](#novarandomdevice)
-- [Object Base Class](#novaobject4)
+- [Nova File](#novafileh)
+- [NovaFS and Win32FS](#novafs--win32fs)
 
 ------------------------------------------------------------------
 
@@ -29,6 +29,9 @@
     - [Music](#music)
 - [Keyboard and Mouse](#keyboard-and-mouse)
 - [Input Manager](#input-manager)
+- [Randomization](#novarandomdevice)
+- [Object Base Class](#novaobject4)
+
 
 ## Window initialization
 
@@ -246,7 +249,6 @@ Functions:
 
 
 
-# Hot (new) 🔥
 
 ## NovaRandomDevice
 This class allows for easy randomization.
@@ -259,9 +261,54 @@ Methods (not static):
 `.randomItem<T>(std::vector<T>)`: Get random item
 `std::vector<T> shuffle<T>(std::vector<T> src, std::vector<T> vals)`: Puts a random element from values in each non-empty slot of `src`
 
-# NovaObject4
+## NovaObject4
 Base class for all objects (excluding NovaCircle)
 
 Has `.x`, `.y`, `.width`, `.height`
 
 No methods
+
+# Hot (new) 🔥
+
+## `novafile.h`
+Nova isn't just for game development.
+You could also use it for things like Randomization, Integration into raylib
+
+But now you can even use it for file operation.
+
+This *MASSIVE* (low taper faddeee) update adds file operation.
+That work without even filesystem.
+Currently experimental, They are to be improved as the project continues
+They are available in `novafile.h`.
+
+`NovaFile`:
+Constructor: (std::string pathWithoutExtension, std::string extension)
+
+- `fullPath()`: Get path with extension (automatically handles empty extension)
+- `close()`: Close file (NEEDED)
+- `operator <<(std::string)`: Append line to `.contents` and to the file (no auto new line)
+
+Static methods:
+ 
+- `fetchContents(std::string path)`: Get file contents
+
+
+
+## NovaFS & Win32FS
+
+NovaFS (in `novafile.h`) is used for file system operations.
+
+
+`NovaFS`:
+- `mkdir(std::string path)` (Cross Platform): Create directory (Putting `/` on windows automatically gets handled)
+- `rm(std::string path, bool force = false, bool recursive = false)` (macOS/POSIX): Remove a file/directory
+- `cp(std::string path, bool force = false, bool recursive = false)` (macOS/POSIX): Copy a file/directory
+- `mv(std::string path, bool force = false, bool recursive = false)` (macOS/POSIX): Move a file/directory
+
+
+
+`NovaFS::Win32FS`:
+- `rmdir(std::string path)`: Remove a directory recursively
+- `copy(std::string path, std::string dest)`: Copy a file
+- `move(std::string path, std::string dest)`: Move a file
+- `xcopy(std::string path, std::string dest)`: Copy a Directory

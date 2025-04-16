@@ -20,4 +20,4 @@ add_executable(${TARGET} ${MAIN} ${NOVA_H} ${NOVA_SRC} ${NOVAFILE_H} ${NOVAFILE_
 target_link_libraries(${TARGET} raylib stdc++)
 
 # Add Library
-add_library(nova STATIC ${NOVA_SRC})
+add_library(nova STATIC ${NOVA_SRC} ${NOVAFILE_SRC})
