@@ -7,7 +7,8 @@ int main(int argc, char const *argv[])
     NovaWindow win;
     NovaRenderDevice::framerateLimit(60);
 
-    std::cout << NovaFile::fetchContents("test.txt");
+    NovaFile file("test2", "txt");
+    file << "ello";
 
     while (win.open()){
         // Obstacle

@@ -13,7 +13,8 @@ class NovaFile {
 
     // Constructor
     NovaFile(std::string path, std::string extension):
-        path(path), extension(extension), contents(""), file(fullPath()){
+        path(path), extension(extension), contents(""){
+        file = std::ofstream(fullPath());
         // Terminate if file not open
         if (!file.is_open()){
             throw std::runtime_error("Could not open file: `" + fullPath() + "`.");
