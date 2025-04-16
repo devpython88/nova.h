@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <stdexcept>
+#include <algorithm>
 
 class NovaFile {
     private:
@@ -37,4 +38,28 @@ class NovaFile {
 
     // Read files
     static std::string fetchContents(std::string file);
+};
+
+
+
+class NovaFS {
+    public:
+    // Returns int: 0 = success, else = failure
+    static int mkdir(std::string path);
+    static int touch(std::string path);
+
+    // Based on UNIX `rm`, `-f` is the force arg, `-r` is the recursive arg
+    static int rm(std::string path, std::string dest, bool force = false, bool recursive = false);
+
+    static int cp(std::string path, std::string dest, bool force = false, bool recursive = false);
+
+    static int mv(std::string path, std::string dest, bool force = false, bool recursive = false);
+
+    class Win32FS {
+        public:
+        static int rmdir(std::string paTh);
+        static int copy(std::string path, std::string dest);
+        static int move(std::string path, std::string dest);
+        static int xcopy(std::string path, std::string dest);
+    };
 };

@@ -32,3 +32,100 @@ std::string NovaFile::fetchContents(std::string file)
 
     return fetched;
 }
+
+int NovaFS::mkdir(std::string path)
+{
+    std::string p2 = path;
+
+    #if defined(_WIN32)
+        // Use modern c++ features to batchify the path
+        std::replace(p2.begin(), p2.end(), '/', '\\');
+    #endif
+
+    // Create dir
+    return system(("mkdir " + p2).c_str());
+}
+
+int NovaFS::touch(std::string path)
+{
+    // Make file
+    return system(("touch " + path).c_str());
+}
+
+int NovaFS::rm(std::string path, std::string dest, bool force, bool recursive)
+{
+    // Command
+    std::string cmd = "rm ";
+
+    // Options
+    if (force) cmd += "-f ";
+    if (recursive) cmd += "-r ";
+
+    // Finalization
+    cmd += path + " " + dest;
+
+    // Return
+    return system(cmd.c_str());
+}
+
+int NovaFS::cp(std::string path, std::string dest, bool force, bool recursive)
+{
+    // Command
+    std::string cmd = "cp ";
+
+    // Options
+    if (force) cmd += "-f ";
+    if (recursive) cmd += "-r ";
+
+    // Finalization
+    cmd += path + " " + dest;
+
+    // Return
+    return system(cmd.c_str());
+}
+
+
+
+int NovaFS::mv(std::string path, std::string dest, bool force, bool recursive)
+{
+    // COmmand
+    std::string cmd = "mv ";
+    
+    // Options
+    if (force) cmd += "-f ";
+    if (recursive) cmd += "-r ";
+
+    // Finalize
+    cmd += path + " " + dest;
+
+    // Return
+    return system(cmd.c_str());
+}
+
+
+
+
+int NovaFS::Win32FS::rmdir(std::string paTh)
+{
+    // Remove dir recursively
+    return system(("rmdir " + paTh).c_str());
+}
+
+int NovaFS::Win32FS::copy(std::string path, std::string dest)
+{
+    // Copy
+    return system(("copy " + path + " " + dest).c_str());
+}
+
+int NovaFS::Win32FS::move(std::string path, std::string dest)
+{
+    // Move (Cut)
+    return system(("move " + path + " " + dest).c_str());
+}
+
+int NovaFS::Win32FS::xcopy(std::string path, std::string dest)
+{
+    // Copy dir
+    return system(("xcopy " + path + " " + dest + " " + "/E").c_str());
+}
+

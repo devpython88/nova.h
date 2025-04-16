@@ -7,8 +7,9 @@ int main(int argc, char const *argv[])
     NovaWindow win;
     NovaRenderDevice::framerateLimit(60);
 
-    NovaFile file("test2", "txt");
-    file << "ello";
+    NovaFS::mkdir("unix");
+    NovaFS::mkdir("unix/win");
+    NovaFS::Win32FS::move("unix", "dist-msys");
 
     while (win.open()){
         // Obstacle
