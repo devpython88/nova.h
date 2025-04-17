@@ -2,6 +2,24 @@
 
 ### It goes over all of nova's constants, variables, functions and classes
 
+## Compilation
+
+Nova now has dist-linux.sh
+and dist-win32.bat
+
+Both of them are versatile, You can choose your generator and its executable
+
+Guide on how to compile:
+1. Clone the repository
+    `git clone https://github.com/devpython88/nova.h.git`
+    `cd <name-of-directory-it-got-cloned-in>`
+2. Run the corresponding file
+    For macOS (Experimental) and Linux: `bash dist-linux.sh`
+    For windows: `dist-win32.bat`
+3. Finish
+    Directories for macOS and Linux: `build-linx/dist/include` and `build-linx/dist/lib`
+    For windows: `build/dist/include` and `build/dist/lib`
+
 
 ## Table of contents
 
