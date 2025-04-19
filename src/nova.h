@@ -32,7 +32,6 @@ class NovaWindow;
 
 
 
-
 // Class for randomization
 class NovaRandomDevice {
     public:
@@ -106,11 +105,9 @@ class NovaAxis {
 
 
 
-
 /********************************/
 /** WINDOW                      */
 /********************************/
-
 
 
 
@@ -171,7 +168,6 @@ class NovaWindow {
 
 
 
-
 // Base class for all objects
 class NovaObject4 {
     public:
@@ -180,6 +176,7 @@ class NovaObject4 {
     float rotation;
 
     NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y), width(width), height(height), rotation(rotation){}
+    NovaObject4() {}
 };
 
 // Class representing a rectangle
@@ -190,6 +187,7 @@ class NovaRectangle : public NovaObject4 {
     // Constructor to initialize rectangle properties
     NovaRectangle(float x, float y, float width, float height, Color color, float rotation = 0.0f)
         : NovaObject4(x, y, width, height, rotation), color(color) {}
+    NovaRectangle() {}
     
     // Check collision with another rectangle
     [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRectangle other);
@@ -204,6 +202,7 @@ class NovaCircle {
 
     // Constructor to initialize circle properties
     NovaCircle(float x, float y, float radius, Color color): x(x), y(y), radius(radius), color(color) {}
+    NovaCircle() {}
     
     // Collision detection methods
     [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaObject4 other);
@@ -222,6 +221,8 @@ class NovaRenderImage : public NovaObject4 {
         width = texture.width;
         height = texture.height;
     }
+
+    NovaRenderImage() : path("") {}
 
     // Collision detection methods
     [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRenderImage image);
@@ -245,9 +246,6 @@ class NovaRenderImage : public NovaObject4 {
 
 
 
-
-
-
 // Class representing a spritesheet
 class NovaSpritesheet {
     public:
@@ -264,6 +262,8 @@ class NovaSpritesheet {
         recalculateRows();
         recalculateColumns();
     }
+
+    NovaSpritesheet() : frameWidth(0), frameHeight(0) {}
 
     // Recalculate rows and columns based on frame dimensions
     void recalculateRows();
@@ -288,6 +288,8 @@ class NovaAnimation : public NovaSpritesheet {
     NovaAnimation(std::string path, float x, float y, float frameWidth, float frameHeight):
     NovaSpritesheet(path, x, y, frameWidth, frameHeight), maxFrameTime(1.0f), loop(false){}
 
+    NovaAnimation() {}
+
     // Play the animation
     void play();
     void dispose() { image.dispose(); }
@@ -299,8 +301,6 @@ class NovaAnimation : public NovaSpritesheet {
 /********************************/
 /** RENDERING                   */
 /********************************/
-
-
 
 
 
@@ -354,8 +354,6 @@ class NovaRenderDevice {
 
 
 
-
-
 // Class for handling input devices
 class NovaInputDevice {
     public:
@@ -378,7 +376,6 @@ class NovaInputDevice {
     static float getScroll();
     static int getScrollEx();
 };
-
 
 
 
@@ -409,6 +406,8 @@ class NovaSound {
     NovaSound(std::string path):
     path(path), sound(LoadSound(path.c_str())){}
 
+    NovaSound() : path("") {}
+
     // Play the sound
     void play();
 };
@@ -429,6 +428,8 @@ class NovaMusic {
     // Constructor to load the music
     NovaMusic(std::string path, bool loop = true):
     path(path), loop(loop), music(LoadMusicStream(path.c_str())){}
+
+    NovaMusic() {}
 
     // Update the music stream
     void update();
@@ -464,7 +465,7 @@ class NovaBinding {
 
     NovaBinding(int type, int code): type(type), code(code){}
     NovaBinding(){}
-    
+
     bool held();
     bool hit();
     bool up();
@@ -490,6 +491,27 @@ class NovaInputManager {
 
 
 
+/********************************/
+/** OBJECT CHAIN                */
+/********************************/
 
 
+class NovaObjectChain {
+    public:
+    std::vector<NovaObject4*> children;
+    std::vector<NovaObjectChain*> subchains;
+    NovaObject4* parent;
+    Vector2 lastParentPos;
 
+    NovaObjectChain(){}
+    NovaObjectChain(NovaObject4* parent): parent(parent), children(), lastParentPos({parent->x, parent->y}){}
+
+    void addChild(NovaObject4* child);
+    void removeChild(int index);
+
+    void addSubChain(NovaObjectChain* subchain);
+    void removeSubChain(int index);
+
+    void rechain();
+    void rechainObject(NovaObject4* obj);
+};

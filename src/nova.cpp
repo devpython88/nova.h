@@ -469,3 +469,59 @@ int NovaRandomDevice::randomIndex(std::string str)
     return randomInt(start, end);
 }
 
+
+/********************************/
+/** OBJECT CHAIN                */
+/********************************/
+
+void NovaObjectChain::addChild(NovaObject4 *child)
+{
+    children.push_back(child);
+}
+
+void NovaObjectChain::removeChild(int index)
+{
+    children.erase(children.begin() + index);
+}
+
+void NovaObjectChain::addSubChain(NovaObjectChain *subchain)
+{
+    if (this == subchain){
+        throw std::runtime_error("Cannot add chain as subchain to itself");
+    }
+    subchains.push_back(subchain);
+}
+
+void NovaObjectChain::removeSubChain(int index)
+{
+    subchains.erase(subchains.begin() + index);
+}
+
+void NovaObjectChain::rechain()
+{
+    for (NovaObject4* obj : children){
+        // Reposition object
+        rechainObject(obj);
+    }
+
+
+    // Handle subchains
+    for (NovaObjectChain* chain : subchains){
+        rechainObject(chain->parent);
+        chain->rechain();
+    }
+
+    // Update position
+    lastParentPos = Vector2{parent->x, parent->y};
+}
+
+void NovaObjectChain::rechainObject(NovaObject4 *obj)
+{
+    // Get delta
+    float deltaX = parent->x - lastParentPos.x;
+    float deltaY = parent->y - lastParentPos.y;
+    
+    // Move the object
+    obj->x += deltaX;
+    obj->y += deltaY;
+}
