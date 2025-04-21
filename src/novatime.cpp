@@ -4,6 +4,7 @@
 #include "novatime.h"
 
 void NovaTimer::update() {
+    if (paused) return;
     if (timer > 0.0f){
         timer -= GetFrameTime();
     }
@@ -18,5 +19,5 @@ void NovaTimer::reset() {
 }
 
 bool NovaTimer::done() {
-    return timer <= 0.0f    ;
+    return timer <= 0.0f;
 }

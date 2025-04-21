@@ -28,8 +28,10 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Nova File](#novafileh)
-- [NovaFS and Win32FS](#novafs--win32fs)
+- [NovaObjectChain](#novaobjectchain)
+- [NovaTypewriter](#novatypewriter-novastrh)
+- [NovaTimer](#novatimer-novatimeh)
+- [NovaVec](#novavec)
 
 ------------------------------------------------------------------
 
@@ -49,6 +51,8 @@ Guide on how to compile:
 - [Input Manager](#input-manager)
 - [Randomization](#novarandomdevice)
 - [Object Base Class](#novaobject4)
+- [Nova File](#novafileh)
+- [NovaFS and Win32FS](#novafs--win32fs)
 
 
 ## Window initialization
@@ -286,7 +290,6 @@ Has `.x`, `.y`, `.width`, `.height`
 
 No methods
 
-# Hot (new) 🔥
 
 ## `novafile.h`
 Nova isn't just for game development.
@@ -330,3 +333,67 @@ NovaFS (in `novafile.h`) is used for file system operations.
 - `copy(std::string path, std::string dest)`: Copy a file
 - `move(std::string path, std::string dest)`: Move a file
 - `xcopy(std::string path, std::string dest)`: Copy a Directory
+
+
+# Hot (new) 🔥
+
+
+
+## NovaObjectChain
+Ever wanted hierarchy in game libraries? Welp, here it is
+
+<b>How to use:</b>
+
+First, create a NovaObjectChain object, The constructor requires a pointer to a parent object: 
+`NovaObjectChain chain(&player);`
+
+Next, add some children to the chain: 
+`chain.addChild(&weapon);`
+
+You can also add subchains to chains, Which is what makes this a hierarchy, a.k.a object tree: 
+`chain.addSubChain(&subchain);`
+
+To remove subchains or children, use `.removeSubChain` and `.removeChild`. Both of these assume you know the index of the object in the lists
+
+And in the main loop, Make sure to call `chain.rechain()` to sync the children and subchains with the parent.
+Note 1: If a subchains moves faster than the parent, it moves a little more faster because the parent is also constantly moving
+Note 2: To move a child, You just use the object, You dont have to get the child from the chain, SImply use the child itself
+
+
+
+## NovaTimer (novatime.h)
+This class is for timers
+
+<b>How to use:</b>
+
+First, create a timer: `NovaTimer timer(<duration>)`
+The duration is measured in seconds.
+
+Then in the main loop, Use `.update` to update the timer
+You can use `.elapsed()` to get the amount of time that has passed.
+`.reset` to reset the timer
+`.done()` to get if the timer has finished
+And finally `.pause()` and `.unpause()` to pause/unpause the timer
+
+
+## NovaTypewriter (novastr.h)
+This class is primarily made for dialogues or cutscenes
+All it does is create a typewriter effect for text.
+
+Constructor: `(std::string targetText, float duration)`
+
+- `targetText`:The text to writer
+- `duration`: Duration in seconds between each character
+
+Methods:
+- `.pause()`, `.unpause()`: pause or unpause
+- `.update()`: Update (In main loop)
+- `.reset()`: Restart
+- `.getCurrentText`: Get the text that has been written so far
+
+
+## NovaVec
+There are now vecs in nova.
+NovaVec2, NovaVec3 and NovaVec4
+
+You can use +=, -=, *=, /=, +, -, *, and / on them
