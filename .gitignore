@@ -1,2 +1,4 @@
 /build
 /build-linx
+/dist
+/cmake-build-debug

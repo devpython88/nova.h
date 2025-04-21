@@ -12,7 +12,6 @@
 #include <cmath>
 #include <random>
 
-
 // Default color for modal
 const Color NOVA_MODAL_WINDOW_COLOR_DEFAULT = Color{20, 20, 20, 255};
 const Color NOVA_MODAL_WINDOW_COLOR_LIGHT   = Color{250, 250, 250, 255};
@@ -28,6 +27,66 @@ class NovaWindow;
 /********************************/
 /** EXTRAS                      */
 /********************************/
+
+
+
+
+class NovaVec2 {
+public:
+    float x, y;
+
+
+    NovaVec2() = default;
+    NovaVec2(float x, float y) : x(x), y(y) {}
+
+    NovaVec2 operator+(NovaVec2 v) const { return {v.x + x, v.y + y}; }
+    NovaVec2 operator-(NovaVec2 v) const { return {v.x - x, v.y - y}; }
+    NovaVec2 operator*(NovaVec2 v) const { return {v.x * x, v.y * y}; }
+    NovaVec2 operator/(NovaVec2 v) const { return {v.x / x, v.y / y}; }
+
+    void operator+=(NovaVec2 v) { x += v.x; y += v.y; }
+    void operator-=(NovaVec2 v) { x -= v.x; y -= v.y; }
+    void operator*=(NovaVec2 v) { x *= v.x; y *= v.y; }
+    void operator/=(NovaVec2 v) { x /= v.x; y /= v.y; }
+};
+
+class NovaVec3 {
+public:
+    float x, y, z;
+
+    NovaVec3() = default;
+    NovaVec3(float x, float y, float z) : x(x), y(y), z(z) {}
+
+    NovaVec3 operator+(NovaVec3 v) const { return {v.x + x, v.y + y, v.z + z}; }
+    NovaVec3 operator-(NovaVec3 v) const { return {v.x - x, v.y - y, v.z - z}; }
+    NovaVec3 operator*(NovaVec3 v) const { return {v.x * x, v.y * y, v.z * z}; }
+    NovaVec3 operator/(NovaVec3 v) const { return {v.x / x, v.y / y, v.z / z}; }
+
+    void operator+=(NovaVec3 v) { x += v.x; y += v.y; z += v.z; }
+    void operator-=(NovaVec3 v) { x -= v.x; y -= v.y; z -= v.z; }
+    void operator*=(NovaVec3 v) { x *= v.x; y *= v.y; z *= v.z; }
+    void operator/=(NovaVec3 v) { x /= v.x; y /= v.y; z /= v.z; }
+};
+
+
+class NovaVec4 {
+public:
+    float x, y, z, w;
+
+    NovaVec4() = default;
+    NovaVec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+    NovaVec4 operator+(NovaVec4 v) const { return {v.x + x, v.y + y, v.z + z, v.w + w}; }
+    NovaVec4 operator-(NovaVec4 v) const { return {v.x - x, v.y - y, v.z - z, v.w - w}; }
+    NovaVec4 operator*(NovaVec4 v) const { return {v.x * x, v.y * y, v.z * z, v.w * w}; }
+    NovaVec4 operator/(NovaVec4 v) const { return {v.x / x, v.y / y, v.z / z, v.w / w}; }
+
+    void operator+=(NovaVec4 v) { x += v.x; y += v.y; z += v.z; w += v.w; }
+    void operator-=(NovaVec4 v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; }
+    void operator*=(NovaVec4 v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; }
+    void operator/=(NovaVec4 v) { x /= v.x; y /= v.y; z /= v.z; w /= v.w; }
+};
+
 
 
 
@@ -515,3 +574,4 @@ class NovaObjectChain {
     void rechain();
     void rechainObject(NovaObject4* obj);
 };
+

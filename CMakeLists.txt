@@ -9,12 +9,18 @@ set(NOVA_SRC src/nova.cpp)
 set(NOVAFILE_H src/novafile.h)
 set(NOVAFILE_SRC src/novafile.cpp)
 
+# Nova time and text tools and upcoming features
+set(NOVAEXTRA_H src/novatime.h
+        src/novastr.h)
+set(NOVAEXTRA_SRC src/novatime.cpp
+        src/novastr.cpp)
+
 # Target and main file
 set(TARGET test)
 set(MAIN src/main.cpp)
 
 # API test
-add_executable(${TARGET} ${MAIN} ${NOVA_H} ${NOVA_SRC} ${NOVAFILE_H} ${NOVAFILE_SRC})
+add_executable(${TARGET} ${MAIN} ${NOVA_H} ${NOVA_SRC} ${NOVAFILE_H} ${NOVAFILE_SRC} ${NOVAEXTRA_H} ${NOVAEXTRA_SRC})
 
 # Link Libraries
 target_link_libraries(${TARGET} raylib stdc++)
