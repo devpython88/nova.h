@@ -1,0 +1,22 @@
+//
+// Created by sadik on 4/20/2025.
+//
+#include "novatime.h"
+
+void NovaTimer::update() {
+    if (timer > 0.0f){
+        timer -= GetFrameTime();
+    }
+}
+
+float NovaTimer::elapsed() {
+    return duration - timer;
+}
+
+void NovaTimer::reset() {
+    timer = duration;
+}
+
+bool NovaTimer::done() {
+    return timer <= 0.0f    ;
+}
