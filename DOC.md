@@ -168,7 +168,8 @@ NovaAnimation anim("Player.png", 20, 20, 8, 8);
 Step 2. Set frame time (in seconds)
 ```cpp
 // Frame time determens how much time it takes for the next frame to appear
-anim.frameTime = 1.5f;
+anim.setMaxFrameTime(2.0f);
+anim.getMaxFrameTime();
 ```
 
 Step 3. (Optionally) Set the looping property
