@@ -248,8 +248,6 @@ class NovaRectangle : public NovaObject4 {
         : NovaObject4(x, y, width, height, rotation), color(color) {}
     NovaRectangle() {}
     
-    // Check collision with another rectangle
-    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRectangle other);
 };
 
 // Class representing a circle
@@ -263,9 +261,6 @@ class NovaCircle {
     NovaCircle(float x, float y, float radius, Color color): x(x), y(y), radius(radius), color(color) {}
     NovaCircle() {}
     
-    // Collision detection methods
-    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaObject4 other);
-    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaCircle other);
 };
 
 // Class representing a renderable image
@@ -282,11 +277,6 @@ class NovaRenderImage : public NovaObject4 {
     }
 
     NovaRenderImage() : path("") {}
-
-    // Collision detection methods
-    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRenderImage image);
-    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaCircle circle);
-    [[deprecated("WILL BE REMOVED IN V1.5! Use NovaRenderDevice::checkCollision instead.")]] bool checkCollision(NovaRectangle rectangle);
 
     // Destructor to unload the texture
     void dispose(){
@@ -310,8 +300,8 @@ class NovaSpritesheet {
     public:
     NovaRenderImage image; // Renderable image
     const float frameWidth, frameHeight; // Frame dimensions
-    float rows, columns; // Number of rows and columns in the spritesheet
-    float row, column; // Current frame position
+    int rows, columns; // Number of rows and columns in the spritesheet
+    int row, column; // Current frame position
     float x, y; // Position of the spritesheet
 
     // Constructor to initialize spritesheet properties
@@ -336,16 +326,26 @@ class NovaSpritesheet {
 
 // Class representing an animation, derived from NovaSpritesheet
 class NovaAnimation : public NovaSpritesheet {
+    private:
+    bool firstTime;
+
     protected:
     float frameTime; // Time per frame
-
-    public:
     float maxFrameTime; // Maximum time per frame
+    
+    public:
     bool loop; // Whether the animation loops
 
     // Constructor to initialize animation properties
     NovaAnimation(std::string path, float x, float y, float frameWidth, float frameHeight):
-    NovaSpritesheet(path, x, y, frameWidth, frameHeight), maxFrameTime(1.0f), loop(false){}
+    NovaSpritesheet(path, x, y, frameWidth, frameHeight), maxFrameTime(1.0f), loop(false),
+    frameTime(maxFrameTime), firstTime(true){
+        column = 0;
+        row = 0;
+    }
+
+    inline void setMaxFrameTime(float maxFrameTime_){ maxFrameTime = maxFrameTime_; frameTime = maxFrameTime; }
+    inline float getMaxFrameTime() { return maxFrameTime; }
 
     NovaAnimation() {}
 

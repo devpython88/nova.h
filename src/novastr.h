@@ -7,6 +7,8 @@
 #include <string>
 #include <utility>
 #include <raylib.h>
+#include <vector>
+#include <sstream>
 
 class NovaTypeWriter {
 private:
@@ -29,4 +31,23 @@ public:
 
     inline void pause(){ paused = true; }
     inline void unpause(){ paused = false; }
+};
+
+
+
+// Nova String
+
+
+class NovaString : public std::string {
+public:
+
+    NovaString(): std::string(){}
+    explicit NovaString(const char* str): std::string(str){}
+    explicit NovaString(std::string str): std::string(str){}
+
+    bool hasPrefix(std::string prefix);
+    bool hasSuffix(std::string suffix);
+
+    std::vector<NovaString> split(char delimiter);
+    NovaString replace_(std::string __old, std::string __new);
 };

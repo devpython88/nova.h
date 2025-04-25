@@ -45,6 +45,8 @@ echo "Package the files into TAR? (y/n)"
 read P_TAR
 
 if [ "$P_TAR" = "y" ]; then
-    tar -czvf dist.tar.gz dist
+    echo "Enter tar name: "
+    read P_TARNAME
+    tar -czvf "$P_TARNAME.tar.gz" ./dist
     echo "Done"
 fi

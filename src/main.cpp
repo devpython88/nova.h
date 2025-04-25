@@ -1,24 +1,27 @@
+#include <iostream>
 #include "nova.h"
-#include "novastr.h"
+
+using nrd = NovaRenderDevice;
+
 int main(int argc, char const *argv[])
 {
-    NovaWindow win(800, 600, "game");
-    NovaRenderDevice::framerateLimit(30);
+    NovaWindow window(640, 480, "Game");
 
-    NovaTypeWriter writer("Hello world!", 0.1f);
+    NovaAnimation sheet("glob.png", 100, 100, 32, 32);
+    sheet.setMaxFrameTime(2.0f);
+    sheet.loop = true;
 
-    while (win.open()){
-        if (writer.getCurrentText() == "Hell"){
-            writer.pause();
-        }
-        writer.update();
-        
-        win.start();
-        NovaRenderDevice::fill(WHITE);
-        NovaRenderDevice::text(writer.getCurrentText(), 20, 20, 32, RED);
+    while (window.open()){
+        sheet.play();
 
-        win.end();
+        window.start();
+        nrd::fill(WHITE);
+        sheet.render();
+
+        window.end();
     }
+
+    sheet.dispose();
 
     return 0;
 }

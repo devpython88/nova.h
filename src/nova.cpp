@@ -158,53 +158,6 @@ bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaCircle circ)
     return CheckCollisionCircleRec(Vector2{circ.x, circ.y}, circ.radius, Rectangle{obj.x, obj.y, obj.width, obj.height});
 }
 
-// RECTANGLE
-
-// Check collision between two rectangles
-bool NovaRectangle::checkCollision(NovaRectangle other)
-{
-    return CheckCollisionRecs(Rectangle{x, y, width, height}, Rectangle{other.x, other.y, other.width, other.height});
-}
-
-// CIRCLE
-
-// Check collision between a circle and a rectangle
-bool NovaCircle::checkCollision(NovaObject4 other)
-{
-    return CheckCollisionCircleRec(Vector2{x, y}, radius, Rectangle{other.x, other.y, other.width, other.height});
-}
-
-// Check collision between two circles
-bool NovaCircle::checkCollision(NovaCircle other)
-{
-    return CheckCollisionCircles(Vector2{x, y}, radius, Vector2{other.x, other.y}, other.radius);
-}
-
-// IMAGE
-
-// Check collision between two images
-bool NovaRenderImage::checkCollision(NovaRenderImage image)
-{
-    return CheckCollisionRecs(Rectangle{x, y, width, height}, Rectangle{image.x, image.y, image.width, image.height});
-}
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-// Check collision between an image and a circle
-bool NovaRenderImage::checkCollision(NovaCircle circle)
-{
-    return circle.checkCollision(NovaRectangle(x, y, width, height, WHITE));
-}
-
-// Check collision between an image and a rectangle
-bool NovaRenderImage::checkCollision(NovaRectangle rectangle)
-{
-    return rectangle.checkCollision(NovaRectangle(x, y, width, height, WHITE));
-}
-
-#pragma GCC pop
-
 // SPRITESHEET
 
 // Recalculate the number of rows in the spritesheet
@@ -225,8 +178,8 @@ void NovaSpritesheet::render()
     DrawTexturePro(
         image.texture,
         Rectangle{
-            column * frameWidth,
-            row * frameHeight,
+            frameWidth * column,
+            frameHeight * row,
             frameWidth,
             frameHeight
         },
@@ -305,21 +258,23 @@ int NovaInputDevice::getScrollEx()
 }
 
 // BACK TO SPRITESHEET
-
-// Play the animation by updating the frame
 void NovaAnimation::play()
 {
+    if (firstTime){
+        firstTime = false;
+        column = 0;
+    }
+
     if ((frameTime -= GetFrameTime()) <= 0.0f){
         frameTime = maxFrameTime;
-        column++;
-        if (column >= columns && loop){
+        if (column < columns - 1){
+            column++;
+        } else if (loop && column >= columns - 1){
             column = 0;
-            return;
         }
-
-        column = columns - 1;
     }    
 }
+
 
 // AUDIO
 
