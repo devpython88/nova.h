@@ -473,3 +473,23 @@ Strings:
 myjson.loadFile("somefile.json");
 std::string str = myjson.get<std::string>("name");
 ```
+
+
+
+## NovaString (`novastr.h`)
+This new class is a subclass of `std::string`
+
+which means you can replace your existing `std::string`'s with this class and they'll still work.
+
+How to use:
+Constructors:
+- `()`: Default
+- `(std::string)`: Default
+- `(const char*)`: Default
+
+Methods:
+(Even though all functions use `std::string`, you can still use the `NovaString`)
+- `bool hasPrefix(std::string)`: Starts with specified string 
+- `bool hasPrefix(std::string)`: Ends with specified string
+- `std::string replace_(std::string old, std::string new)`: Replace `old` with `new` in copy of string then return that copy
+- `std::vector<std::string> split(char delimiter)`: Split string
