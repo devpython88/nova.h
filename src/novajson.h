@@ -53,7 +53,7 @@ class NovaJSON {
             throw novajson_null_val_error("The following item is not in the json: " + name);
         }
 
-        auto value = _nlJsonData[name];
+        auto value = _nlJsonData[name].get<T>();
 
         if constexpr (!std::is_same<decltype(value), T>::value){
             throw novajson_type_mismatch_error("The entry and value were found but the value's type is not the same as the required type.");

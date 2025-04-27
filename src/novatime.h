@@ -26,3 +26,62 @@ public:
     inline void unpause(){ paused = false; }
 
 };
+
+
+
+
+
+// Stopwatch
+
+
+// Time scales
+class timescale_t {
+    public:
+    int value;
+
+    timescale_t() = default;
+    timescale_t(float val): value(val){}
+};
+
+class seconds_t : public timescale_t {
+    public:
+    
+    seconds_t() = default;
+    seconds_t(float secs): timescale_t(secs){}
+};
+
+class milliseconds_t : public timescale_t {
+    public:
+    
+    milliseconds_t() = default;
+    milliseconds_t(float secs): timescale_t(secs * 1000){}
+};
+
+class minutes_t : public timescale_t {
+    public:
+    
+    minutes_t() = default;
+    minutes_t(float secs): timescale_t(secs / 60){}
+};
+
+// Stopwatch
+
+class NovaStopwatch {
+    private:
+    float timer;
+    bool paused;
+
+    public:
+
+    NovaStopwatch(): timer(0.0f), paused(false){}
+
+    void tick();
+    
+    template <typename T>
+    T get(){
+        return T(timer);
+    }
+
+    void pause();
+    void unpause();
+};

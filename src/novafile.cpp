@@ -129,3 +129,12 @@ int NovaFS::Win32FS::xcopy(std::string path, std::string dest)
     return system(("xcopy " + path + " " + dest + " " + "/E").c_str());
 }
 
+bool NovaFileWatcher::isDifferent()
+{
+    return !(NovaFile::fetchContents(file) == capturedContents);
+}
+
+void NovaFileWatcher::reload()
+{
+    capturedContents = NovaFile::fetchContents(file);
+}

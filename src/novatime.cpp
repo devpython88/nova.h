@@ -21,3 +21,20 @@ void NovaTimer::reset() {
 bool NovaTimer::done() {
     return timer <= 0.0f;
 }
+
+void NovaStopwatch::tick()
+{
+    if (paused) return;
+
+    timer += GetFrameTime();
+}
+
+void NovaStopwatch::pause()
+{
+    paused = true;
+}
+
+void NovaStopwatch::unpause()
+{
+    paused = false;
+}

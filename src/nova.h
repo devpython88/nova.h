@@ -5,11 +5,13 @@
 #define DEFAULT_HEIGHT 480
 #define DEFAULT_CAPTION "Game"
 
-#include <string>
+#include <iostream>
 #include <raylib.h>
 #include <stdexcept>
 #include <map>
 #include <cmath>
+#include <chrono>
+#include <ctime> 
 #include <random>
 
 // Default color for modal
@@ -575,3 +577,17 @@ class NovaObjectChain {
     void rechainObject(NovaObject4* obj);
 };
 
+
+
+
+
+class NovaLogger {
+    public:
+    
+    static void log(std::string level, std::string text);
+    static void info(std::string text);
+    static void fatal(std::string text);
+    static void error(std::string text);
+    static void warn(std::string text);
+    
+};

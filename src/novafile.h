@@ -3,6 +3,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <algorithm>
+#include <future>
 
 class NovaFile {
     private:
@@ -38,6 +39,23 @@ class NovaFile {
 
     // Read files
     static std::string fetchContents(std::string file);
+};
+
+
+
+// File watcher
+class NovaFileWatcher {
+    public:
+    std::string capturedContents;
+    std::string file;
+
+    NovaFileWatcher() = default;
+    NovaFileWatcher(std::string file): file(file){
+        capturedContents = NovaFile::fetchContents(file);
+    }
+
+    bool isDifferent();
+    void reload();
 };
 
 

@@ -480,3 +480,45 @@ void NovaObjectChain::rechainObject(NovaObject4 *obj)
     obj->x += deltaX;
     obj->y += deltaY;
 }
+
+
+// Nova logger
+
+
+void NovaLogger::log(std::string level, std::string text)
+{
+    auto now = std::chrono::system_clock::now();
+    std::time_t nowc = std::chrono::system_clock::to_time_t(now);
+
+    std::string out;
+    
+    out += "[";
+    out += std::ctime(&nowc);
+    out.pop_back();
+    out += "]";
+
+    out += "::";
+    out += level;
+    out += "::> ";
+    out += text;
+
+    std::cout << out << "\n";
+}
+
+void NovaLogger::info(std::string text)
+{
+    log("info", text);
+}
+
+void NovaLogger::fatal(std::string text)
+{
+    log("fatal", text);
+}
+void NovaLogger::error(std::string text)
+{
+    log("error", text);
+}
+void NovaLogger::warn(std::string text)
+{
+    log("warn", text);
+}
