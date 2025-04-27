@@ -28,17 +28,17 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [NovaObjectChain](#novaobjectchain)
-- [NovaTypewriter](#novatypewriter-novastrh)
-- [NovaTimer](#novatimer-novatimeh)
-- [NovaVec](#novavec)
+[NovaStopwatch](#novastopwatch-novatimeh)
+[NovaFileWatcher](#novafilewatcher-novafileh)
+[NovaLogger](#novalogger-novah)
+[NovaJSON](#novajson-novajsonh)
 
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
-    - [Collision](#collision)
+    - [Collision](#collision) <b><-- THIS HAS A CRITICAL CHANGE</b>
 - [Images](#images)
 - [Animated Images](#animated-images)
     - [NovaSpritesheet](#novaspritesheet)
@@ -53,6 +53,10 @@ Guide on how to compile:
 - [Object Base Class](#novaobject4)
 - [Nova File](#novafileh)
 - [NovaFS and Win32FS](#novafs--win32fs)
+- [NovaObjectChain](#novaobjectchain)
+- [NovaTypewriter](#novatypewriter-novastrh)
+- [NovaTimer](#novatimer-novatimeh)
+- [NovaVec](#novavec)
 
 
 ## Window initialization
@@ -119,9 +123,8 @@ Here are the current shapes:
     > Can be drawn with `NovaRenderDevice::circle(NovaCircle)`
 
 ### Collision
-NovaRectangle has only one function that can collide with a rectangle
-NovaCircle has two overloaded functions that can collide with a rectangle and a circle
-NovaRenderImage has three overloaded functions that can collide with a rectangle and a circle and a NovaRenderImage
+All previous object collision functions were deprecated in v1.2 and now removed in v1.5
+NovaRenderDevice has two function, both are checkCollision but one takes two objects, and the other takes a object and a circle
 
 ### Want to draw images, Checkout [Images](#images)
 
@@ -336,7 +339,6 @@ NovaFS (in `novafile.h`) is used for file system operations.
 - `xcopy(std::string path, std::string dest)`: Copy a Directory
 
 
-# Hot (new) 🔥
 
 
 
@@ -398,3 +400,76 @@ There are now vecs in nova.
 NovaVec2, NovaVec3 and NovaVec4
 
 You can use +=, -=, *=, /=, +, -, *, and / on them
+
+
+# Hot (new) 🔥
+
+
+## NovaStopwatch (`novatime.h`)
+This is a stopwatch.
+Unlike NovaTimer, this one doesnt have a end to it, it can go forever.
+
+How to use:
+Constructor: `()`
+
+functions:
+`get<T>()`: Get the time in a timescale, the availaible timescales in novatime.h are: seconds_t, minutes_t, milliseconds_t
+`pause()`, `unpause()`: Pause and unpause
+`tick()`: Update the timer
+
+
+## NovaFileWatcher (`novafile.h`)
+This class watches over a file, It is used just in case you want to see if a file has changed since the last use
+> Note: Please use with care, because reopening a file every frame slows the game down.
+
+How to use:
+Constructor: `(pathToFile)`
+
+Methods:
+`isDifferent()`: Returns bool whether its different or not
+`reload()`: Reload the file
+
+Fields:
+`.capturedContent`: Contains the contents of the file since the last reload
+
+
+## NovaLogger (nova.h)
+
+This class only has static methods but it is not a ordinary logger.
+it prints the date, time, day and level of the log
+
+Static methods:
+`log(level, text)`: USe when you need a custom log level
+`info(text)`: Information log
+`error(text)`: Regular error  log
+`fatal(text)`: Fatal error log
+`warn(text)`: Warning log
+
+## NovaJSON (novajson.h)
+
+This is built on json.hpp by nlohmann
+
+How to use:
+Constructor: `()`
+
+Methods:
+`loadFile(filePath)`: Load json from a file
+`writeFile(filePath, indent = 4)`: Write json to a file, with a custom optional indentation level
+`set<T>(std::string name, T value)`: Set `name` in json, to `val` of type `T`
+`get<T>(std::string name)`: Throws `novajson_null_val_error` if key is not found, and throws `novajson_type_mismatch_error` if the key is found but not of the type that is required, else returns the value as `T`
+
+How to add arrays:
+```cpp
+nlohmann::json myarr = nlohmann::json::array();
+myarr.push_back("hello");
+
+myjson.set<nlohmann::json>("Array", myarr);
+
+nlohmann::json arr = myjson.get<nlohmann::json>("Array");
+```
+
+Strings:
+```cpp
+myjson.loadFile("somefile.json");
+std::string str = myjson.get<std::string>("name");
+```
