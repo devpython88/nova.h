@@ -4,6 +4,7 @@
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGHT 480
 #define DEFAULT_CAPTION "Game"
+#define SIGNAL(f) std::function<void(void)>(f)
 
 #include <iostream>
 #include <raylib.h>
@@ -13,6 +14,8 @@
 #include <chrono>
 #include <ctime> 
 #include <random>
+#include <functional>
+
 
 // Default color for modal
 const Color NOVA_MODAL_WINDOW_COLOR_DEFAULT = Color{20, 20, 20, 255};
@@ -33,6 +36,10 @@ class NovaWindow;
 
 
 
+
+
+
+
 class NovaVec2 {
 public:
     float x, y;
@@ -40,12 +47,12 @@ public:
 
     NovaVec2() = default;
     NovaVec2(float x, float y) : x(x), y(y) {}
-
+    
     NovaVec2 operator+(NovaVec2 v) const { return {v.x + x, v.y + y}; }
     NovaVec2 operator-(NovaVec2 v) const { return {v.x - x, v.y - y}; }
     NovaVec2 operator*(NovaVec2 v) const { return {v.x * x, v.y * y}; }
     NovaVec2 operator/(NovaVec2 v) const { return {v.x / x, v.y / y}; }
-
+    
     void operator+=(NovaVec2 v) { x += v.x; y += v.y; }
     void operator-=(NovaVec2 v) { x -= v.x; y -= v.y; }
     void operator*=(NovaVec2 v) { x *= v.x; y *= v.y; }
@@ -53,12 +60,12 @@ public:
 };
 
 class NovaVec3 {
-public:
+    public:
     float x, y, z;
 
     NovaVec3() = default;
     NovaVec3(float x, float y, float z) : x(x), y(y), z(z) {}
-
+    
     NovaVec3 operator+(NovaVec3 v) const { return {v.x + x, v.y + y, v.z + z}; }
     NovaVec3 operator-(NovaVec3 v) const { return {v.x - x, v.y - y, v.z - z}; }
     NovaVec3 operator*(NovaVec3 v) const { return {v.x * x, v.y * y, v.z * z}; }
@@ -77,12 +84,12 @@ public:
 
     NovaVec4() = default;
     NovaVec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-
+    
     NovaVec4 operator+(NovaVec4 v) const { return {v.x + x, v.y + y, v.z + z, v.w + w}; }
     NovaVec4 operator-(NovaVec4 v) const { return {v.x - x, v.y - y, v.z - z, v.w - w}; }
     NovaVec4 operator*(NovaVec4 v) const { return {v.x * x, v.y * y, v.z * z, v.w * w}; }
     NovaVec4 operator/(NovaVec4 v) const { return {v.x / x, v.y / y, v.z / z, v.w / w}; }
-
+    
     void operator+=(NovaVec4 v) { x += v.x; y += v.y; z += v.z; w += v.w; }
     void operator-=(NovaVec4 v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; }
     void operator*=(NovaVec4 v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; }
@@ -90,8 +97,105 @@ public:
 };
 
 
+class NovaEvent {
+    public:
+    class Key {
+        public:
+        // Letters A-Z
+        static const int A = KEY_A;
+        static const int B = KEY_B;
+        static const int C = KEY_C;
+        static const int D = KEY_D;
+        static const int E = KEY_E;
+        static const int F = KEY_F;
+        static const int G = KEY_G;
+        static const int H = KEY_H;
+        static const int I = KEY_I;
+        static const int J = KEY_J;
+        static const int K = KEY_K;
+        static const int L = KEY_L;
+        static const int M = KEY_M;
+        static const int N = KEY_N;
+        static const int O = KEY_O;
+        static const int P = KEY_P;
+        static const int Q = KEY_Q;
+        static const int R = KEY_R;
+        static const int S = KEY_S;
+        static const int T = KEY_T;
+        static const int U = KEY_U;
+        static const int V = KEY_V;
+        static const int W = KEY_W;
+        static const int X = KEY_X;
+        static const int Y = KEY_Y;
+        static const int Z = KEY_Z;
+
+        // Numbers 0-9
+        static const int Zero = KEY_ZERO;
+        static const int One = KEY_ONE;
+        static const int Two = KEY_TWO;
+        static const int Three = KEY_THREE;
+        static const int Four = KEY_FOUR;
+        static const int Five = KEY_FIVE;
+        static const int Six = KEY_SIX;
+        static const int Seven = KEY_SEVEN;
+        static const int Eight = KEY_EIGHT;
+        static const int Nine = KEY_NINE;
+
+        // Special characters
+        static const int Space = KEY_SPACE;
+        static const int Enter = KEY_ENTER;
+        static const int Backspace = KEY_BACKSPACE;
+        static const int Tab = KEY_TAB;
+        static const int Escape = KEY_ESCAPE;
+        static const int Apostrophe = KEY_APOSTROPHE; // '
+        static const int Comma = KEY_COMMA;      // ,
+        static const int Minus = KEY_MINUS;      // -
+        static const int Period = KEY_PERIOD;     // .
+        static const int Slash = KEY_SLASH;      // /
+        static const int Semicolon = KEY_SEMICOLON;   // ;
+        static const int Equal = KEY_EQUAL;       // =
+        static const int LeftBracket = KEY_LEFT_BRACKET;  // [
+        static const int Backslash = KEY_BACKSLASH;     // Backslash
+        static const int RightBracket = KEY_RIGHT_BRACKET; // ]
+        static const int Grave = KEY_GRAVE;         // ` (grave accent)
+
+        // Modifier keys
+        static const int LeftShift = KEY_LEFT_SHIFT;
+        static const int RightShift = KEY_RIGHT_SHIFT;
+        static const int LeftControl = KEY_LEFT_CONTROL;
+        static const int RightControl = KEY_RIGHT_CONTROL;
+        static const int LeftAlt = KEY_LEFT_ALT;
+        static const int RightAlt = KEY_RIGHT_ALT;
+        static const int LeftSuper = KEY_LEFT_SUPER;
+        static const int RightSuper = KEY_RIGHT_SUPER;
+        static const int CapsLock = KEY_CAPS_LOCK;
+        static const int NumLock = KEY_NUM_LOCK;
+        static const int ScrollLock = KEY_SCROLL_LOCK;
+
+    };
+
+    class Mouse {
+        public:
+        static const int Left = MOUSE_BUTTON_LEFT;
+        static const int Middle = MOUSE_BUTTON_MIDDLE;
+        static const int Right = MOUSE_BUTTON_RIGHT;
+        static const int Back = MOUSE_BUTTON_BACK;
+        static const int Forward = MOUSE_BUTTON_FORWARD;
+        static const int Side = MOUSE_BUTTON_SIDE;
+    };
 
 
+
+
+    NovaVec2 mousePos, mouseScroll;
+    int lastKeyHit;
+    
+
+    NovaEvent() = default;
+
+    void fetch();
+
+};
 
 // Class for randomization
 class NovaRandomDevice {
@@ -235,8 +339,11 @@ class NovaObject4 {
     float x, y;
     float width, height;
     float rotation;
+    bool visible, canCollide;
 
-    NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y), width(width), height(height), rotation(rotation){}
+    NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
+    width(width), height(height), rotation(rotation),
+    visible(true), canCollide(true){}
     NovaObject4() {}
 };
 
@@ -258,9 +365,11 @@ class NovaCircle {
     float x, y; // Position
     float radius; // Radius of the circle
     Color color; // Color of the circle
+    bool visible, canCollide;
 
     // Constructor to initialize circle properties
-    NovaCircle(float x, float y, float radius, Color color): x(x), y(y), radius(radius), color(color) {}
+    NovaCircle(float x, float y, float radius, Color color): x(x), y(y), radius(radius), color(color) ,
+        visible(true), canCollide(true) {}
     NovaCircle() {}
     
 };
@@ -578,6 +687,9 @@ class NovaObjectChain {
 };
 
 
+/********************************/
+/** LOGGER                      */
+/********************************/
 
 
 
@@ -591,3 +703,31 @@ class NovaLogger {
     static void warn(std::string text);
     
 };
+
+
+
+
+
+
+
+/********************************/
+/** SIGNAL                      */
+/********************************/
+
+class NovaSignal {
+    public: 
+    std::function<void(void)> callback;
+
+
+    NovaSignal() = default;
+
+    void emit();
+};
+
+
+
+
+
+
+
+

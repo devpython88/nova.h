@@ -86,6 +86,7 @@ void NovaRenderDevice::rect(float left, float top, float width, float height, Co
 // Draw a rectangle using a NovaRectangle object
 void NovaRenderDevice::rect(NovaRectangle rect)
 {
+    if (!rect.visible) return;
     DrawRectanglePro(Rectangle{rect.x, rect.y, rect.width, rect.height}, Vector2{rect.width / 2, rect.height / 2}, rect.rotation, rect.color);
 }
 
@@ -98,6 +99,7 @@ void NovaRenderDevice::circle(float centerX, float centerY, float radius, Color 
 // Draw a circle using a NovaCircle object
 void NovaRenderDevice::circle(NovaCircle circle)
 {
+    if (!circle.visible) return;
     DrawCircle(circle.x, circle.y, circle.radius, circle.color);
 }
 
@@ -119,6 +121,7 @@ void NovaRenderDevice::poly(float x, float y, float sides, float radius, Color c
 // Draw an image with rotation and position
 void NovaRenderDevice::image(NovaRenderImage image)
 {
+    if (!image.visible) return;
     DrawTextureEx(image.texture, Vector2{image.x, image.y}, image.rotation, 1.0f, WHITE);
 }
 
@@ -150,11 +153,13 @@ void NovaRenderDevice::text(std::string text, float x, float y, int fontSize, Co
 
 bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaObject4 obj2)
 {
+    if (!obj.canCollide || !obj2.canCollide) return false;
     return CheckCollisionRecs(Rectangle{obj.x, obj.y, obj.width, obj.height}, Rectangle{obj2.x, obj2.y, obj2.width, obj2.height});
 }
 
 bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaCircle circ)
 {
+    if (!circ.canCollide || !obj.canCollide) return false;
     return CheckCollisionCircleRec(Vector2{circ.x, circ.y}, circ.radius, Rectangle{obj.x, obj.y, obj.width, obj.height});
 }
 
@@ -175,6 +180,7 @@ void NovaSpritesheet::recalculateColumns()
 // Render the current frame of the spritesheet
 void NovaSpritesheet::render()
 {
+    if (!image.visible) return;
     DrawTexturePro(
         image.texture,
         Rectangle{
@@ -522,3 +528,25 @@ void NovaLogger::warn(std::string text)
 {
     log("warn", text);
 }
+
+
+
+// Nova signal
+
+
+void NovaSignal::emit()
+{
+    callback();
+}
+
+
+// Nova event
+
+void NovaEvent::fetch()
+{
+    mousePos = NovaVec2(GetMouseX(), GetMouseY());
+    Vector2 mScroll_ = GetMouseWheelMoveV();
+    mouseScroll = NovaVec2(mScroll_.x, mScroll_.y);
+    lastKeyHit = GetKeyPressed();
+}
+

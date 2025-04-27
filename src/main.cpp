@@ -9,9 +9,18 @@ int main(int argc, char const *argv[])
 {
     NovaWindow window(640, 480, "Game");
 
-    NovaLogger::info("yaya");
+    NovaSignal signal;
+    signal.callback = SIGNAL([&]() {
+        NovaLogger::info("function");
+    });
+
+    NovaEvent event;
 
     while (window.open()){
+        event.fetch();
+        if (event.lastKeyHit == NovaEvent::Key::A){
+            signal.emit();
+        }
 
         window.start();
         nrd::fill(WHITE);
