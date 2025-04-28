@@ -4,7 +4,9 @@
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGHT 480
 #define DEFAULT_CAPTION "Game"
-#define SIGNAL(f) std::function<void(void)>(f)
+#define CALLBACK(f) std::function<void(void)>(f)
+#define SCREEN(f) std::function<void(void)>(f)
+#define CONDITION_VAR(cn) std::function<bool(void)>([&]() { return cn == true; })
 
 #include <iostream>
 #include <raylib.h>
@@ -15,6 +17,11 @@
 #include <ctime> 
 #include <random>
 #include <functional>
+#include <filesystem>
+#include <future>
+
+
+namespace _fs = std::filesystem;
 
 
 // Default color for modal
@@ -24,7 +31,7 @@ const Color NOVA_MODAL_WINDOW_COLOR_NIGHT   = Color{20, 50, 20, 255};
 
 
 class NovaWindow;
-
+class NovaResourceManager;
 
 
 
@@ -716,18 +723,14 @@ class NovaLogger {
 
 class NovaSignal {
     public: 
+    std::function<bool(void)> bindedCondition;
     std::function<void(void)> callback;
-
-
+    
+    
     NovaSignal() = default;
-
+    
     void emit();
+    void bindTo(std::function<bool(void)> condition);
+    void emitOnCondition();
 };
-
-
-
-
-
-
-
 

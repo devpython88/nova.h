@@ -51,3 +51,18 @@ public:
     std::vector<NovaString> split(char delimiter);
     NovaString replace_(std::string __old, std::string __new);
 };
+
+
+// Nova Command BUilder
+
+class NovaCommandBuilder {
+    public:
+    std::vector<std::string> options;
+    std::string command;
+    std::vector<std::string> values;
+
+
+    NovaCommandBuilder() = default;
+
+    std::string build();
+};

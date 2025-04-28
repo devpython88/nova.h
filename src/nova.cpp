@@ -539,6 +539,15 @@ void NovaSignal::emit()
     callback();
 }
 
+void NovaSignal::bindTo(std::function<bool(void)> condition)
+{
+    bindedCondition = condition;
+}
+
+void NovaSignal::emitOnCondition()
+{
+    if (bindedCondition) if (bindedCondition() && callback) callback(); // Inlining stat +10
+}
 
 // Nova event
 
@@ -549,4 +558,3 @@ void NovaEvent::fetch()
     mouseScroll = NovaVec2(mScroll_.x, mScroll_.y);
     lastKeyHit = GetKeyPressed();
 }
-

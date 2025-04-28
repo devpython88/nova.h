@@ -60,3 +60,13 @@ NovaString NovaString::replace_(std::string _old, std::string _new) {
     tempStr.replace(oldStartPos, oldEndPos, _new);
     return tempStr;
 }
+
+std::string NovaCommandBuilder::build()
+{
+    std::string cmd = command + " ";
+
+    for (std::string option : options) cmd += option + " ";
+    for (std::string value : values) cmd += value;
+
+    return cmd;
+}
