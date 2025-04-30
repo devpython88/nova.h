@@ -1,1 +1,1 @@
-script.sh text eol=lf
+dist-linux.sh text eol=lf
