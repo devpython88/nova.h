@@ -4,9 +4,12 @@
 if not exist ".\build" mkdir build
 
 @rem `dist`
-if not exist ".\build\dist" mkdir build\dist
-if not exist ".\build\dist\include" mkdir build\dist\include
-if not exist ".\build\dist\lib" mkdir build\dist\lib
+
+set /p dist_directory=Enter dist directory name:
+
+if not exist ".\build\%dist_directory%" mkdir "build\%dist_directory%"
+if not exist ".\build\%dist_directory%\include" mkdir "build\%dist_directory%\include"
+if not exist ".\build\%dist_directory%\lib" mkdir "build\%dist_directory%\lib"
 
 @rem compile
 cd build
@@ -21,17 +24,17 @@ echo [MSYS Makefiles             - make]
 echo [MinGW Makefiles            - mingw32-make]
 echo [-----------------------------------]
 
-set /p P_BS=Enter cmake generator name (case sensitive): 
-cmake -G %P_BS% ..
-set /p P_BS_EXE=Enter cmake generator exe (*=ignore for systems like msvc): 
+set /p build_system=Enter cmake generator name (case sensitive): 
+cmake -G "%build_system%" ..
+set /p build_system_exe=Enter cmake generator exe (*=ignore for systems like msvc): 
 
-if not "%P_BS_EXE%"=="*" (
-    %P_BS_EXE%
+if not "%build_system_exe%"=="*" (
+    %build_system_exe%
 )
 
 @rem copy files
-copy ..\src\*.h dist\include
-copy .\libnova.a dist\lib
+copy ..\src\*.h %dist_directory%\include
+copy .\libnova.a %dist_directory%\lib
 
 
 echo Done!
