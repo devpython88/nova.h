@@ -402,7 +402,6 @@ NovaVec2, NovaVec3 and NovaVec4
 You can use +=, -=, *=, /=, +, -, *, and / on them
 
 
-# Hot (new) 🔥
 
 
 ## NovaStopwatch (`novatime.h`)
@@ -493,3 +492,51 @@ Methods:
 - `bool hasPrefix(std::string)`: Ends with specified string
 - `std::string replace_(std::string old, std::string new)`: Replace `old` with `new` in copy of string then return that copy
 - `std::vector<std::string> split(char delimiter)`: Split string
+
+
+# Hot (new) 🔥
+
+## NovaSignal (nova.h)
+This class also adds two things:
+
+### CALLBACK(f)
+    This macro turns anything into a void return and 0 arg function
+### CONDITION_VAR(c)
+    This macro turns a condition into a callable function, Basically storing a literal condition instead of just its output
+    You can get the output by just calling it
+
+
+This class can emit a function signal, or have a condition to emit the function
+
+How to use:
+Constructor: `()`
+
+Fields:
+`callback`: The funtion that its binding to, Use the `CALLBACK` macro to turn a literal function into a `std::function`
+
+Methods:
+`emit()`: Call the function no matter what
+`bindTo(std::function<void(void)>)`: Bind to a condition, use `CONDITION_VAR` to turn a condition into a callable function
+`emitOnCondition()`: Emit only when condition
+
+
+
+
+## NovaEvent
+
+This is a new much cleaner way of input
+
+Static fields:
+NovaEvent::Key contains key constants
+NovaEvent::Mouse contains mouse constants
+
+How to use:
+Constructor: `()`
+
+Methods:
+`fetch()`: Call every frame to fetch events
+
+Fields:
+`.mousePos: NovaVec2`: Mouse position
+`.mouseScroll: NovaVec2`: Mouse scroll xy, NovaInputDevice doesnt provide xy scroll, only y scroll
+`.lastKeyHit`: Last key pressed
