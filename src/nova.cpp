@@ -153,7 +153,7 @@ void NovaRenderDevice::text(std::string text, float x, float y, int fontSize, Co
 
 bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaObject4 obj2)
 {
-    if (!obj.canCollide || !obj2.canCollide) return false;
+    if (!obj.canCollide || !obj2.canCollide || obj.zIndex != obj2.zIndex) return false;
     return CheckCollisionRecs(Rectangle{obj.x, obj.y, obj.width, obj.height}, Rectangle{obj2.x, obj2.y, obj2.width, obj2.height});
 }
 
@@ -490,16 +490,20 @@ void NovaObjectChain::rechainObject(NovaObject4 *obj)
 
 // Nova logger
 
-
-void NovaLogger::log(std::string level, std::string text)
+std::string NovaLogger::getTime()
 {
     auto now = std::chrono::system_clock::now();
     std::time_t nowc = std::chrono::system_clock::to_time_t(now);
+    return std::ctime(&nowc);
+}
+
+void NovaLogger::log(std::string level, std::string text)
+{
 
     std::string out;
     
     out += "[";
-    out += std::ctime(&nowc);
+    out += getTime();
     out.pop_back();
     out += "]";
 
@@ -557,4 +561,10 @@ void NovaEvent::fetch()
     Vector2 mScroll_ = GetMouseWheelMoveV();
     mouseScroll = NovaVec2(mScroll_.x, mScroll_.y);
     lastKeyHit = GetKeyPressed();
+}
+
+NovaVec2 NovaGrid::snap(float x, float y)
+{
+    return NovaVec2(((x + (cellSize.x / 2)) / cellSize.x) * cellSize.x,
+                        ((y + (cellSize.y / 2)) / cellSize.y) * cellSize.y);
 }

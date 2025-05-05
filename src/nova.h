@@ -19,10 +19,22 @@
 #include <functional>
 #include <filesystem>
 #include <future>
-
+#include <ctype.h>
+#include <sstream>
 
 namespace _fs = std::filesystem;
 
+
+// Type definitions for types
+typedef uint8_t UnsignedInt8;
+typedef uint16_t UnsignedInt16;
+typedef uint32_t UnsignedInt32;
+typedef uint64_t UnsignedInt64;
+
+typedef int8_t Int8;
+typedef int16_t Int16;
+typedef int32_t Int32;
+typedef int64_t Int64;
 
 // Default color for modal
 const Color NOVA_MODAL_WINDOW_COLOR_DEFAULT = Color{20, 20, 20, 255};
@@ -108,6 +120,11 @@ class NovaEvent {
     public:
     class Key {
         public:
+        static const int ArrowLeft = KEY_LEFT;        
+        static const int ArrowRight = KEY_RIGHT;        
+        static const int ArrowUp = KEY_UP;        
+        static const int ArrowDown = KEY_DOWN;        
+
         // Letters A-Z
         static const int A = KEY_A;
         static const int B = KEY_B;
@@ -196,12 +213,18 @@ class NovaEvent {
 
     NovaVec2 mousePos, mouseScroll;
     int lastKeyHit;
-    
-
     NovaEvent() = default;
 
     void fetch();
 
+};
+
+class NovaColor {
+    public:
+    UnsignedInt8 r, g, b, a;
+
+    NovaColor() = default;
+    NovaColor(UnsignedInt8 r, UnsignedInt8 g, UnsignedInt8 b, UnsignedInt8 a): r(r), g(g), b(b), a(a){}
 };
 
 // Class for randomization
@@ -281,14 +304,11 @@ class NovaAxis {
 /** WINDOW                      */
 /********************************/
 
-
-
-
 // Class representing a game window
 class NovaWindow {
     private:
     Camera2D camera; // Camera for 2D rendering
-
+    
     public:
     int width, height; // Window dimensions
     std::string caption; // Window title
@@ -307,7 +327,7 @@ class NovaWindow {
     }
 
     // Destructor to clean up resources
-    ~NovaWindow(){
+    void close(){
         CloseAudioDevice();
         CloseWindow();
     }
@@ -347,10 +367,11 @@ class NovaObject4 {
     float width, height;
     float rotation;
     bool visible, canCollide;
+    int zIndex;
 
     NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true){}
+    visible(true), canCollide(true), zIndex(0){}
     NovaObject4() {}
 };
 
@@ -703,12 +724,12 @@ class NovaObjectChain {
 class NovaLogger {
     public:
     
+    static std::string getTime();
     static void log(std::string level, std::string text);
     static void info(std::string text);
     static void fatal(std::string text);
     static void error(std::string text);
     static void warn(std::string text);
-    
 };
 
 
@@ -732,5 +753,22 @@ class NovaSignal {
     void emit();
     void bindTo(std::function<bool(void)> condition);
     void emitOnCondition();
+};
+
+/********************************/
+/** GRID                        */
+/********************************/
+
+
+class NovaGrid {
+    public:
+    NovaVec2 cellSize;
+
+    NovaGrid() = default;
+    NovaGrid(NovaVec2 cellSize): cellSize(cellSize){}
+    NovaGrid(float cellWidth, float cellHeight): cellSize(cellWidth, cellHeight){}
+
+
+    NovaVec2 snap(float x, float y);
 };
 

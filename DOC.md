@@ -28,17 +28,18 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-[NovaStopwatch](#novastopwatch-novatimeh)
-[NovaFileWatcher](#novafilewatcher-novafileh)
-[NovaLogger](#novalogger-novah)
-[NovaJSON](#novajson-novajsonh)
+- [Nova Event](#novaevent)
+- [Nova Signal](#novasignal-novah)
+- [Nova Color](#novacolor)
+- [Nova Types](#nova-types)
+- (Updated) [Object Base Class](#novaobject4)
 
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
-    - [Collision](#collision) <b><-- THIS HAS A CRITICAL CHANGE</b>
+    - [Collision](#collision)
 - [Images](#images)
 - [Animated Images](#animated-images)
     - [NovaSpritesheet](#novaspritesheet)
@@ -50,13 +51,16 @@ Guide on how to compile:
 - [Keyboard and Mouse](#keyboard-and-mouse)
 - [Input Manager](#input-manager)
 - [Randomization](#novarandomdevice)
-- [Object Base Class](#novaobject4)
 - [Nova File](#novafileh)
 - [NovaFS and Win32FS](#novafs--win32fs)
 - [NovaObjectChain](#novaobjectchain)
 - [NovaTypewriter](#novatypewriter-novastrh)
 - [NovaTimer](#novatimer-novatimeh)
 - [NovaVec](#novavec)
+- [NovaStopwatch](#novastopwatch-novatimeh)
+- [NovaFileWatcher](#novafilewatcher-novafileh)
+- [NovaLogger](#novalogger-novah)
+- [NovaJSON](#novajson-novajsonh)
 
 
 ## Window initialization
@@ -291,6 +295,8 @@ Methods (not static):
 Base class for all objects (excluding NovaCircle)
 
 Has `.x`, `.y`, `.width`, `.height`
+This class also has a zIndex integer var. If you check for collision and the zindexes arent equal, it will return false.
+Great for mechanics like terraria and blashpemouses back and forth system.
 
 No methods
 
@@ -540,3 +546,16 @@ Fields:
 `.mousePos: NovaVec2`: Mouse position
 `.mouseScroll: NovaVec2`: Mouse scroll xy, NovaInputDevice doesnt provide xy scroll, only y scroll
 `.lastKeyHit`: Last key pressed
+
+
+## Nova Types
+there are now int types for nova
+`UnsignedInt8/16/32/64`
+`Int8/16/32/64"
+
+
+## NovaColor
+There is now a color class
+Constructor: `(UnsignedInt8 red, UnsignedInt8 green, UnsignedInt8 blue, UnsignedInt8 alpha)`
+Fields:
+`UnsignedInt8 red, green, blue, alpha`

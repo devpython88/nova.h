@@ -6,7 +6,7 @@
 #include <future>
 
 class NovaFile {
-    private:
+    protected:
     std::ofstream file;
 
     public:
@@ -27,7 +27,7 @@ class NovaFile {
     std::string fullPath();
 
     // Close file
-    void close();
+    virtual void close();
 
     // Add contents
     void operator<<(std::string text){
@@ -81,3 +81,7 @@ class NovaFS {
         static int xcopy(std::string path, std::string dest);
     };
 };
+
+
+
+

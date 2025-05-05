@@ -1,1 +1,1 @@
-dist-linux.sh text eol=lf
+dist-mac-linux.sh text eol=lf
