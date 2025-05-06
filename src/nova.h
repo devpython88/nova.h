@@ -470,21 +470,21 @@ class NovaAnimation : public NovaSpritesheet {
 
     protected:
     float frameTime; // Time per frame
-    float maxFrameTime; // Maximum time per frame
+    float framerate; // Maximum time per frame
     
     public:
     bool loop; // Whether the animation loops
 
     // Constructor to initialize animation properties
     NovaAnimation(std::string path, float x, float y, float frameWidth, float frameHeight):
-    NovaSpritesheet(path, x, y, frameWidth, frameHeight), maxFrameTime(1.0f), loop(false),
-    frameTime(maxFrameTime), firstTime(true){
+    NovaSpritesheet(path, x, y, frameWidth, frameHeight), framerate(1 / 30), loop(false),
+    frameTime(framerate), firstTime(true){
         column = 0;
         row = 0;
     }
 
-    inline void setMaxFrameTime(float maxFrameTime_){ maxFrameTime = maxFrameTime_; frameTime = maxFrameTime; }
-    inline float getMaxFrameTime() { return maxFrameTime; }
+    inline void setFramerate(float framerate_){ framerate = 1 / framerate_; frameTime = framerate; }
+    inline float getFramerate() { return framerate; }
 
     NovaAnimation() {}
 
@@ -726,6 +726,7 @@ class NovaLogger {
     
     static std::string getTime();
     static void log(std::string level, std::string text);
+    static std::string getLogFormat(std::string level, std::string text);
     static void info(std::string text);
     static void fatal(std::string text);
     static void error(std::string text);

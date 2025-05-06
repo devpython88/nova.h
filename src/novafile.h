@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <future>
+#include "nova.h"
 
 class NovaFile {
     protected:
@@ -12,6 +13,8 @@ class NovaFile {
     public:
     std::string path, extension;
     std::string contents;
+
+    NovaFile() = default;
 
     // Constructor
     NovaFile(std::string path, std::string extension):
@@ -39,6 +42,23 @@ class NovaFile {
 
     // Read files
     static std::string fetchContents(std::string file);
+};
+
+
+
+
+
+class NovaLogFile : public NovaFile {
+    public:
+
+    NovaLogFile(): NovaFile(){}
+    NovaLogFile(std::string file, std::string ext): NovaFile(file, ext){}
+
+    void info(std::string text){ operator<<(NovaLogger::getLogFormat("info", text) + "\n"); }
+    void error(std::string text){ operator<<(NovaLogger::getLogFormat("error", text) + "\n"); }
+    void fatal(std::string text){ operator<<(NovaLogger::getLogFormat("fatal", text) + "\n"); }
+    void warning(std::string text){ operator<<(NovaLogger::getLogFormat("warning", text) + "\n"); }
+    
 };
 
 

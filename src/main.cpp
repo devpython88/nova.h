@@ -8,14 +8,21 @@ int main(int argc, char const *argv[])
     NovaWindow window(640, 480, "Game");
 
     NovaEvent event;
-    NovaRectangle rec(20, 20, 40, 40, RED);
+    
+    NovaLogFile file("client", "log");
+
+    file.info("this is info");
+    file.warning("This is awanring");
+    file.error("err");
+    file.fatal("fata");
+    file.info("informason");
+    file.close();
 
     while (window.open()){
         event.fetch();
 
         window.start();
-        nrd::fill(WHITE); 
-        nrd::rect(rec);
+        nrd::fill(WHITE);
         window.end();
     }
 

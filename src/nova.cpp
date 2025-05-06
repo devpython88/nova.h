@@ -272,7 +272,7 @@ void NovaAnimation::play()
     }
 
     if ((frameTime -= GetFrameTime()) <= 0.0f){
-        frameTime = maxFrameTime;
+        frameTime = framerate;
         if (column < columns - 1){
             column++;
         } else if (loop && column >= columns - 1){
@@ -513,6 +513,24 @@ void NovaLogger::log(std::string level, std::string text)
     out += text;
 
     std::cout << out << "\n";
+}
+
+std::string NovaLogger::getLogFormat(std::string level, std::string text)
+{
+    
+    std::string out;
+    
+    out += "[";
+    out += getTime();
+    out.pop_back();
+    out += "]";
+
+    out += "::";
+    out += level;
+    out += "::> ";
+    out += text;
+
+    return out;
 }
 
 void NovaLogger::info(std::string text)
