@@ -163,6 +163,38 @@ bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaCircle circ)
     return CheckCollisionCircleRec(Vector2{circ.x, circ.y}, circ.radius, Rectangle{obj.x, obj.y, obj.width, obj.height});
 }
 
+void NovaRenderDevice::gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color)
+{
+    float lineWidth = cellSize.x * cells.x; // This way, 16 * 3 = 48
+    float lineHeight = cellSize.y * cells.y;
+
+    float lineStartY = 0.0f;
+    
+    for (int i = 0; i < cells.y; i++){
+        DrawLine(0.0f, lineStartY, lineWidth, lineStartY, color);
+        lineStartY += cellSize.y;
+    }
+    
+    float lineStartX = 0.0f;
+    
+    for (int i = 0; i < cells.x; i++){
+        DrawLine(lineStartX, 0.0f, lineStartX, lineHeight, color);
+        lineStartX += cellSize.x;
+    }
+}
+
+void NovaRenderDevice::gridBoxes(NovaVec2 cellSize, NovaVec2 cells, Color lineColor, Color boxColor)
+{
+    
+    float boxX = 0.0f;
+    float boxY = 0.0f;
+    float boxWidth = cells.x * cellSize.x;
+    float boxHeight = cells.y * cellSize.y;
+    
+    rect(boxX, boxY, boxWidth, boxHeight, boxColor);
+    gridLines(cellSize, cells, lineColor); // draw the grid lines after the box to make it look like individual cells
+}
+
 // SPRITESHEET
 
 // Recalculate the number of rows in the spritesheet
@@ -585,4 +617,46 @@ NovaVec2 NovaGrid::snap(float x, float y)
 {
     return NovaVec2(((x + (cellSize.x / 2)) / cellSize.x) * cellSize.x,
                         ((y + (cellSize.y / 2)) / cellSize.y) * cellSize.y);
+}
+
+
+// NOVA OBJECT 4
+
+
+void NovaObject4::move(NovaVec2 delta)
+{
+    x += delta.x;
+    y += delta.y;
+}
+
+void NovaObject4::move(float deltaX, float deltaY)
+{
+    x += deltaX;
+    y += deltaY;
+}
+
+void NovaObject4::roam(float speed, NovaRandomDevice* rd)
+{
+    float deltaX = 0.0f;
+    float deltaY = 0.0f;
+
+    if (rd->randomInt(0, 1) == 1){ // move horizontally 
+        deltaX = std::round(rd->randomFloat(-speed, speed) / speed) * speed;
+    } else {
+        deltaY = std::round(rd->randomFloat(-speed, speed) / speed) * speed;
+    }
+
+    move(deltaX, deltaY);
+}
+
+void NovaObject4::cache()
+{
+    visible = false;
+    canCollide = false;
+}
+
+void NovaObject4::grab()
+{
+    visible = true;
+    canCollide = true;
 }

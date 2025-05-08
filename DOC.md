@@ -14,7 +14,7 @@ Guide on how to compile:
     `git clone https://github.com/devpython88/nova.h.git`
     `cd <name-of-directory-it-got-cloned-in>`
 2. Run the corresponding file
-    For macOS (Experimental) and Linux: `bash dist-linux.sh`
+    For macOS (Experimental) and Linux: `bash dist-mac-linx.sh`
     For windows: `dist-win32.bat`
 3. Finish
     Directories for macOS and Linux: `build-linx/dist/include` and `build-linx/dist/lib`
@@ -27,12 +27,12 @@ Guide on how to compile:
 > Use NovaRenderDevice::checkCollision(NovaObject4, NovaObject4/NovaCircle) instead.
 
 ## Hot (new) 🔥
-
-- [Nova Event](#novaevent)
-- [Nova Signal](#novasignal-novah)
-- [Nova Color](#novacolor)
-- [Nova Types](#nova-types)
-- (Updated) [Object Base Class](#novaobject4)
+- [NovaGrid](#novagrid)
+- [NovaRenderDevice grid functions](#novarenderdevice-grid)
+- [NovaLogFile](#novalogfile-novafileh)
+- [NovaObject4 update](#novaobject4-update)
+- [NovaAnimation update](#novaanimation-update)
+- [Copyright free assets](#copyright-free-assets)
 
 ------------------------------------------------------------------
 
@@ -40,6 +40,7 @@ Guide on how to compile:
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
     - [Collision](#collision)
+- [Object Base Class](#novaobject4)
 - [Images](#images)
 - [Animated Images](#animated-images)
     - [NovaSpritesheet](#novaspritesheet)
@@ -61,6 +62,10 @@ Guide on how to compile:
 - [NovaFileWatcher](#novafilewatcher-novafileh)
 - [NovaLogger](#novalogger-novah)
 - [NovaJSON](#novajson-novajsonh)
+- [Nova Event](#novaevent)
+- [Nova Signal](#novasignal-novah)
+- [Nova Color](#novacolor)
+- [Nova Types](#nova-types)
 
 
 ## Window initialization
@@ -500,7 +505,6 @@ Methods:
 - `std::vector<std::string> split(char delimiter)`: Split string
 
 
-# Hot (new) 🔥
 
 ## NovaSignal (nova.h)
 This class also adds two things:
@@ -559,3 +563,60 @@ There is now a color class
 Constructor: `(UnsignedInt8 red, UnsignedInt8 green, UnsignedInt8 blue, UnsignedInt8 alpha)`
 Fields:
 `UnsignedInt8 red, green, blue, alpha`
+
+
+
+# Hot (new) 🔥
+
+
+## NovaGrid
+This class is mainly used to snap objects to a grid
+
+How to use:
+Constructors:
+- `(float cellSizeX, float cellSizeY)`: takes cell size individually
+- `(NovaVec2 cellSize)`: takes a vector 2 
+
+methods:
+- `NovaVec2 snap(float x, float y)`: Snaps the x and y to the grid then returns a vector 2 containing the snapped position
+
+## NovaRenderDevice grid
+NovaRenderDevice now has some grid drawing functions.
+
+
+- `gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color)`: draws a grid only with lines, Takes cellsize and number of cells
+- `gridBoxes(NovaVec2 cellSize, NovaVec2 cells, Color boxColor, Color lineColor)`: draws grid but each cell filled with a color instead of each cell being blank
+
+
+## Copyright free assets
+Now Nova has some copyright free assets for game stats, All of these were made by me so don't worry i wont copyright you 👍
+
+These include: `Mana`, `Health`, `Breathe`, `Hunger`, `Thirst` and `Temperature`
+You can check these out, they are spritesheets with different stages
+
+
+
+## NovaObject4 update
+
+NovaObject4 has gotten some more new features.
+
+These include two move functions:
+
+`move(float, float)` and `move(NovaVec2)`
+
+and finally a roam function `roam(speed)`
+This function just makes the object go in a random direction in random horizontal or vertical axis
+
+## NovaAnimation update
+
+maxFrameTime got removed
+
+Instead now you use:
+- `setFramerate(int)`: Sets the frame time in actual FPS
+- `getFramerate(int)`: Gets the frame rate
+
+
+
+## NovaLogFile (`novafile.h`)
+This is just a normal `NovaFile` but it has log functions.
+You can use it for multiplayer server logs and stuff.

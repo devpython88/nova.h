@@ -373,6 +373,16 @@ class NovaObject4 {
     width(width), height(height), rotation(rotation),
     visible(true), canCollide(true), zIndex(0){}
     NovaObject4() {}
+
+
+
+    void move(NovaVec2 delta);
+    void move(float deltaX, float deltaY);
+    void roam(float speed, NovaRandomDevice* rd);
+
+
+    void cache();
+    void grab();
 };
 
 // Class representing a rectangle
@@ -471,6 +481,7 @@ class NovaAnimation : public NovaSpritesheet {
     protected:
     float frameTime; // Time per frame
     float framerate; // Maximum time per frame
+    int fps; // just to know what the fps in integer was
     
     public:
     bool loop; // Whether the animation loops
@@ -483,8 +494,8 @@ class NovaAnimation : public NovaSpritesheet {
         row = 0;
     }
 
-    inline void setFramerate(float framerate_){ framerate = 1 / framerate_; frameTime = framerate; }
-    inline float getFramerate() { return framerate; }
+    inline void setFramerate(float framerate_){ framerate = 1 / framerate_; frameTime = framerate; fps = framerate_; }
+    inline int getFramerate() { return fps; }
 
     NovaAnimation() {}
 
@@ -540,6 +551,11 @@ class NovaRenderDevice {
 
     static bool checkCollision(NovaObject4 obj, NovaObject4 obj2);
     static bool checkCollision(NovaObject4 obj, NovaCircle circ);
+
+
+    // Grid
+    static void gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color);
+    static void gridBoxes(NovaVec2 cellSize, NovaVec2 cells, Color lineColor, Color boxColor);
 };
 
 
@@ -772,4 +788,51 @@ class NovaGrid {
 
     NovaVec2 snap(float x, float y);
 };
+
+
+
+
+  /********************************/
+ /** GENERATOR                   */
+/********************************/
+
+
+template <typename T>
+class NovaGenerator {
+    public:
+    std::vector<T>* targetList;
+
+    NovaGenerator() = default;
+    NovaGenerator(std::vector<T>* targetList): targetList(targetList){}
+    
+    
+    inline void generate(int amount, auto func){
+        // While loops are generally faster
+        int i = 0;
+        do {
+            targetList->push_back(func(i));
+            i++;
+        } while (i <= amount);
+    }
+
+
+
+
+
+    inline void generate(int amount, auto func, int chance){
+        int i = 0;
+        do {
+            int chanceHit = GetRandomValue(1, chance);
+            
+            if (chanceHit == 1){
+                targetList->push_back(func(i));
+            }
+            
+            i++;
+        } while (i <= amount);
+    }
+};
+
+
+
 
