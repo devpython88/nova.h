@@ -125,6 +125,11 @@ void NovaRenderDevice::image(NovaRenderImage image)
     DrawTextureEx(image.texture, Vector2{image.x, image.y}, image.rotation, 1.0f, WHITE);
 }
 
+void NovaRenderDevice::texture(NovaRawTexture texture, float x, float y, Color tint)
+{
+    DrawTexture(texture.rTexture, x, y, tint);
+}
+
 // Check if an image is loaded
 bool NovaRenderDevice::imageLoaded(NovaRenderImage image)
 {
@@ -193,6 +198,156 @@ void NovaRenderDevice::gridBoxes(NovaVec2 cellSize, NovaVec2 cells, Color lineCo
     
     rect(boxX, boxY, boxWidth, boxHeight, boxColor);
     gridLines(cellSize, cells, lineColor); // draw the grid lines after the box to make it look like individual cells
+}
+
+
+// UI
+
+// Initialize global ui properties
+
+bool NovaRenderDevice::useDefaultFont = true;
+NovaVec2 NovaRenderDevice::padding = NovaVec2(10, 10);
+Font NovaRenderDevice::font = {};
+std::string NovaRenderDevice::fontName = "";
+int NovaRenderDevice::spacing = 10;
+
+// Buttons
+
+UIEvent NovaRenderDevice::uiButton(std::string text, NovaVec2 position, Color background, Color foreground, int fontSize)
+{
+    // Return value
+    UIEvent returnValue = UIEvent::None;
+    
+
+    // Get Button size
+    NovaVec2 buttonSize = getTextPixelSize(text, fontSize);
+    // Add padding
+    buttonSize += padding * NovaVec2(2, 2);
+
+    // Handle background colors
+    Color resultColor = background;
+
+    // Handle hover
+    if (NovaInputDevice::mouseHover(position.x, position.y, buttonSize.x, buttonSize.y)){
+        returnValue = UIEvent::Hover;
+        // Brighten color
+        resultColor.r = std::min(255, background.r + 20); // If red + 20 is less than 255, itll be red + 20 else itll be 255, same for rest of the colors
+        resultColor.g = std::min(255, background.g + 20);
+        resultColor.b = std::min(255, background.b + 20);
+    }
+
+    // Handle click
+    if (NovaInputDevice::mouseClick(position.x, position.y, buttonSize.x, buttonSize.y)){
+        returnValue = UIEvent::Click;
+        // Brighten color
+        resultColor.r = std::min(255, background.r + 40); // If red + 40 is less than 255, itll be red + 40 else itll be 255, same for rest of the colors
+        resultColor.g = std::min(255, background.g + 40);
+        resultColor.b = std::min(255, background.b + 40);
+    }
+    
+
+    // Get text display position
+    NovaVec2 displayPosition(position);
+    displayPosition += padding;
+
+    // Draw Button
+    rect(position.x, position.y, buttonSize.x, buttonSize.y, resultColor);
+
+    // Draw Text (default font)
+    if (useDefaultFont) DrawText(text.c_str(), displayPosition.x, displayPosition.y, fontSize, foreground);
+
+    // Draw text (custom font)
+    else DrawTextEx(font, text.c_str(), Vector2{displayPosition.x, displayPosition.y}, fontSize, spacing, WHITE);
+
+    // Return button event
+    return returnValue;
+}
+
+void NovaRenderDevice::uiTextInput(std::string *target, NovaVec2 position, Color background, Color foreground, int fontSize, bool focused)
+{
+
+    // Get input
+
+    if (focused){
+        char c = GetCharPressed();
+
+        if ((c >= 32) && (c <= 126)){
+            *target += c;
+        }
+
+        // Handle backspace
+        if ((IsKeyPressed(KEY_BACKSPACE) || IsKeyPressedRepeat(KEY_BACKSPACE)) && target->size() >= 1){
+            *target = target->substr(0, target->size() - 1); // -1 = 0 indexed length, so -2 = length without last char
+        }
+    }
+    
+    // Get entry size
+    NovaVec2 entrySize = getTextPixelSize(*target, fontSize);
+    // Add padding
+    entrySize += padding * NovaVec2(2, 2);
+
+    // Make a default width
+    entrySize.x = std::max(225, (int) entrySize.x); // Make it so when there are less characters, the entry fixates to 225 width
+
+    // Handle background colors
+    Color resultColor = background;
+
+    // Handle hover
+    if (NovaInputDevice::mouseHover(position.x, position.y, entrySize.x, entrySize.y)){
+        // Brighten color
+        resultColor.r = std::min(255, background.r + 20); // If red + 20 is less than 255, itll be red + 20 else itll be 255, same for rest of the colors
+        resultColor.g = std::min(255, background.g + 20);
+        resultColor.b = std::min(255, background.b + 20);
+    }
+    
+
+    // Get text display position
+    NovaVec2 displayPosition(position);
+    displayPosition += padding;
+
+    // Draw Entry
+    rect(position.x, position.y, entrySize.x, entrySize.y, resultColor);
+
+    // Draw Text (default font)
+
+    if (useDefaultFont) DrawText(target->c_str(), displayPosition.x, displayPosition.y, fontSize, foreground);
+
+    // Draw Text (custom font)
+    else DrawTextEx(font, target->c_str(), Vector2{displayPosition.x, displayPosition.y}, fontSize, spacing, WHITE);
+
+
+    // Draw line cursor
+
+    if (focused){
+        // draw
+        DrawText("|", displayPosition.x + getTextPixelSize(*target, fontSize).x, displayPosition.y, fontSize, WHITE);
+    }
+}
+
+NovaVec2 NovaRenderDevice::getTextPixelSize(std::string text, int fontSize)
+{
+    if (useDefaultFont) return NovaVec2(MeasureText(text.c_str(), fontSize), fontSize);
+    return NovaVec2(MeasureTextEx(font, text.c_str(), fontSize, spacing).x, fontSize);
+}
+
+NovaVec2 NovaRenderDevice::getWidgetSize(std::string text, int fontSize)
+{
+    NovaVec2 size = getTextPixelSize(text, fontSize);
+    size += padding * NovaVec2(2, 2);
+    return size;
+}
+
+// LABEL
+
+
+void NovaRenderDevice::uiLabel(std::string text, NovaVec2 pos, int fontSize, Color color)
+{
+    if (useDefaultFont){
+        DrawText(text.c_str(), pos.x, pos.y, fontSize, color);
+        return;
+    }
+
+    DrawTextEx(font, text.c_str(), Vector2{pos.x, pos.y}, fontSize, spacing, color);
 }
 
 // SPRITESHEET
@@ -280,7 +435,7 @@ bool NovaInputDevice::mouseHover(float left, float top, float width, float heigh
 
 bool NovaInputDevice::mouseClick(float left, float top, float width, float height)
 {
-    return NovaInputDevice::mouseHover(left, top, width, height) && NovaInputDevice::mouseButtonHeld(MOUSE_BUTTON_LEFT);
+    return NovaInputDevice::mouseHover(left, top, width, height) && NovaInputDevice::mouseButtonHit (MOUSE_BUTTON_LEFT);
 }
 
 // Get the mouse scroll wheel movement
@@ -659,4 +814,88 @@ void NovaObject4::grab()
 {
     visible = true;
     canCollide = true;
+}
+
+
+
+// RAW TEXTURE
+
+NovaVec2 NovaRawTexture::getSize()
+{
+    return NovaVec2(rTexture.width, rTexture.height);
+}
+
+int NovaRawTexture::getTextureID()
+{
+    return rTexture.id;
+}
+
+int NovaRawTexture::getMipmaps()
+{
+    return rTexture.mipmaps;
+}
+
+PopupEvent NovaPopup::show()
+{
+    if (!visible) return PopupEvent::Closed;
+
+    // Get position for close button
+    NovaVec2 closeButtonPosition((x + width) - 32, y);
+
+
+    // Get text position
+    NovaVec2 textPosition(x + 10, y + 10);
+
+    // draw dialog
+    NovaRenderDevice::rect(x, y, width, height, background);
+
+    // Draw title
+    NovaRenderDevice::text(title, textPosition.x, textPosition.y, 18, BLACK);
+
+    // Draw close button
+    if (NovaRenderDevice::uiButton("X", closeButtonPosition, RED, WHITE, 20) == UIEvent::Click){
+        visible = false;
+        return PopupEvent::Closed;
+    } 
+    
+    return PopupEvent::Open;
+}
+
+
+
+// MENUS
+
+
+MenuResult NovaMenu::show(){
+    // Draw menu button and set opened to true if pressed
+    auto result = NovaRenderDevice::uiButton(label, position, BLACK, WHITE, fontSize);
+    if (result == UIEvent::Click){
+        opened = !opened; // if false then becomes true, vice versa
+    }
+
+    // Draw Menu options if shown
+
+    if (opened){
+        return drawOptions();
+    }
+
+    // Return a failed option select
+    return MenuResult{"", false};
+}
+
+MenuResult NovaMenu::drawOptions()
+{
+    NovaVec2 pos = dropdownPosition;
+    std::string clicked = "";
+    bool alreadyClicked = false;
+    for (std::string option : options){
+        auto result = NovaRenderDevice::uiButton(option, pos, BLACK, WHITE, fontSize);
+        if (result == UIEvent::Click && !alreadyClicked){
+            clicked = option;
+            alreadyClicked = true;
+        }
+        pos.y += NovaRenderDevice::getWidgetSize(option, fontSize).y;
+    }
+    
+    return MenuResult{clicked, alreadyClicked};
 }

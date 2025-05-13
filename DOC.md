@@ -26,14 +26,16 @@ Guide on how to compile:
 > NOTE: v1.2 has deprecated the old .checkCollision methods for all objects, Set to be removed in 1.5
 > Use NovaRenderDevice::checkCollision(NovaObject4, NovaObject4/NovaCircle) instead.
 
-## Hot (new) 🔥
-- [NovaGrid](#novagrid)
-- [NovaRenderDevice grid functions](#novarenderdevice-grid)
-- [NovaLogFile](#novalogfile-novafileh)
-- [NovaObject4 update](#novaobject4-update)
-- [NovaAnimation update](#novaanimation-update)
-- [Copyright free assets](#copyright-free-assets)
 
+## Hot (new) 🔥
+
+## [UI](#ui)
+- ### [Buttons](#buttons)
+- ### [Input](#input-boxes)
+- ### [Labels](#labels)
+- ### [Styling](#styling)
+- ### [Dialogs](#dialogs)
+- ### [Menus](#menus)
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
@@ -66,6 +68,10 @@ Guide on how to compile:
 - [Nova Signal](#novasignal-novah)
 - [Nova Color](#novacolor)
 - [Nova Types](#nova-types)
+- [NovaGrid](#novagrid)
+- [NovaRenderDevice grid functions](#novarenderdevice-grid)
+- [NovaLogFile](#novalogfile-novafileh)
+- [Copyright free assets](#copyright-free-assets)
 
 
 ## Window initialization
@@ -177,11 +183,11 @@ Step 1. Create a instance
 NovaAnimation anim("Player.png", 20, 20, 8, 8);
 ```
 
-Step 2. Set frame time (in seconds)
+Step 2. Set frame rate
 ```cpp
-// Frame time determens how much time it takes for the next frame to appear
-anim.setMaxFrameTime(2.0f);
-anim.getMaxFrameTime();
+// frame rate
+anim.setFramerate(24);
+anim.getFramerate();
 ```
 
 Step 3. (Optionally) Set the looping property
@@ -566,7 +572,6 @@ Fields:
 
 
 
-# Hot (new) 🔥
 
 
 ## NovaGrid
@@ -620,3 +625,82 @@ Instead now you use:
 ## NovaLogFile (`novafile.h`)
 This is just a normal `NovaFile` but it has log functions.
 You can use it for multiplayer server logs and stuff.
+
+
+
+
+
+# Hot (new) 🔥
+
+## UI
+Nova now has ui function in NovaRenderDevice
+
+### Buttons:
+To show buttons you use the `.uiButton` function from NovaRenderDevice.
+`.uiButton(std::string text, NovaVec2 position, Color background, Color foreground, int fontSize)`: Simple button (Has hover and click effects)
+This returns a enum class `UIEvent`
+You can use the enum to check for click, hover and no action
+`UIEvent::Click` and `UIEvent::Hover` and `UIEvent::None` when no action is performed
+
+### Input boxes:
+To show a functional input box, use `.uiInputBox`
+`.uiInputBox(std::string* ptr_to_target, NovaVec2 position, Color background, Color foreground, int fontSize, bool focused = true)`
+This function takes a pointer to a string, That pointer modifies the string, And that string is where the contents of the input box are
+The end `focused` parameter is optional and controls whether to just show the input box or take input aswell
+
+### Labels:
+Labels are normal text display but can have fonts, Unlike `.text`
+`.uiLabel(text, int fontSize, Color color)`: Shows the text with the font.
+
+### Fonts and Padding:
+To actually modify the UI element fonts and padding and spacing.
+
+You can use the setters and getters
+`.getSpacing(): int`
+`.getPadding(): NovaVec2`
+`.getFontName(): std::string`
+
+`.setPadding(NovaVec2)`: Set padding through a vector
+`.setPadding(float, float)`: Set padding through floats
+`.setSpacing(int)`: Set the spacing
+`.setFont(std::string)`: Set the font
+`.unloadFont()`: Unload the font aswell as make it so Nova starts using the default font again.
+
+
+
+### Dialogs
+There are also simple modal dialogs.
+They can be shown through `NovaPopup`
+How to use:
+Constructor: `(title std::string, float x, float y, float width, float height, Color bg)`
+
+Methods:
+`show()`: Show the dialog, Returns enum class `PopupEvent`, which can be either `::Open` or `::Closed` depending on if the close button was pressed
+
+There is also a boolean field `visible` that controls if the dialog is visible or not
+
+
+### Menus
+Nova also has menus.
+
+The class is `NovaMenu`
+
+Constructor: `(std::string label, NovaVec2 position, int fontSize)`
+
+Fields:
+`position NovaVec2`: Position
+`dropdownPosition Novavec2`: Position from where the dropdown list will show up
+`label std::string`: Label
+`fontSize int`: Font size
+`opened bool`: Dropdown shown or not
+
+Methods:
+`addOption(label)`: Add option
+`removeOption(index)`: Remove option
+
+`MenuResult show()`:
+Shows the menu bar, Handles opening and closing.
+Returns MenuResult containing if option was clicked and which option was clicked
+
+`MenuResult`:
+`bool clicked` and `std::string option`

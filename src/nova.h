@@ -1,12 +1,28 @@
 #pragma once
 
 // Default window properties
+
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGHT 480
 #define DEFAULT_CAPTION "Game"
+
+// MACROS
+
 #define CALLBACK(f) std::function<void(void)>(f)
 #define SCREEN(f) std::function<void(void)>(f)
 #define CONDITION_VAR(cn) std::function<bool(void)>([&]() { return cn == true; })
+
+// CONSTANTS
+enum class UIEvent {
+    Click,
+    Hover,
+    None
+};
+
+enum class PopupEvent {
+    Closed,
+    Open
+};
 
 #include <iostream>
 #include <raylib.h>
@@ -415,7 +431,7 @@ class NovaCircle {
 // Class representing a renderable image
 class NovaRenderImage : public NovaObject4 {    
     public:
-    Texture texture; // Texture of the image
+    Texture2D texture; // Texture of the image
     const std::string path; // File path of the image
     
     // Constructor to load the image texture
@@ -434,8 +450,22 @@ class NovaRenderImage : public NovaObject4 {
 };
 
 
+/********************************/
+/** RAW TEXTURE                 */
+/********************************/
+
+class NovaRawTexture {
+    public:
+    Texture2D rTexture;
 
 
+    NovaRawTexture() = default;
+    NovaRawTexture(std::string path): rTexture(LoadTexture(path.c_str())){}
+
+    NovaVec2 getSize();
+    int getTextureID();
+    int getMipmaps();
+};
 
 /********************************/
 /** ANIMATIONS                  */
@@ -516,6 +546,13 @@ class NovaAnimation : public NovaSpritesheet {
 
 // Class for rendering shapes and images
 class NovaRenderDevice {
+    private:
+    static bool useDefaultFont;
+    static Font font;
+    static NovaVec2 padding;
+    static std::string fontName;
+    static int spacing;
+
     public:
 
     // Fill the screen with a color
@@ -536,6 +573,7 @@ class NovaRenderDevice {
 
     // Draw images
     static void image(NovaRenderImage image);
+    static void texture(NovaRawTexture texture, float x, float y, Color tint = WHITE);
     
     // Check if an image is loaded
     static bool imageLoaded(NovaRenderImage image);
@@ -556,6 +594,33 @@ class NovaRenderDevice {
     // Grid
     static void gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color);
     static void gridBoxes(NovaVec2 cellSize, NovaVec2 cells, Color lineColor, Color boxColor);
+
+
+    // UI
+    static UIEvent uiButton(std::string text, NovaVec2 position, Color background, Color foreground, int fontSize);
+    static void uiTextInput(std::string* target, NovaVec2 position, Color background, Color foreground, int fontSize, bool focused = true);
+    static NovaVec2 getTextPixelSize(std::string text, int fontSize);
+    static NovaVec2 getWidgetSize(std::string text, int fontSize);
+    static void uiLabel(std::string text, NovaVec2 pos, int fontSize, Color color);
+
+    // UI Property modifiers
+    inline static NovaVec2 getPadding(){ return padding; }
+    inline static void setPadding(float x, float y){ padding = NovaVec2(x, y); }
+    inline static void setPadding(NovaVec2 padding_){ padding = padding_; }
+    inline static void setSpacing(int spacing_){ spacing = spacing_; }
+    inline static int getSpacing(){ return spacing; }
+    inline static std::string getFontName(){ return fontName; }
+
+    inline static void setFont(std::string fontName_){
+        fontName = fontName_;
+        useDefaultFont = false;
+        font = LoadFont(fontName_.c_str());
+    }
+
+    inline static void unloadFont(){
+        useDefaultFont = true;
+        UnloadFont(font);
+    }
 };
 
 
@@ -836,3 +901,58 @@ class NovaGenerator {
 
 
 
+  /********************************/
+ /** POPUPS                      */
+/********************************/
+
+
+
+class NovaPopup {
+    public:
+    float x, y, width, height;
+    std::string title;
+    Color background;
+    bool visible;
+
+
+    NovaPopup() = default;
+    NovaPopup(std::string title, float x, float y, float width, float height, Color background):
+    x(x), y(y), width(width), height(height), title(title), background(background), visible(true){}
+
+
+
+    PopupEvent show();
+};
+
+  /********************************/
+ /** MENUS                       */
+/********************************/
+
+typedef struct {
+    std::string option;
+    bool clicked;
+} MenuResult;
+
+class NovaMenu {
+    public:
+    std::vector<std::string> options;
+    NovaVec2 dropdownPosition, position;
+    std::string label;
+    int fontSize;
+    bool opened;
+
+
+    NovaMenu() = default;
+    NovaMenu(std::string label, NovaVec2 position, int fontSize):
+    label(label), fontSize(fontSize), position(position),
+    dropdownPosition(position), options(), opened(false){
+        dropdownPosition.y += NovaRenderDevice::getWidgetSize("", fontSize).y;
+    }
+
+
+    inline void addOption(std::string option) { options.push_back(option); }
+    inline void removeOption(int index) { options.erase(options.begin() + index); }
+
+    MenuResult show();
+    MenuResult drawOptions();
+};
