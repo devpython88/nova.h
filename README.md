@@ -31,6 +31,7 @@ int main(int argc, char const *argv[])
     }
 
     image.dispose();
+    window.close();
     return 0;
 }
 ```
