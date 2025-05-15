@@ -13,9 +13,8 @@ int main(int argc, char const *argv[])
     nrd::framerateLimit(60);
 
     NovaRectangle rec(5, 5, 25, 25, RED);
-    NovaFueledVehicle veh(&rec,
-        NovaVehicleConfig(10.0f, 0.1f, 0.1f, 3.0f, 2.0f),
-        NovaFuelConfig(20, 1),
+    NovaVehicle veh(&rec,
+        NovaVehicleConfig(100.0f, 0.2f, 0.2f, 2.0f, -4.0f),
         NovaEvent::Key::W,
         NovaEvent::Key::S,
         NovaEvent::Key::A,
@@ -29,7 +28,6 @@ int main(int argc, char const *argv[])
         nrd::fill(WHITE);
         nrd::rect(rec);
         nrd::text(std::to_string(veh.getValidSpeed()), 100, 100, 22, BLACK);
-        nrd::text(std::to_string(veh.fuel), 100, 150, 22, BLACK);
         window.end();
     }
 
