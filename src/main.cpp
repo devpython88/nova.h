@@ -21,6 +21,7 @@ int main(int argc, char const *argv[])
         NovaEvent::Key::D
     );
 
+    
     while (window.open()){
         veh.drive();
 
