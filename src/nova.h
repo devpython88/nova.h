@@ -384,10 +384,11 @@ class NovaObject4 {
     float rotation;
     bool visible, canCollide;
     int zIndex;
+    NovaVec2 origin;
 
     NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true), zIndex(0){}
+    visible(true), canCollide(true), zIndex(0), origin(width / 2, height / 2){}
     NovaObject4() {}
 
 
@@ -395,6 +396,8 @@ class NovaObject4 {
     void move(NovaVec2 delta);
     void move(float deltaX, float deltaY);
     void roam(float speed, NovaRandomDevice* rd);
+    void moveTo(NovaVec2 target, float speed);
+    void roamTo(NovaVec2 target, float speed, NovaRandomDevice* rd);
 
 
     void cache();

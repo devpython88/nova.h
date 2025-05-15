@@ -87,7 +87,7 @@ void NovaRenderDevice::rect(float left, float top, float width, float height, Co
 void NovaRenderDevice::rect(NovaRectangle rect)
 {
     if (!rect.visible) return;
-    DrawRectanglePro(Rectangle{rect.x, rect.y, rect.width, rect.height}, Vector2{rect.width / 2, rect.height / 2}, rect.rotation, rect.color);
+    DrawRectanglePro(Rectangle{rect.x, rect.y, rect.width, rect.height}, Vector2{rect.origin.x, rect.origin.y}, rect.rotation, rect.color);
 }
 
 // Draw a circle with specified center, radius, and color
@@ -122,7 +122,14 @@ void NovaRenderDevice::poly(float x, float y, float sides, float radius, Color c
 void NovaRenderDevice::image(NovaRenderImage image)
 {
     if (!image.visible) return;
-    DrawTextureEx(image.texture, Vector2{image.x, image.y}, image.rotation, 1.0f, WHITE);
+    DrawTexturePro(
+        image.texture,
+        Rectangle{0, 0, (float)image.texture.width, (float)image.texture.height},
+        Rectangle{image.x, image.y, (float)image.texture.width, (float)image.texture.height},
+        Vector2{image.origin.x, image.origin.y},
+        image.rotation,
+        WHITE
+    );
 }
 
 void NovaRenderDevice::texture(NovaRawTexture texture, float x, float y, Color tint)
@@ -382,7 +389,7 @@ void NovaSpritesheet::render()
             frameWidth,
             frameHeight
         },
-        Vector2{frameWidth / 2, frameHeight / 2},
+        Vector2{image.origin.x, image.origin.y},
         image.rotation,
         WHITE
     );
@@ -802,6 +809,32 @@ void NovaObject4::roam(float speed, NovaRandomDevice* rd)
     }
 
     move(deltaX, deltaY);
+}
+
+void NovaObject4::moveTo(NovaVec2 target, float speed)
+{
+    // Move in x axis 
+    if (x < target.x) x += speed;
+    if (x > target.x) x -= speed;
+
+    // Move in y axis
+    if (y < target.y) y += speed;
+    if (y > target.y) y -= speed;
+}
+
+void NovaObject4::roamTo(NovaVec2 target, float speed, NovaRandomDevice *rd)
+{
+    int axis = rd->randomInt(1, 2); // 1 = x, 2 = y
+    // Move in x axis 
+    if (axis == 1){
+        if (x < target.x) x += speed;
+        if (x > target.x) x -= speed;
+        return; // Exit function if moved in x axis
+    }
+
+    // Move in y axis
+    if (y < target.y) y += speed;
+    if (y > target.y) y -= speed;
 }
 
 void NovaObject4::cache()

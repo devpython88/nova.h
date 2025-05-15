@@ -14,9 +14,9 @@ set(NOVAFILE_SRC src/novafile.cpp)
 
 # Nova time and text tools and upcoming features
 set(NOVAEXTRA_H src/novatime.h
-        src/novastr.h src/json.hpp src/novajson.h)
+        src/novastr.h src/json.hpp src/novajson.h src/novamisc.h)
 set(NOVAEXTRA_SRC src/novatime.cpp
-        src/novastr.cpp src/novajson.cpp)
+        src/novastr.cpp src/novajson.cpp src/novamisc.cpp)
 
 # Target and main file
 set(TARGET test)

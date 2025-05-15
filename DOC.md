@@ -23,10 +23,6 @@ Guide on how to compile:
 
 ## Table of contents
 
-> NOTE: v1.2 has deprecated the old .checkCollision methods for all objects, Set to be removed in 1.5
-> Use NovaRenderDevice::checkCollision(NovaObject4, NovaObject4/NovaCircle) instead.
-
-
 ## Hot (new) 🔥
 
 ## [UI](#ui)
@@ -309,7 +305,14 @@ Has `.x`, `.y`, `.width`, `.height`
 This class also has a zIndex integer var. If you check for collision and the zindexes arent equal, it will return false.
 Great for mechanics like terraria and blashpemouses back and forth system.
 
-No methods
+Methods:
+`cache()`: Cache the object, make it invisible and [TITLE CARD], ahem. Invincible
+`grab()`: Decache the object, make it visible and vincible
+`move(float dx, float dy)`: Increase x and y with dx and dy
+`move(NovaVec2 delta)`: Increase x and y by delta
+`roam(float speed, NovaRandomDevice* rd)`: Randomly roam around
+`moveTo(NovaVec2 target, float speed)`: Move towards target
+`roamTo(NovaVec2 target, float speed, NovaRandomDevice* rd)`: Roam towards target, in other words randomly move targets target in x or y axis, for example instead of going a straight diagonal path, go a rough diagonal path
 
 
 ## `novafile.h`
