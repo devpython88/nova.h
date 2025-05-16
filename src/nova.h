@@ -241,6 +241,11 @@ class NovaColor {
 
     NovaColor() = default;
     NovaColor(UnsignedInt8 r, UnsignedInt8 g, UnsignedInt8 b, UnsignedInt8 a): r(r), g(g), b(b), a(a){}
+
+
+    void brighten(UnsignedInt8 rVal, UnsignedInt8 gVal, UnsignedInt8 bVal, UnsignedInt8 aVal);
+    void darken(UnsignedInt8 rVal, UnsignedInt8 gVal, UnsignedInt8 bVal, UnsignedInt8 aVal);
+    
 };
 
 // Class for randomization

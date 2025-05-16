@@ -19,54 +19,25 @@ void NovaInteractPrompt::checkAndDraw(NovaVec2 textPosition, std::vector<NovaObj
 
 void NovaVehicle::drive()
 {
-    handleVehicleVelocity();
-    repositionVehicle();
-}
-
-float NovaVehicle::getValidSpeed()
-{
-    if (fabs(yVelocity) < 0.05f) return 0.0f;
-    return yVelocity;
-}
-
-
-void NovaVehicle::handleAcceleration(){
-    yVelocity += vehicleConfig.accelerationSpeed;
-    if (yVelocity > vehicleConfig.topSpeed) yVelocity = vehicleConfig.topSpeed;
-}
-
-void NovaVehicle::handleDeceleration(){
-    yVelocity -= vehicleConfig.decelerationSpeed;
-    if (yVelocity < -vehicleConfig.maxDecelerationSpeed) yVelocity = -vehicleConfig.maxDecelerationSpeed;
-}
-
-void NovaVehicle::handleDamping(){
-    if (fabs(yVelocity) < 0.05f) yVelocity = 0.0f;
-    else if (yVelocity > 0.0f) yVelocity -= vehicleConfig.decelerationSpeed;
-    else yVelocity += vehicleConfig.decelerationSpeed;
-}
-
-void NovaVehicle::handleVehicleVelocity(){
-    // Accelerate
+    float rad = vehicleHost->rotation * DEG2RAD;
+    
     if (NovaInputDevice::keyHeld(forwardKey)){
-        handleAcceleration();
+       yVelocity += vehicleConfig.accelerationSpeed;
+        if (yVelocity > vehicleConfig.topSpeed) yVelocity = vehicleConfig.topSpeed;
     }
 
     // Decellerate
     else if (NovaInputDevice::keyHeld(backwardKey)){
-        handleDeceleration();
+        yVelocity -= vehicleConfig.decelerationSpeed;
+        if (yVelocity < -vehicleConfig.maxDecelerationSpeed) yVelocity = -vehicleConfig.maxDecelerationSpeed;
     }
 
     // Damping
     else {
-        handleDamping();
+        if (fabs(yVelocity) < 0.05f) yVelocity = 0.0f;
+        else if (yVelocity > 0.0f) yVelocity -= vehicleConfig.decelerationSpeed;
+        else yVelocity += vehicleConfig.decelerationSpeed;
     }
-}
-
-void NovaVehicle::repositionVehicle(){
-    float rad = vehicleHost->rotation * DEG2RAD;
-    
-
 
     // Turning
     if (NovaInputDevice::keyHeld(turnLeftKey)) vehicleHost->rotation -= vehicleConfig.turnSpeed;
@@ -75,4 +46,10 @@ void NovaVehicle::repositionVehicle(){
 
     vehicleHost->x += sin(rad) * yVelocity;
     vehicleHost->y += -cos(rad) * yVelocity;
+}
+
+float NovaVehicle::getValidSpeed()
+{
+    if (fabs(yVelocity) < 0.05f) return 0.0f;
+    return yVelocity;
 }

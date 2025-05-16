@@ -232,24 +232,20 @@ UIEvent NovaRenderDevice::uiButton(std::string text, NovaVec2 position, Color ba
     buttonSize += padding * NovaVec2(2, 2);
 
     // Handle background colors
-    Color resultColor = background;
+    NovaColor resultColor(background.r, background.g, background.b, background.a);
 
     // Handle hover
     if (NovaInputDevice::mouseHover(position.x, position.y, buttonSize.x, buttonSize.y)){
         returnValue = UIEvent::Hover;
         // Brighten color
-        resultColor.r = std::min(255, background.r + 20); // If red + 20 is less than 255, itll be red + 20 else itll be 255, same for rest of the colors
-        resultColor.g = std::min(255, background.g + 20);
-        resultColor.b = std::min(255, background.b + 20);
+        resultColor.brighten(20, 20, 20, 0);
     }
 
     // Handle click
     if (NovaInputDevice::mouseClick(position.x, position.y, buttonSize.x, buttonSize.y)){
         returnValue = UIEvent::Click;
         // Brighten color
-        resultColor.r = std::min(255, background.r + 40); // If red + 40 is less than 255, itll be red + 40 else itll be 255, same for rest of the colors
-        resultColor.g = std::min(255, background.g + 40);
-        resultColor.b = std::min(255, background.b + 40);
+        resultColor.brighten(40, 40, 40, 0);
     }
     
 
@@ -258,7 +254,7 @@ UIEvent NovaRenderDevice::uiButton(std::string text, NovaVec2 position, Color ba
     displayPosition += padding;
 
     // Draw Button
-    rect(position.x, position.y, buttonSize.x, buttonSize.y, resultColor);
+    rect(position.x, position.y, buttonSize.x, buttonSize.y, Color{resultColor.r, resultColor.g, resultColor.b, resultColor.a});
 
     // Draw Text (default font)
     if (useDefaultFont) DrawText(text.c_str(), displayPosition.x, displayPosition.y, fontSize, foreground);
@@ -297,14 +293,13 @@ void NovaRenderDevice::uiTextInput(std::string *target, NovaVec2 position, Color
     entrySize.x = std::max(225, (int) entrySize.x); // Make it so when there are less characters, the entry fixates to 225 width
 
     // Handle background colors
-    Color resultColor = background;
+    NovaColor resultColor(background.r, background.g, background.b, background.a);
+
 
     // Handle hover
     if (NovaInputDevice::mouseHover(position.x, position.y, entrySize.x, entrySize.y)){
         // Brighten color
-        resultColor.r = std::min(255, background.r + 20); // If red + 20 is less than 255, itll be red + 20 else itll be 255, same for rest of the colors
-        resultColor.g = std::min(255, background.g + 20);
-        resultColor.b = std::min(255, background.b + 20);
+        resultColor.brighten(20, 20, 20, 0);
     }
     
 
@@ -313,7 +308,7 @@ void NovaRenderDevice::uiTextInput(std::string *target, NovaVec2 position, Color
     displayPosition += padding;
 
     // Draw Entry
-    rect(position.x, position.y, entrySize.x, entrySize.y, resultColor);
+    rect(position.x, position.y, entrySize.x, entrySize.y, Color{resultColor.r, resultColor.g, resultColor.b, resultColor.a});
 
     // Draw Text (default font)
 
@@ -596,6 +591,27 @@ bool NovaInputManager::up(std::string name)
     }
     return false;
 }
+
+
+// Color
+
+void NovaColor::brighten(UnsignedInt8 rVal, UnsignedInt8 gVal, UnsignedInt8 bVal, UnsignedInt8 aVal){
+    r = std::min(255, r + rVal);
+    g = std::min(255, g + gVal);
+    b = std::min(255, b + bVal);
+    a = std::min(255, a + aVal);
+}
+
+void NovaColor::darken(UnsignedInt8 rVal, UnsignedInt8 gVal, UnsignedInt8 bVal, UnsignedInt8 aVal){
+    r = std::max(0, r - rVal);
+    g = std::max(0, g - gVal);
+    b = std::max(0, b - bVal);
+    a = std::max(0, a - aVal);
+}
+
+    
+
+// Randomization
 
 int NovaRandomDevice::randomInt(int s, int e)
 {

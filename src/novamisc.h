@@ -50,16 +50,6 @@ class NovaVehicle {
 
     void drive();
     float getValidSpeed();
-
-
-
-    protected:
-    void handleAcceleration();
-    void handleDeceleration();
-    void handleDamping();
-
-    void handleVehicleVelocity();
-    void repositionVehicle();
 };
 
 
