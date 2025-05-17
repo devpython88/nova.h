@@ -3,25 +3,6 @@
 #include <string>
 
 
-class NovaInteractPrompt {
-    private:
-    int checkObjectAndDraw(NovaObject4 obj, NovaVec2 textPosition);
-
-    public:
-    float detectionRadius;
-    std::string message;
-    int triggerKey;
-    NovaVec2 pos;
-
-
-    NovaInteractPrompt() = default;
-    NovaInteractPrompt(std::string message, NovaVec2 pos, int triggerKey, float detectionRange):
-    message(message), triggerKey(triggerKey), detectionRadius(detectionRange), pos(pos){}
-
-    void checkAndDraw(NovaVec2 textPosition, std::vector<NovaObject4> objectsToCheck);
-};
-
-
 
 class NovaVehicleConfig {
     public:
@@ -43,6 +24,7 @@ class NovaVehicle {
     NovaVehicleConfig vehicleConfig;
     int forwardKey, backwardKey, turnLeftKey, turnRightKey;
     NovaObject4* vehicleHost;
+    bool driving;
 
     NovaVehicle() = default;
     NovaVehicle(NovaObject4* vehicleHost, const NovaVehicleConfig& config, int forwardKey, int backwardKey, int turnLeftKey, int turnRightKey)

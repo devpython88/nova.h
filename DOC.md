@@ -25,20 +25,14 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-## [UI](#ui)
-- ### [Buttons](#buttons)
-- ### [Input](#input-boxes)
-- ### [Labels](#labels)
-- ### [Styling](#styling)
-- ### [Dialogs](#dialogs)
-- ### [Menus](#menus)
+- [Vehicles](#vehicles-novamisch)
+- [Object Base Class](#novaobject4) -- UPDATE
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
     - [Collision](#collision)
-- [Object Base Class](#novaobject4)
 - [Images](#images)
 - [Animated Images](#animated-images)
     - [NovaSpritesheet](#novaspritesheet)
@@ -68,6 +62,14 @@ Guide on how to compile:
 - [NovaRenderDevice grid functions](#novarenderdevice-grid)
 - [NovaLogFile](#novalogfile-novafileh)
 - [Copyright free assets](#copyright-free-assets)
+## [UI](#ui)
+
+- ### [Buttons](#buttons)
+- ### [Input](#input-boxes)
+- ### [Labels](#labels)
+- ### [Styling](#styling)
+- ### [Dialogs](#dialogs)
+- ### [Menus](#menus)
 
 
 ## Window initialization
@@ -633,7 +635,6 @@ You can use it for multiplayer server logs and stuff.
 
 
 
-# Hot (new) 🔥
 
 ## UI
 Nova now has ui function in NovaRenderDevice
@@ -707,3 +708,40 @@ Returns MenuResult containing if option was clicked and which option was clicked
 
 `MenuResult`:
 `bool clicked` and `std::string option`
+
+
+
+# Hot (new) 🔥
+
+
+## Vehicles (novamisc.h)
+Yes, nova now has built in vehicle physics and systems
+
+First, lets see the fields and constructor of `NovaVehicleConfig`:
+Fields:
+`topSpeed`: Top speed in pixels
+`accelerationSpeed`: Acceleration speed
+`decelerationSpeed`: Deceleration speed
+`maxDecelerationSpeed`: Maximum deceleration speed (control how quickly the vehicle can reverse)
+`turnSpeed`: vehicle's wheel turn speed
+Constructor: `(float topSpeed, float decelerationSpeed, float accelerationSpeed, float turnSpeed, float maxDecelerationSpeed)`
+
+
+Now lets take a look at how you can actually make a vehicle:
+
+Constructor: `NovaVehicle(NovaObject4* vehicleHost, const NovaVehicleConfig& config, int forwardKey, int backwardKey, int turnLeftKey, int turnRightKey)`
+The constructor takes a pointer to a host object (The vehicle), A vehicle config for the stats, And finally the movement keys
+
+
+Fields:
+`NovaVehicleConfig vehicleConfig;`: The vehicle stats, Can be changed
+`int forwardKey, backwardKey, turnLeftKey, turnRightKey;`: The movement keys, Can be changed
+`NovaObject4* vehicleHost;`: The host, can be changed
+`bool driving;`: Controls whether to handle acceleration and deceleration or not, If false then the vehicle only handles velocity (damping)
+
+Methods:
+`void drive();`: Call every frame to update rotation, velocity, handle acceleration and deceleration
+`float getValidSpeed();`: Returns a valid speed instead of the barebones y velocity
+
+
+Overall, This is great class that provides a quick and easy way to make vehicles
