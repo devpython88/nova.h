@@ -1,0 +1,58 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "cd build && if exist test.exe del test.exe"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "cd build && ninja -j4"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Run",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "cd build && if exist test.exe .\\test.exe"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Clean, Build, Run",
+      "dependsOn": ["Clean", "Build", "Run"],
+      "dependsOrder": "sequence"
+    }
+  ]
+}

@@ -125,7 +125,7 @@ void NovaRenderDevice::image(NovaRenderImage image)
     DrawTexturePro(
         image.texture,
         Rectangle{0, 0, (float)image.texture.width, (float)image.texture.height},
-        Rectangle{image.x, image.y, (float)image.texture.width, (float)image.texture.height},
+        Rectangle{image.x, image.y, (float)image.texture.width * image.scale.x, (float)image.texture.height * image.scale.y},
         Vector2{image.origin.x, image.origin.y},
         image.rotation,
         WHITE
@@ -381,8 +381,8 @@ void NovaSpritesheet::render()
         Rectangle{
             x,
             y,
-            frameWidth,
-            frameHeight
+            frameWidth * image.scale.x,
+            frameHeight * image.scale.y
         },
         Vector2{image.origin.x, image.origin.y},
         image.rotation,
@@ -865,6 +865,14 @@ void NovaObject4::grab()
     canCollide = true;
 }
 
+void NovaObject4::updateMovement(){
+    NovaVec2 dest(NovaVec2(x, y) + velocity);
+
+    if (x < dest.x) x += acceleration.x;
+    if (x > dest.x) x -= acceleration.x;
+    if (y < dest.y) y += acceleration.y;
+    if (y > dest.y) y -= acceleration.y;
+}
 
 
 // RAW TEXTURE

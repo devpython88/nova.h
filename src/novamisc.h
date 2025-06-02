@@ -36,3 +36,24 @@ class NovaVehicle {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+class NovaMath {
+    public:
+
+    static float roundTo(float val, float step);
+
+    static float normalize(float value);
+    static NovaVec2 normalize2(NovaVec2 vec);
+    static NovaVec3 normalize3(NovaVec3 vec);
+    static NovaVec4 normalize4(NovaVec4 vec);
+};

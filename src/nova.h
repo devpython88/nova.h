@@ -384,11 +384,18 @@ class NovaWindow {
 // Base class for all objects
 class NovaObject4 {
     public:
+    NovaVec2 acceleration, velocity;
+    
     float x, y;
+    
     float width, height;
+    
     float rotation;
+    
     bool visible, canCollide;
+    
     int zIndex;
+
     NovaVec2 origin;
 
     NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
@@ -404,6 +411,10 @@ class NovaObject4 {
     void moveTo(NovaVec2 target, float speed);
     void roamTo(NovaVec2 target, float speed, NovaRandomDevice* rd);
 
+    void updateMovement();
+
+    void setVelocity(float vx, float vy){ velocity.x = vx; velocity.y = vy; }
+    void setAcceleration(float vx, float vy){ acceleration.x = vx; acceleration.y = vy; }
 
     void cache();
     void grab();
@@ -441,14 +452,17 @@ class NovaRenderImage : public NovaObject4 {
     public:
     Texture2D texture; // Texture of the image
     const std::string path; // File path of the image
+    NovaVec2 scale;
     
     // Constructor to load the image texture
     NovaRenderImage(float x, float y, std::string path, float rotation = 0.0f):
-    NovaObject4(x, y, 0, 0, rotation), texture(LoadTexture(path.c_str())), path(path) {
+    NovaObject4(x, y, 0, 0, rotation), texture(LoadTexture(path.c_str())), path(path), scale(1.0f, 1.0f) {
         width = texture.width;
         height = texture.height;
+        centerPivot();
     }
 
+    void centerPivot(){ origin = NovaVec2((width * scale.x) / 2, (height * scale.y) / 2); }
     NovaRenderImage() : path("") {}
 
     // Destructor to unload the texture
