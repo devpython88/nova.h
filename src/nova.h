@@ -400,7 +400,7 @@ class NovaObject4 {
 
     NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true), zIndex(0){}
+    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f){}
     NovaObject4() {
         centerPivot();
     }

@@ -93,4 +93,3 @@ NovaVec4 NovaMath::normalize4(NovaVec4 vec){
 
 
 
-
