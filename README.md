@@ -1,4 +1,4 @@
-<img src="/nova_icon.png" width="300"/>
+<img src="/novaIcon.png" width="300"/>
 
 Nova.h is a simple single header library that is designed to user friendly and is built on top of raylib.
 
