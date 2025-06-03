@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 
     nrd::framerateLimit(60);
 
-    std::cout << NovaMath::roundTo(146.4f, 20.0f);
+    
     
     while (window.open()){
         window.start();

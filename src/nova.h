@@ -400,10 +400,13 @@ class NovaObject4 {
 
     NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true), zIndex(0), origin(width / 2, height / 2){}
-    NovaObject4() {}
+    visible(true), canCollide(true), zIndex(0){}
+    NovaObject4() {
+        centerPivot();
+    }
 
 
+    void centerPivot(){ origin = NovaVec2(width / 2, height / 2); }
 
     void move(NovaVec2 delta);
     void move(float deltaX, float deltaY);

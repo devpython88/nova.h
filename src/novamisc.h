@@ -57,3 +57,10 @@ class NovaMath {
     static NovaVec3 normalize3(NovaVec3 vec);
     static NovaVec4 normalize4(NovaVec4 vec);
 };
+
+
+
+
+
+
+

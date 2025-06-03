@@ -25,8 +25,12 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Vehicles](#vehicles-novamisch)
+- [Image Scaling](#image-scaling)
+- [Vehicle Bugfix](#image-vehicle-fix)
+- [Cool Math Operations](#math-operations-novamisch)
+- [Raw Texture](#raw-texture)
 - [Object Base Class](#novaobject4) -- UPDATE
+
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
@@ -62,6 +66,8 @@ Guide on how to compile:
 - [NovaRenderDevice grid functions](#novarenderdevice-grid)
 - [NovaLogFile](#novalogfile-novafileh)
 - [Copyright free assets](#copyright-free-assets)
+- [Vehicles](#vehicles-novamisch)
+
 ## [UI](#ui)
 
 - ### [Buttons](#buttons)
@@ -307,6 +313,10 @@ Has `.x`, `.y`, `.width`, `.height`
 This class also has a zIndex integer var. If you check for collision and the zindexes arent equal, it will return false.
 Great for mechanics like terraria and blashpemouses back and forth system.
 
+Fields:
+`acceleration: NovaVec2`: XY Speed for velocity movements
+`velocity: NovaVec2`: If you change this to not be 0, 0 Then every frame the object will move using acceleration towards the velocity, Be sure to call `updateMovement`
+
 Methods:
 `cache()`: Cache the object, make it invisible and [TITLE CARD], ahem. Invincible
 `grab()`: Decache the object, make it visible and vincible
@@ -315,6 +325,8 @@ Methods:
 `roam(float speed, NovaRandomDevice* rd)`: Randomly roam around
 `moveTo(NovaVec2 target, float speed)`: Move towards target
 `roamTo(NovaVec2 target, float speed, NovaRandomDevice* rd)`: Roam towards target, in other words randomly move targets target in x or y axis, for example instead of going a straight diagonal path, go a rough diagonal path
+`updateMovement()`: Uses velocity and acceleration to move, Needs to be called if velocity movement is needed every frame
+`centerPivot()`: Center the origin to the center of the object (Overriden by NovaRenderImage for scaling)
 
 
 ## `novafile.h`
@@ -323,7 +335,6 @@ You could also use it for things like Randomization, Integration into raylib
 
 But now you can even use it for file operation.
 
-This *MASSIVE* (low taper faddeee) update adds file operation.
 That work without even filesystem.
 Currently experimental, They are to be improved as the project continues
 They are available in `novafile.h`.
@@ -711,7 +722,6 @@ Returns MenuResult containing if option was clicked and which option was clicked
 
 
 
-# Hot (new) 🔥
 
 
 ## Vehicles (novamisc.h)
@@ -745,3 +755,38 @@ Methods:
 
 
 Overall, This is great class that provides a quick and easy way to make vehicles
+
+
+
+
+# Hot (new) 🔥
+
+
+## Math Operations (novamisc.h)
+This update adds some cool math operations,
+Such as vector normalization and sign extraction.
+
+Methods:
+`normalize(float)`: Sign extraction
+`normalize2(NovaVec2)`: Vector normalization
+`normalize3(NovaVec3)`: Vector normalization
+`normalize4(NovaVec4)`: Vector normalization
+`round(float v, float step)`: Round `v` to the nearest `step`
+
+
+## Image Scaling
+To scale a image now, You can just have a `NovaRenderImage` and change its `scale` NovaVec2
+Be sure to call `centerPivot()` afterwards to adjust the pivot for scaling.
+For animations/spritesheets you can change the `scale` vector of their internal `NovaRenderImage`
+
+## Raw Texture
+NovaRawTexture is basically a Object Oriented `Texture2D`
+Its main use is for when you need raylib-level control over textures
+Thats because you can access its mipmaps etc...
+
+
+## Image Vehicle Fix
+Previously, I overlooked vehicles for images.
+Which resulted in weird rotations for images when using vehicles
+Now I have fixed it
+
