@@ -34,7 +34,7 @@ echo "[-----------------------------------------]"
 echo "enter cmake generator name (case sensitive):"
 read P_BS
 
-cmake -G "$P_BS" ..
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G "$P_BS" ..
 
 echo "enter cmake generator exe (* to ignore, for systems like Visual studio):"
 read P_EXE

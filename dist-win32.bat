@@ -25,7 +25,7 @@ echo [MinGW Makefiles            - mingw32-make]
 echo [-----------------------------------]
 
 set /p build_system=Enter cmake generator name (case sensitive): 
-cmake -G "%build_system%" ..
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G "%build_system%" ..
 set /p build_system_exe=Enter cmake generator exe (*=ignore for systems like msvc): 
 
 if not "%build_system_exe%"=="*" (

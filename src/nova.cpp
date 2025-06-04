@@ -11,19 +11,19 @@ bool NovaWindow::open()
 void NovaWindow::start()
 {
     BeginDrawing();
-    BeginMode2D(camera);
+    if (integratedCamera) BeginMode2D(camera);
 }
 
 // Switch to UI mode (end 2D camera mode)
 void NovaWindow::uiMode()
 {
-    EndMode2D();
+    if (integratedCamera) EndMode2D();
 }
 
 // End drawing and clean up
 void NovaWindow::end()
 {
-    EndMode2D();
+    if (integratedCamera) EndMode2D();
     EndDrawing();
 }
 
@@ -68,6 +68,34 @@ NovaAxis NovaWindow::axis()
 {
     return NovaAxis(width, height);
 }
+
+
+
+
+// CAMERA
+
+
+
+NovaVec2 NovaCamera::getViewportSize(){
+    return NovaVec2(GetScreenWidth() / zoom, GetScreenHeight() / zoom);
+}
+
+void NovaCamera::start(){
+    refreshCamera();
+    BeginMode2D(camera);
+}
+
+void NovaCamera::end(){
+    EndMode2D();
+}
+
+NovaVec2 NovaCamera::getViewportRelativePosition(float x, float y){
+    return NovaVec2(x / zoom, y / zoom);
+}
+
+
+
+
 
 // RENDER DEVICE
 

@@ -1,6 +1,7 @@
 #pragma
 #include "nova.h"
 #include <string>
+#include "novajson.h"
 
 
 
@@ -66,3 +67,55 @@ class NovaMath {
 
 
 
+
+
+
+template <typename T>
+class NovaList : public std::vector<T> {
+    public:
+
+
+    NovaList(): std::vector<T>(){}
+
+    void pop_index(int index){
+        this->erase(this->begin() + index);
+    }
+
+
+    bool has_item(auto item){
+        for (auto& it : *this){
+            if (it == item) return true;
+        }
+        return false;
+    }
+
+    
+
+    void fill(int amount, auto genFunc){
+        for (size_t i = 0; i < amount; i++){
+            this->push_back(genFunc());
+        }
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+// Data device
+
+
+class NovaDataDevice {
+    public:
+    static void saveData(std::string file, NovaJSON json);
+    static void saveData(std::string file, std::vector<NovaJSON> jsons);
+    static NovaJSON loadData(std::string file);
+    static std::vector<NovaJSON> loadDataEx(std::string file);
+};

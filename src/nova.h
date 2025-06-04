@@ -333,10 +333,11 @@ class NovaWindow {
     public:
     int width, height; // Window dimensions
     std::string caption; // Window title
+    bool integratedCamera;
 
     // Constructor to initialize the window and audio device
     NovaWindow(int w = DEFAULT_WIDTH, int h = DEFAULT_HEIGHT, const std::string& c = DEFAULT_CAPTION)
-        : width(w), height(h), caption(c) {
+        : width(w), height(h), caption(c), integratedCamera(true) {
         InitWindow(width, height, caption.c_str());
         InitAudioDevice();
 
@@ -370,6 +371,47 @@ class NovaWindow {
     // Axis
     NovaAxis axis();
 };
+
+
+
+
+
+
+// Nova Camera
+
+
+
+
+class NovaCamera {
+    private:
+    Camera2D camera;
+
+    inline void refreshCamera(){
+        camera.target = Vector2{target.x, target.y};
+        camera.zoom = zoom;
+        camera.rotation = rotation;
+        camera.offset = { 0, 0 };
+    }
+
+    public:
+    NovaVec2 target;
+    float zoom;
+    float rotation;
+
+    NovaCamera(): target(0, 0), zoom(1.0f), rotation(.0f){
+        refreshCamera();
+    }
+
+
+    NovaVec2 getViewportSize();
+    float getViewportWidth(){ return GetScreenWidth() / zoom; }
+    float getViewportHeight(){ return GetScreenHeight() / zoom; }
+    
+    void start();
+    void end();
+    NovaVec2 getViewportRelativePosition(float x, float y);
+};
+
 
 
 
