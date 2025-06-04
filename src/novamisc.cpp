@@ -175,3 +175,47 @@ std::vector<NovaJSON> NovaDataDevice::loadDataEx(std::string file){
 
     return newArr;
 }
+
+
+
+
+
+
+// Nova object group
+
+
+void NovaObjectGroup::refresh(){
+    for (auto obj : objects){
+        obj.obj->acceleration = globalAcceleration;
+        obj.obj->velocity = globalVelocity;
+    }
+}
+
+NovaList<NovaObject4*> NovaObjectGroup::getAll(std::string tag){
+    NovaList<NovaObject4*> matches;
+
+    for (auto obj : objects){
+        if (obj.tag == tag) matches.push_back(obj.obj);    
+    }
+
+    return matches;
+}
+
+NovaObject4* NovaObjectGroup::get(int index){
+    if (index >= objects.size()) throw std::runtime_error("Index out of bounds: " + index);
+
+    return objects.at(index).obj;
+}
+
+void NovaObjectGroup::add(NovaObject4* obj, std::string tag){
+    objects.push_back(GroupItem(obj, tag));
+}
+
+bool NovaObjectGroup::collidesWith(NovaObject4& other){
+    for (auto obj : objects){
+        if (NovaRenderDevice::checkCollision(*obj.obj, other)) return true;
+    }
+
+    return false;
+}
+

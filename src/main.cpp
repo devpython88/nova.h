@@ -11,21 +11,7 @@ int main(int argc, char const *argv[])
 
     nrd::framerateLimit(24);
 
-    std::vector<NovaJSON> stuff;
-
-    for (int i = 0; i < 20; i++){
-        NovaJSON j;
-        j.set<int>("x", GetRandomValue(20, 60));
-        j.set<int>("y", GetRandomValue(20, 60));
-        j.set<int>("w", GetRandomValue(20, 60));
-        j.set<int>("h", GetRandomValue(20, 60));
-        stuff.push_back(j);
-    }
-
-    NovaDataDevice::saveData("data.dat", stuff);
-
     while (window.open()){
-
         window.start();
         nrd::fill(WHITE);
         window.end();

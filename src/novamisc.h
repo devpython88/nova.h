@@ -119,3 +119,52 @@ class NovaDataDevice {
     static NovaJSON loadData(std::string file);
     static std::vector<NovaJSON> loadDataEx(std::string file);
 };
+
+
+
+
+
+
+
+
+// Object Group
+
+
+
+class GroupItem {
+    public:
+    NovaObject4* obj;
+    std::string tag;
+
+    GroupItem(NovaObject4* obj, std::string tag): obj(obj), tag(tag){}
+};
+
+
+
+
+class NovaObjectGroup {
+
+    private:
+    NovaList<GroupItem> objects;
+
+    public:
+    NovaVec2 globalVelocity, globalAcceleration;
+
+
+    NovaObjectGroup(): globalVelocity(0.0f, 0.0f), globalAcceleration(.1f, .1f){}
+
+
+    void refresh();
+    NovaList<NovaObject4*> getAll(std::string tag);
+    NovaObject4* get(int index);
+    void add(NovaObject4* obj, std::string tag);
+    bool collidesWith(NovaObject4& other);
+
+
+    template <typename Func>
+    void forEach(Func&& logic){
+        for (int i = 0; i < objects.size(); i++){
+            logic(i, objects[i]);
+        }
+    }
+};
