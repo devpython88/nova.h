@@ -11,6 +11,14 @@ int main(int argc, char const *argv[])
 
     nrd::framerateLimit(24);
 
+    NovaList<int> ages;
+    
+    ages.push_back(23);
+    ages.push_back(19);
+    ages.push_back(3);
+    ages.push_back(13);
+    try { ages.find_item(223); } catch(std::exception e){}
+
     while (window.open()){
         window.start();
         nrd::fill(WHITE);

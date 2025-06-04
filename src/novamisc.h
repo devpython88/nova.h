@@ -88,12 +88,11 @@ class NovaList : public std::vector<T> {
         }
         return false;
     }
-
     
 
     void fill(int amount, auto genFunc){
         for (size_t i = 0; i < amount; i++){
-            this->push_back(genFunc());
+            this->push_back(genFunc(i));
         }
     }
 };

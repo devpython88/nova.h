@@ -406,6 +406,11 @@ class NovaCamera {
     NovaVec2 getViewportSize();
     float getViewportWidth(){ return GetScreenWidth() / zoom; }
     float getViewportHeight(){ return GetScreenHeight() / zoom; }
+    void centerTo(float x, float y){
+        NovaVec2 viewportSize = getViewportSize();
+        target.x = x - (viewportSize.x / 2);
+        target.y = y - (viewportSize.y / 2);
+    }
     
     void start();
     void end();

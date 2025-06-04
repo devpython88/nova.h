@@ -25,15 +25,15 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Image Scaling](#image-scaling)
-- [Vehicle Bugfix](#image-vehicle-fix)
-- [Cool Math Operations](#math-operations-novamisch)
-- [Raw Texture](#raw-texture)
-- [Object Base Class](#novaobject4) -- UPDATE
+- [Lists](#lists-novamisch)
+- [Object groups](#novaobjectgroup-novamisch)
+- [Data save and load](#novadatadevice-novamisch)
+- [External camera](#camera-novah)
 
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
+- [Object Base Class](#novaobject4)
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
     - [Collision](#collision)
@@ -41,32 +41,35 @@ Guide on how to compile:
 - [Animated Images](#animated-images)
     - [NovaSpritesheet](#novaspritesheet)
     - [NovaAnimation](#novaanimation)
-- [Camera](#camera)
+- [Built-in Camera](#camera)
 - [Audio](#audio)
     - [Sounds](#sounds)
     - [Music](#music)
 - [Keyboard and Mouse](#keyboard-and-mouse)
 - [Input Manager](#input-manager)
 - [Randomization](#novarandomdevice)
-- [Nova File](#novafileh)
-- [NovaFS and Win32FS](#novafs--win32fs)
-- [NovaObjectChain](#novaobjectchain)
-- [NovaTypewriter](#novatypewriter-novastrh)
-- [NovaTimer](#novatimer-novatimeh)
-- [NovaVec](#novavec)
-- [NovaStopwatch](#novastopwatch-novatimeh)
-- [NovaFileWatcher](#novafilewatcher-novafileh)
-- [NovaLogger](#novalogger-novah)
-- [NovaJSON](#novajson-novajsonh)
-- [Nova Event](#novaevent)
-- [Nova Signal](#novasignal-novah)
+- [File management](#novafileh)
+- [File system management](#novafs--win32fs)
+- [Object hierarchies](#novaobjectchain)
+- [Typewriter effects](#novatypewriter-novastrh)
+- [Timers](#novatimer-novatimeh)
+- [Math vectors](#novavec)
+- [Stopwatches](#novastopwatch-novatimeh)
+- [File watcher](#novafilewatcher-novafileh)
+- [Verbose logging](#novalogger-novah)
+- [JSON](#novajson-novajsonh)
+- [Events](#novaevent)
+- [Signals](#novasignal-novah)
 - [Nova Color](#novacolor)
 - [Nova Types](#nova-types)
-- [NovaGrid](#novagrid)
-- [NovaRenderDevice grid functions](#novarenderdevice-grid)
-- [NovaLogFile](#novalogfile-novafileh)
+- [Grid snapping](#novagrid)
+- [Grid rendering](#novarenderdevice-grid)
+- [Log files](#novalogfile-novafileh)
 - [Copyright free assets](#copyright-free-assets)
 - [Vehicles](#vehicles-novamisch)
+- [Image Scaling](#image-scaling)
+- [Cool Math Operations](#math-operations-novamisch)
+- [Raw Texture](#raw-texture)
 
 ## [UI](#ui)
 
@@ -759,7 +762,6 @@ Overall, This is great class that provides a quick and easy way to make vehicles
 
 
 
-# Hot (new) 🔥
 
 
 ## Math Operations (novamisc.h)
@@ -790,3 +792,73 @@ Previously, I overlooked vehicles for images.
 Which resulted in weird rotations for images when using vehicles
 Now I have fixed it
 
+
+# Hot (new) 🔥
+
+
+
+## Lists (novamisc.h)
+The class is called `NovaList`
+It is a subclass of std::vector meaning even if you replace your normal vectors with `NovaList` They will still work just fine.
+
+Constructor: `NovaList<T>()`
+
+Methods:
+`has_item(auto it)`: Checks if the `it` valued item is in the list, If your list consists of custom classes and those classes have a `==` operator overload, It will use that overload instead of the default `==` operator.
+`pop_index(int index)`: Removes item at that index
+`fill(int amount, auto genFunc)`: Takes a amount and a lambda/function, The function should take a `int i` parameter for the index, All it does it add the return value of the function to the array `amount` amount of times.
+
+
+
+## Camera (nova.h)
+To use this camera class `NovaCamera`
+You will first have to set your window's `integratedCamera` property to `false` so that the window doesn't use the built-in camera.
+
+
+Constructor: `NovaCamera()`
+Fields:
+`float zoom`: The amount of zoom
+`float rotation`: How much the camera is rotated
+`NovaVec2 target`: The point where the camera's top-left is.
+
+
+Methods:
+`NovaVec2 getViewportSize()`: Get the camera's viewport size, What this does is it returns the size of the camera's vision. So if the zoom is 2.0f then instead of the screen size, it returns the camera's view size
+`float getViewportWidth()`: Same as above but only for width
+`float getViewportHeight()`: Same as above but only for height
+`void start()`: Start the camera mode
+`void end()`: End the camera mode, You can draw your GUI after calling this since after ending the camera mode, The items will no longer be affected by the camera
+`NovaVec2 getViewportRelativePosition(float x, float y)`: Make `x` and `y` relative to the camera view.
+`void refresh()`: Update the internal raylib camera's properties to be the properties of the actual `NovaCamera`
+
+
+## NovaDataDevice (novamisc.h)
+This class is used for saving and loading json data as binary\
+
+
+Methods:
+`static void saveData(std::string file, NovaJSON j)`: Saves binary of the `j` to `file`
+`static void saveData(std::string file, std::vector<NovaJSON> jsons)`: Saves binary of the `jsons` to `file`
+`static NovaJSON loadData(std::string file)`: Load the JSON from `file`
+`static std::vector<NovaJSON> loadDataEx(std::string file)`: Load the JSONs from `file`
+
+
+
+## NovaObjectGroup (novamisc.h)
+
+What this class does is it basically allows you to manipulate a list as if it were an object and apply the changes to all objects in it
+
+
+Constructor: `()`
+
+Methods:
+`get(int index)`: Get object at index
+`getAll(std::string)`: Get all objects with `tag`
+`add(NovaObject4* obj, std::string tag)`: Add an object pointer with a tag
+`forEach(auto itFunc)`: Iterate over all objects with the `itFunc`, The function must take `int i` and `GroupItem it`
+`refresh()`: Call every frame, Update all object's velocity and acceleration to be `globalVelocity` and `globalAcceleration`
+`collidesWith(NovaObject4 other)`: Check if any objects collide with `other`
+
+Fields:
+`NovaVec2 globalVelocity`: The global velocity for all objects
+`NovaVec2 globalAcceleration`: The global acceleration for all objects.
