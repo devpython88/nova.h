@@ -1,6 +1,10 @@
 <img src="/novaIcon.png" width="300"/>
 
-Nova.h is a simple single header library that is designed to user friendly and is built on top of raylib.
+Nova.h is a simple library that is designed to user friendly and is built on top of raylib.
+
+It aims to provide built-in features that other game development libraries don't tend to.
+
+Such as Vehicles, Parent-Child Systems, Time stuff, Cross platform file system operations, Logging features, and much more.
 
 Here is a example code written in nova.h:
 ```cpp
