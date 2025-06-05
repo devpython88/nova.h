@@ -219,3 +219,31 @@ bool NovaObjectGroup::collidesWith(NovaObject4& other){
     return false;
 }
 
+
+
+
+
+// Notifyer
+
+std::string NovaNotifier::currentMessage = "";
+float NovaNotifier::maxTime = 2.5f;
+float NovaNotifier::time = 0.0f;
+
+
+
+void NovaNotifier::notify(std::string message){
+    currentMessage = message;
+    time = maxTime;
+}
+
+void NovaNotifier::clear(){
+    currentMessage = "";
+    time = 0.0f;
+}
+
+void NovaNotifier::show(){
+    if (time > 0.0f){
+        NovaRenderDevice::uiButton(currentMessage, NovaVec2(0, 0), BLACK, WHITE, 20);
+        time -= GetFrameTime();
+    }
+}

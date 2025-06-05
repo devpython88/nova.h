@@ -167,3 +167,30 @@ class NovaObjectGroup {
         }
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+// Notifyer
+
+
+class NovaNotifier {
+    private:
+    static std::string currentMessage;
+    static float maxTime;
+    static float time;
+
+    public:
+
+    static void notify(std::string message);
+    static void clear();
+    static void show();
+};
