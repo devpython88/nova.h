@@ -1027,3 +1027,50 @@ class NovaMenu {
     MenuResult show();
     MenuResult drawOptions();
 };
+
+
+
+
+
+
+
+
+
+
+// Nova Scene and stuff
+
+
+class NovaScene {
+    protected:
+    NovaWindow* window;
+
+    public:
+
+    NovaScene(NovaWindow* window): window(window){}
+
+
+
+    virtual void load(){}
+    virtual void draw(){}
+    virtual void update(float deltaTime){}
+    virtual void unload(){}
+};
+
+
+
+
+
+
+class NovaScenes {
+    private:
+    static std::map<std::string, NovaScene*> scenes;
+    static std::string current;
+
+    public:
+
+    static void add(std::string sceneName, NovaScene* scene);
+    static void go(std::string sceneName);
+    static bool has(std::string sceneName);
+    static void remove(std::string sceneName);
+    static void show();
+};

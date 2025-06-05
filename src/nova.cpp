@@ -984,3 +984,56 @@ MenuResult NovaMenu::drawOptions()
     
     return MenuResult{clicked, alreadyClicked};
 }
+
+
+
+
+
+
+
+
+
+// Scenes
+
+
+
+std::map<std::string, NovaScene*> NovaScenes::scenes = std::map<std::string, NovaScene*>();
+std::string NovaScenes::current = "";
+
+void NovaScenes::add(std::string sceneName, NovaScene* scene){
+    scenes[sceneName] = scene;
+
+    scene->load();
+
+    if (current == "") current = sceneName; // Avoid corruption and errors
+}
+
+void NovaScenes::go(std::string sceneName){
+    if (!has(sceneName)){
+        throw new std::runtime_error("Scene does not exist: " + sceneName);
+    }
+
+    if (current != "") scenes[current]->unload();
+    current = sceneName;
+}
+
+bool NovaScenes::has(std::string sceneName){
+    return scenes.find(sceneName) != scenes.end();
+}
+
+void NovaScenes::remove(std::string sceneName){
+    if (has(sceneName)){
+        scenes[sceneName]->unload();
+        delete scenes[sceneName];
+    }
+}
+
+void NovaScenes::show(){
+    if (!has(current)){
+        throw new std::runtime_error("The current scene does not exist: " + current);
+    }
+
+    NovaScene* scene = scenes[current];
+    scene->update(GetFrameTime());
+    scene->draw();
+}
