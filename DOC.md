@@ -13,10 +13,19 @@ Guide on how to compile:
 1. Clone the repository
     `git clone https://github.com/devpython88/nova.h.git`
     `cd <name-of-directory-it-got-cloned-in>`
-2. Run the corresponding file
-    For macOS (Experimental) and Linux: `bash dist-mac-linx.sh`
+
+2. Install raylib
+
+    For macOS (homebrew): `brew install raylib`
+    For APT: `sudo apt-get install libraylib-dev`
+    For Arch Linux: `sudo pacman -S raylib`
+    For DNF (Fedora): `sudo dnf install raylib-devel`
+    For windows: Requires manual installation.
+
+3. Run the corresponding file
+    For macOS and Linux: `bash dist-mac-linx.sh`
     For windows: `dist-win32.bat`
-3. Finish
+4. Finish
     Directories for macOS and Linux: `build-linx/dist/include` and `build-linx/dist/lib`
     For windows: `build/dist/include` and `build/dist/lib`
 
@@ -25,10 +34,6 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Lists](#lists-novamisch)
-- [Object groups](#novaobjectgroup-novamisch)
-- [Data save and load](#novadatadevice-novamisch)
-- [External camera](#camera-novah)
 
 ------------------------------------------------------------------
 
@@ -70,6 +75,10 @@ Guide on how to compile:
 - [Image Scaling](#image-scaling)
 - [Cool Math Operations](#math-operations-novamisch)
 - [Raw Texture](#raw-texture)
+- [Lists](#lists-novamisch)
+- [Object groups](#novaobjectgroup-novamisch)
+- [Data save and load](#novadatadevice-novamisch)
+- [External camera](#camera-novah)
 
 ## [UI](#ui)
 
@@ -93,11 +102,10 @@ int main(){
 ```
 
 In the main function, You have to create a NovaWindow instance.
-NovaWindow has two constructors:
-- NovaWindow(): Creates a 640x480 window with title "Game"
-- NovaWindow(width, height, title): Creates a `width`x`height` window with title `title`
+NovaWindow(width, height, title): Creates a `width`x`height` window with title `title`
 
-NovaWindow automatically closes so you don't need to manually handle events
+
+Use `.close()` to close the window
 
 After this, You can compile the program:
 `g++ -o mygame mygame.cpp -lraylib -lnova`
@@ -793,7 +801,6 @@ Which resulted in weird rotations for images when using vehicles
 Now I have fixed it
 
 
-# Hot (new) 🔥
 
 
 
@@ -862,3 +869,54 @@ Methods:
 Fields:
 `NovaVec2 globalVelocity`: The global velocity for all objects
 `NovaVec2 globalAcceleration`: The global acceleration for all objects.
+
+# Hot (new) 🔥
+
+
+## Scene management
+Whenever you're making a game, You might run into the problem of scene management.
+To fix it normally, You would have to build a scene manager.
+But in nova.h, You can use the global scene manager
+This class is also static meaning it requires no constructor
+
+But first, Let's check out the `NovaScene` class:
+### Nova Scene (nova.h)
+This class is the base class for all scenes.
+It has these 4 overridable functions:
+`draw()`: Where you draw stuff
+`update(float deltaTime)`: Where you update stuff
+`load()`: Where you load textures and stuff
+`unload()`: Where you dispose of textures and other stuff.
+
+Constructor: `(NovaWindow* window)`
+
+To make a scene, all you have to do is make a subclass of this class.
+Add a `NovaWindow*` argument to pass to the class's costructor.
+And that's basically it
+After that just add your logic
+
+------------------------
+Lets get back to `NovaScenes`
+
+Managing scenes:
+`add(std::string, NovaScene*)`: Add a scene with a identifier
+`remove(std::string)`: Remove a scene by its identifier (Throws std::runtime_error if failed)
+`go(std::string)`: Select a scene (Throws std::runtime_error if failed)
+
+Other functions:
+`show()`: Call every frame to execute the current scene, throws std::runtime_error if the current scene doesn't exist
+`has(std::string)`: Returns bool, Check if a scene exists
+
+
+
+## NovaNotifier (novamisc.h)
+
+This is a basic notifier, If you want to use it for the entire game, You can but note the fact it's very basic and must probably only be used for debugging purposes.
+
+This class is static
+
+Methods:
+`notify(std::string)`: Change the current message and set it to be hidden after 2.5s
+`draw()`: Draw the message and hide it if 2.5s has passed
+`clear()`: Clear the current message and reset the timer
+
