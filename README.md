@@ -15,15 +15,18 @@ int main(int argc, char const *argv[])
 {
     NovaWindow window;
     NovaRenderDevice::framerateLimit(30);
-
+    NovaAnimation anim("some_anim.png", 200, 200, 16, 16); // (file, x, y, frameWidth, frameHeight)
+    anim.setFramerate(16);
+    anim.looping = true;
     NovaRectangle rectangle(20, 20, 50, 50, RED, 45); // Rotate by 45.(optional)
     NovaCircle circle(100, 100, 20, BLUE); // Circle
 
     while (window.open()){
+        anim.play(); // Update frame
         window.start();
         
         NovaRenderDevice::fill(WHITE);
-        NovaRenderDevice::image(image);
+        anim.render();
         NovaRenderDevice::rect(rectangle);
         NovaRenderDevice::circle(circle);
 
@@ -33,7 +36,7 @@ int main(int argc, char const *argv[])
         window.end();
     }
 
-    image.dispose();
+    anim.dispose();
     window.close();
     return 0;
 }
