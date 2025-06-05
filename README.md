@@ -4,7 +4,7 @@ Nova.h is a simple library that is designed to user friendly and is built on top
 
 It aims to provide built-in features that other game development libraries don't tend to.
 
-Such as Vehicles, Parent-Child Systems, Time stuff, Cross platform file system operations, Logging features, and much more.
+In nova, If you want a parent-child system, That's built-in, If you want a vehicle quickly, That's built-in and the same goes for caching, grouping, and much more.
 
 Here is a example code written in nova.h:
 ```cpp
@@ -16,7 +16,6 @@ int main(int argc, char const *argv[])
     NovaWindow window;
     NovaRenderDevice::framerateLimit(30);
 
-    NovaRenderImage image(300, 200, "glob.png");
     NovaRectangle rectangle(20, 20, 50, 50, RED, 45); // Rotate by 45.(optional)
     NovaCircle circle(100, 100, 20, BLUE); // Circle
 
