@@ -247,3 +247,31 @@ void NovaNotifier::show(){
         time -= GetFrameTime();
     }
 }
+
+
+
+
+
+
+
+
+
+// State manager
+
+
+
+void NovaStateManager::unset(){
+    currentState = "";
+}
+
+void NovaStateManager::set(std::string state){
+    currentState = state;
+}
+
+int NovaStateManager::exec(){
+    if (currentState == "") return 0;
+    if (states.find(currentState) == states.end()) return 1;
+
+    states[currentState]();
+    return 0;
+}

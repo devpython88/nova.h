@@ -194,3 +194,46 @@ class NovaNotifier {
     static void clear();
     static void show();
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// State manager
+
+
+
+class NovaStateManager {
+    protected:
+    std::map<std::string, std::function<void(void)>> states;
+    
+    public:
+    std::string currentState;
+
+    NovaStateManager(): states(), currentState(""){}
+
+    void unset();
+    void set(std::string state);
+    int exec();
+
+
+    template <typename Func>
+    void add(std::string name, Func&& callback){ states[name] = std::function<void(void)>(callback); }
+};
