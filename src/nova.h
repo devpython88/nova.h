@@ -13,13 +13,15 @@
 #define CONDITION_VAR(cn) std::function<bool(void)>([&]() { return cn == true; })
 
 // CONSTANTS
-enum class UIEvent {
+enum class UIEvent
+{
     Click,
     Hover,
     None
 };
 
-enum class PopupEvent {
+enum class PopupEvent
+{
     Closed,
     Open
 };
@@ -30,7 +32,7 @@ enum class PopupEvent {
 #include <map>
 #include <cmath>
 #include <chrono>
-#include <ctime> 
+#include <ctime>
 #include <random>
 #include <functional>
 #include <filesystem>
@@ -39,7 +41,6 @@ enum class PopupEvent {
 #include <sstream>
 
 namespace _fs = std::filesystem;
-
 
 // Type definitions for types
 typedef uint8_t UnsignedInt8;
@@ -54,92 +55,143 @@ typedef int64_t Int64;
 
 // Default color for modal
 const Color NOVA_MODAL_WINDOW_COLOR_DEFAULT = Color{20, 20, 20, 255};
-const Color NOVA_MODAL_WINDOW_COLOR_LIGHT   = Color{250, 250, 250, 255};
-const Color NOVA_MODAL_WINDOW_COLOR_NIGHT   = Color{20, 50, 20, 255};
-
+const Color NOVA_MODAL_WINDOW_COLOR_LIGHT = Color{250, 250, 250, 255};
+const Color NOVA_MODAL_WINDOW_COLOR_NIGHT = Color{20, 50, 20, 255};
 
 class NovaWindow;
 class NovaResourceManager;
-
-
-
 
 /********************************/
 /** EXTRAS                      */
 /********************************/
 
-
-
-
-
-
-
-
-class NovaVec2 {
+class NovaVec2
+{
 public:
     float x, y;
 
-
     NovaVec2() = default;
     NovaVec2(float x, float y) : x(x), y(y) {}
-    
+
     NovaVec2 operator+(NovaVec2 v) const { return {v.x + x, v.y + y}; }
     NovaVec2 operator-(NovaVec2 v) const { return {v.x - x, v.y - y}; }
     NovaVec2 operator*(NovaVec2 v) const { return {v.x * x, v.y * y}; }
     NovaVec2 operator/(NovaVec2 v) const { return {v.x / x, v.y / y}; }
-    
-    void operator+=(NovaVec2 v) { x += v.x; y += v.y; }
-    void operator-=(NovaVec2 v) { x -= v.x; y -= v.y; }
-    void operator*=(NovaVec2 v) { x *= v.x; y *= v.y; }
-    void operator/=(NovaVec2 v) { x /= v.x; y /= v.y; }
+
+    void operator+=(NovaVec2 v)
+    {
+        x += v.x;
+        y += v.y;
+    }
+    void operator-=(NovaVec2 v)
+    {
+        x -= v.x;
+        y -= v.y;
+    }
+    void operator*=(NovaVec2 v)
+    {
+        x *= v.x;
+        y *= v.y;
+    }
+    void operator/=(NovaVec2 v)
+    {
+        x /= v.x;
+        y /= v.y;
+    }
 };
 
-class NovaVec3 {
-    public:
+class NovaVec3
+{
+public:
     float x, y, z;
 
     NovaVec3() = default;
     NovaVec3(float x, float y, float z) : x(x), y(y), z(z) {}
-    
+
     NovaVec3 operator+(NovaVec3 v) const { return {v.x + x, v.y + y, v.z + z}; }
     NovaVec3 operator-(NovaVec3 v) const { return {v.x - x, v.y - y, v.z - z}; }
     NovaVec3 operator*(NovaVec3 v) const { return {v.x * x, v.y * y, v.z * z}; }
     NovaVec3 operator/(NovaVec3 v) const { return {v.x / x, v.y / y, v.z / z}; }
 
-    void operator+=(NovaVec3 v) { x += v.x; y += v.y; z += v.z; }
-    void operator-=(NovaVec3 v) { x -= v.x; y -= v.y; z -= v.z; }
-    void operator*=(NovaVec3 v) { x *= v.x; y *= v.y; z *= v.z; }
-    void operator/=(NovaVec3 v) { x /= v.x; y /= v.y; z /= v.z; }
+    void operator+=(NovaVec3 v)
+    {
+        x += v.x;
+        y += v.y;
+        z += v.z;
+    }
+    void operator-=(NovaVec3 v)
+    {
+        x -= v.x;
+        y -= v.y;
+        z -= v.z;
+    }
+    void operator*=(NovaVec3 v)
+    {
+        x *= v.x;
+        y *= v.y;
+        z *= v.z;
+    }
+    void operator/=(NovaVec3 v)
+    {
+        x /= v.x;
+        y /= v.y;
+        z /= v.z;
+    }
 };
 
-
-class NovaVec4 {
+class NovaVec4
+{
 public:
     float x, y, z, w;
 
     NovaVec4() = default;
     NovaVec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-    
+
     NovaVec4 operator+(NovaVec4 v) const { return {v.x + x, v.y + y, v.z + z, v.w + w}; }
     NovaVec4 operator-(NovaVec4 v) const { return {v.x - x, v.y - y, v.z - z, v.w - w}; }
     NovaVec4 operator*(NovaVec4 v) const { return {v.x * x, v.y * y, v.z * z, v.w * w}; }
     NovaVec4 operator/(NovaVec4 v) const { return {v.x / x, v.y / y, v.z / z, v.w / w}; }
-    
-    void operator+=(NovaVec4 v) { x += v.x; y += v.y; z += v.z; w += v.w; }
-    void operator-=(NovaVec4 v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; }
-    void operator*=(NovaVec4 v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; }
-    void operator/=(NovaVec4 v) { x /= v.x; y /= v.y; z /= v.z; w /= v.w; }
+
+    void operator+=(NovaVec4 v)
+    {
+        x += v.x;
+        y += v.y;
+        z += v.z;
+        w += v.w;
+    }
+    void operator-=(NovaVec4 v)
+    {
+        x -= v.x;
+        y -= v.y;
+        z -= v.z;
+        w -= v.w;
+    }
+    void operator*=(NovaVec4 v)
+    {
+        x *= v.x;
+        y *= v.y;
+        z *= v.z;
+        w *= v.w;
+    }
+    void operator/=(NovaVec4 v)
+    {
+        x /= v.x;
+        y /= v.y;
+        z /= v.z;
+        w /= v.w;
+    }
 };
 
-
-class NovaEvent {
+class NovaEvent
+{
+public:
+    class Key
+    {
     public:
-    class Key {
-        public:
-        static const int ArrowLeft = KEY_LEFT;        
-        static const int ArrowRight = KEY_RIGHT;        
-        static const int ArrowUp = KEY_UP;        
-        static const int ArrowDown = KEY_DOWN;        
+        static const int ArrowLeft = KEY_LEFT;
+        static const int ArrowRight = KEY_RIGHT;
+        static const int ArrowUp = KEY_UP;
+        static const int ArrowDown = KEY_DOWN;
 
         // Letters A-Z
         static const int A = KEY_A;
@@ -187,17 +239,17 @@ class NovaEvent {
         static const int Backspace = KEY_BACKSPACE;
         static const int Tab = KEY_TAB;
         static const int Escape = KEY_ESCAPE;
-        static const int Apostrophe = KEY_APOSTROPHE; // '
-        static const int Comma = KEY_COMMA;      // ,
-        static const int Minus = KEY_MINUS;      // -
-        static const int Period = KEY_PERIOD;     // .
-        static const int Slash = KEY_SLASH;      // /
-        static const int Semicolon = KEY_SEMICOLON;   // ;
-        static const int Equal = KEY_EQUAL;       // =
-        static const int LeftBracket = KEY_LEFT_BRACKET;  // [
-        static const int Backslash = KEY_BACKSLASH;     // Backslash
+        static const int Apostrophe = KEY_APOSTROPHE;      // '
+        static const int Comma = KEY_COMMA;                // ,
+        static const int Minus = KEY_MINUS;                // -
+        static const int Period = KEY_PERIOD;              // .
+        static const int Slash = KEY_SLASH;                // /
+        static const int Semicolon = KEY_SEMICOLON;        // ;
+        static const int Equal = KEY_EQUAL;                // =
+        static const int LeftBracket = KEY_LEFT_BRACKET;   // [
+        static const int Backslash = KEY_BACKSLASH;        // Backslash
         static const int RightBracket = KEY_RIGHT_BRACKET; // ]
-        static const int Grave = KEY_GRAVE;         // ` (grave accent)
+        static const int Grave = KEY_GRAVE;                // ` (grave accent)
 
         // Modifier keys
         static const int LeftShift = KEY_LEFT_SHIFT;
@@ -211,11 +263,11 @@ class NovaEvent {
         static const int CapsLock = KEY_CAPS_LOCK;
         static const int NumLock = KEY_NUM_LOCK;
         static const int ScrollLock = KEY_SCROLL_LOCK;
-
     };
 
-    class Mouse {
-        public:
+    class Mouse
+    {
+    public:
         static const int Left = MOUSE_BUTTON_LEFT;
         static const int Middle = MOUSE_BUTTON_MIDDLE;
         static const int Right = MOUSE_BUTTON_RIGHT;
@@ -224,45 +276,41 @@ class NovaEvent {
         static const int Side = MOUSE_BUTTON_SIDE;
     };
 
-
-
-
     NovaVec2 mousePos, mouseScroll;
     int lastKeyHit;
     NovaEvent() = default;
 
     void fetch();
-
 };
 
-class NovaColor {
-    public:
+class NovaColor
+{
+public:
     UnsignedInt8 r, g, b, a;
 
     NovaColor() = default;
-    NovaColor(UnsignedInt8 r, UnsignedInt8 g, UnsignedInt8 b, UnsignedInt8 a): r(r), g(g), b(b), a(a){}
-
+    NovaColor(UnsignedInt8 r, UnsignedInt8 g, UnsignedInt8 b, UnsignedInt8 a) : r(r), g(g), b(b), a(a) {}
 
     void brighten(UnsignedInt8 rVal, UnsignedInt8 gVal, UnsignedInt8 bVal, UnsignedInt8 aVal);
     void darken(UnsignedInt8 rVal, UnsignedInt8 gVal, UnsignedInt8 bVal, UnsignedInt8 aVal);
-    
 };
 
 // Class for randomization
-class NovaRandomDevice {
-    public:
-
+class NovaRandomDevice
+{
+public:
     std::random_device rd;
     std::mt19937 gen;
 
-    NovaRandomDevice(): rd(), gen(rd()){}
+    NovaRandomDevice() : rd(), gen(rd()) {}
 
     int randomInt(int s, int e);
     float randomFloat(float s, float e);
     int randomIndex(std::string str);
 
     template <typename T>
-    int randomIndex(std::vector<T> v){
+    int randomIndex(std::vector<T> v)
+    {
         int start = 0;
         int end = v.size() - 1;
 
@@ -271,20 +319,22 @@ class NovaRandomDevice {
 
     // Template functions cannot be implemented seperately
     template <typename T>
-    T randomItem(std::vector<T> v){
+    T randomItem(std::vector<T> v)
+    {
         int s = 0;
         int e = v.size() - 1;
-        
+
         return v.at(randomInt(s, e));
     }
 
-
     // Shuffler function
     template <typename T>
-    std::vector<T> shuffle(std::vector<T> source, std::vector<T> values){
+    std::vector<T> shuffle(std::vector<T> source, std::vector<T> values)
+    {
         std::vector<T> shuffled;
 
-        for (int i = 0; i < source.size(); i++){
+        for (int i = 0; i < source.size(); i++)
+        {
             shuffled.push_back(values.at(randomIndex<T>(values)));
         }
 
@@ -292,64 +342,62 @@ class NovaRandomDevice {
     }
 };
 
-// Class required for checking positions. 
-class NovaAxis {
-    private:
+// Class required for checking positions.
+class NovaAxis
+{
+private:
     friend class NovaWindow;
 
     int width, height;
-    NovaAxis(int width, int height): width(width), height(height){}
+    NovaAxis(int width, int height) : width(width), height(height) {}
 
-    public:
+public:
+    NovaAxis() {}
 
-    NovaAxis(){}
-
-    inline bool overflowX(float x){ return x < 0 || x > width; }
-    inline bool overflowY(float y){ return y < 0 || y > height; }
+    inline bool overflowX(float x) { return x < 0 || x > width; }
+    inline bool overflowY(float y) { return y < 0 || y > height; }
     inline bool overflow(float x, float y) { return overflowX(x) || overflowY(y); }
 
-
-    inline bool atTop(float y){ return y < 0; }
-    inline bool atBottom(float y){ return y > height; }
-    inline bool atLeft(float x){ return x < 0; }
-    inline bool atRight(float x){ return x > width; }
-    inline bool atMiddle(float x){ return ((int) x) == width / 2; }
-    inline bool atMiddleY(float y){ return ((int) y) == height / 2; }
+    inline bool atTop(float y) { return y < 0; }
+    inline bool atBottom(float y) { return y > height; }
+    inline bool atLeft(float x) { return x < 0; }
+    inline bool atRight(float x) { return x > width; }
+    inline bool atMiddle(float x) { return ((int)x) == width / 2; }
+    inline bool atMiddleY(float y) { return ((int)y) == height / 2; }
 };
-
-
-
-
 
 /********************************/
 /** WINDOW                      */
 /********************************/
 
 // Class representing a game window
-class NovaWindow {
-    private:
+class NovaWindow
+{
+private:
     Camera2D camera; // Camera for 2D rendering
-    
-    public:
-    int width, height; // Window dimensions
+
+public:
+    int width, height;   // Window dimensions
     std::string caption; // Window title
     bool integratedCamera;
 
     // Constructor to initialize the window and audio device
-    NovaWindow(int w = DEFAULT_WIDTH, int h = DEFAULT_HEIGHT, const std::string& c = DEFAULT_CAPTION)
-        : width(w), height(h), caption(c), integratedCamera(true) {
+    NovaWindow(int w = DEFAULT_WIDTH, int h = DEFAULT_HEIGHT, const std::string &c = DEFAULT_CAPTION)
+        : width(w), height(h), caption(c), integratedCamera(true)
+    {
         InitWindow(width, height, caption.c_str());
         InitAudioDevice();
 
-        camera = { 0 };
+        camera = {0};
         camera.zoom = 1.0f;
-        camera.target = { 0, 0 };
+        camera.target = {0, 0};
         camera.rotation = 0;
-        camera.offset = { 0, 0 };
+        camera.offset = {0, 0};
     }
 
     // Destructor to clean up resources
-    void close(){
+    void close()
+    {
         CloseAudioDevice();
         CloseWindow();
     }
@@ -362,7 +410,7 @@ class NovaWindow {
 
     // Camera control methods
     void centerCamera(float x, float y);
-    Vector2* target();
+    Vector2 *target();
     float getCameraZoom();
     void setCameraZoom(float zoom);
     void setCameraRotation(float rotation);
@@ -372,153 +420,128 @@ class NovaWindow {
     NovaAxis axis();
 };
 
-
-
-
-
-
 // Nova Camera
 
-
-
-
-class NovaCamera {
-    private:
+class NovaCamera
+{
+private:
     Camera2D camera;
 
-    inline void refreshCamera(){
+    inline void refreshCamera()
+    {
         camera.target = Vector2{target.x, target.y};
         camera.zoom = zoom;
         camera.rotation = rotation;
-        camera.offset = { 0, 0 };
+        camera.offset = {0, 0};
     }
 
-    public:
+public:
     NovaVec2 target;
     float zoom;
     float rotation;
 
-    NovaCamera(): target(0, 0), zoom(1.0f), rotation(.0f){
+    NovaCamera() : target(0, 0), zoom(1.0f), rotation(.0f)
+    {
         refreshCamera();
     }
 
-
     NovaVec2 getViewportSize();
-    float getViewportWidth(){ return GetScreenWidth() / zoom; }
-    float getViewportHeight(){ return GetScreenHeight() / zoom; }
-    void centerTo(float x, float y){
+    float getViewportWidth() { return GetScreenWidth() / zoom; }
+    float getViewportHeight() { return GetScreenHeight() / zoom; }
+    void centerTo(float x, float y)
+    {
         NovaVec2 viewportSize = getViewportSize();
         target.x = x - (viewportSize.x / 2);
         target.y = y - (viewportSize.y / 2);
     }
-    
+
     void start();
     void end();
     NovaVec2 getViewportRelativePosition(float x, float y);
 };
 
-
-
-
-
 /********************************/
 /** SHAPES & OBJECTS            */
 /********************************/
 
-
-
-
 // Base class for all objects
-class NovaObject4 {
-    public:
+class NovaObject4
+{
+public:
     NovaVec2 acceleration, velocity;
-    
+
     float x, y;
-    
+
     float width, height;
-    
+
     float rotation;
-    
+
     bool visible, canCollide;
-    
+
     int zIndex;
 
     NovaVec2 origin;
 
-    NovaObject4(float x, float y, float width, float height, float rotation): x(x), y(y),
+    NovaObject4(float x, float y, float width, float height, float rotation) : 
+    x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.0f, 0.0f){}
-    NovaObject4() {
+    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.1f, 0.1f) {}
+    
+    NovaObject4()
+    {
         centerPivot();
     }
 
-
-    void centerPivot(){ origin = NovaVec2(width / 2, height / 2); }
+    void centerPivot() { origin = NovaVec2(width / 2, height / 2); }
 
     void move(NovaVec2 delta);
     void move(float deltaX, float deltaY);
-    void roam(float speed, NovaRandomDevice* rd);
+    void roam(float speed, NovaRandomDevice *rd);
     void moveTo(NovaVec2 target, float speed);
-    void roamTo(NovaVec2 target, float speed, NovaRandomDevice* rd);
+    void roamTo(NovaVec2 target, float speed, NovaRandomDevice *rd);
 
     void updateMovement();
 
-    void setVelocity(float vx, float vy){ velocity.x = vx; velocity.y = vy; }
-    void setAcceleration(float vx, float vy){ acceleration.x = vx; acceleration.y = vy; }
+    void setVelocity(float vx, float vy)
+    {
+        velocity.x = vx;
+        velocity.y = vy;
+    }
+    void setAcceleration(float vx, float vy)
+    {
+        acceleration.x = vx;
+        acceleration.y = vy;
+    }
 
     void cache();
     void grab();
 };
 
 // Class representing a rectangle
-class NovaRectangle : public NovaObject4 {
-    public:
+class NovaRectangle : public NovaObject4
+{
+public:
     Color color; // Color of the rectangle
 
     // Constructor to initialize rectangle properties
     NovaRectangle(float x, float y, float width, float height, Color color, float rotation = 0.0f)
         : NovaObject4(x, y, width, height, rotation), color(color) {}
     NovaRectangle() {}
-    
 };
 
 // Class representing a circle
-class NovaCircle {
-    public:
-    float x, y; // Position
+class NovaCircle
+{
+public:
+    float x, y;   // Position
     float radius; // Radius of the circle
-    Color color; // Color of the circle
+    Color color;  // Color of the circle
     bool visible, canCollide;
 
     // Constructor to initialize circle properties
-    NovaCircle(float x, float y, float radius, Color color): x(x), y(y), radius(radius), color(color) ,
-        visible(true), canCollide(true) {}
+    NovaCircle(float x, float y, float radius, Color color) : x(x), y(y), radius(radius), color(color),
+                                                              visible(true), canCollide(true) {}
     NovaCircle() {}
-    
-};
-
-// Class representing a renderable image
-class NovaRenderImage : public NovaObject4 {    
-    public:
-    Texture2D texture; // Texture of the image
-    const std::string path; // File path of the image
-    NovaVec2 scale;
-    
-    // Constructor to load the image texture
-    NovaRenderImage(float x, float y, std::string path, float rotation = 0.0f):
-    NovaObject4(x, y, 0, 0, rotation), texture(LoadTexture(path.c_str())), path(path), scale(1.0f, 1.0f) {
-        width = texture.width;
-        height = texture.height;
-        centerPivot();
-    }
-
-    void centerPivot(){ origin = NovaVec2((width * scale.x) / 2, (height * scale.y) / 2); }
-    NovaRenderImage() : path("") {}
-
-    // Destructor to unload the texture
-    void dispose(){
-        UnloadTexture(texture);
-    }
 };
 
 
@@ -526,41 +549,65 @@ class NovaRenderImage : public NovaObject4 {
 /** RAW TEXTURE                 */
 /********************************/
 
-class NovaRawTexture {
-    public:
+class NovaRawTexture
+{
+public:
     Texture2D rTexture;
-
+    std::string path;
 
     NovaRawTexture() = default;
-    NovaRawTexture(std::string path): rTexture(LoadTexture(path.c_str())){}
+    NovaRawTexture(std::string path) : rTexture(LoadTexture(path.c_str())), path(path) {}
 
     NovaVec2 getSize();
     int getTextureID();
     int getMipmaps();
+
+    void dispose(){ if (rTexture.id != 0) UnloadTexture(rTexture); }
+};
+
+// Class representing a renderable image
+class NovaRenderImage : public NovaObject4
+{
+public:
+    NovaRawTexture* host;
+    const std::string path; // File path of the image
+    NovaVec2 scale;
+
+    // Constructor to load the image texture
+    NovaRenderImage(float x, float y, NovaRawTexture* host, float rotation = 0.0f) : NovaObject4(x, y, 0, 0, rotation), host(host), path(host->path), scale(1.0f, 1.0f)
+    {
+        width = host->rTexture.width;
+        height = host->rTexture.height;
+        centerPivot();
+    }
+
+    void centerPivot() { origin = NovaVec2((width * scale.x) / 2, (height * scale.y) / 2); }
+    NovaRenderImage() : path("") {}
+
+    void dispose(){
+        host->dispose();
+    }
 };
 
 /********************************/
 /** ANIMATIONS                  */
 /********************************/
 
-
-
-
 // Class representing a spritesheet
-class NovaSpritesheet {
-    public:
-    NovaRenderImage image; // Renderable image
-    const float frameWidth, frameHeight; // Frame dimensions
-    int rows, columns; // Number of rows and columns in the spritesheet
-    int row, column; // Current frame position
-    float x, y; // Position of the spritesheet
+class NovaSpritesheet : public NovaRenderImage
+{
+public:
+    float frameWidth, frameHeight; // Frame dimensions
+    int rows, columns;                   // Number of rows and columns in the spritesheet
+    int row, column;                     // Current frame position
 
     // Constructor to initialize spritesheet properties
-    NovaSpritesheet(std::string path, float x, float y, float frameWidth, float frameHeight):
-    x(x), y(y), image(x, y, path), frameWidth(frameWidth), frameHeight(frameHeight),
-    row(0), column(0){
+    NovaSpritesheet(NovaRawTexture* host, float x, float y, float frameWidth, float frameHeight) :
+    NovaRenderImage(x, y, host), frameWidth(frameWidth), frameHeight(frameHeight)
+    {
         recalculateRows();
         recalculateColumns();
+        centerPivotToFrame();
     }
 
     NovaSpritesheet() : frameWidth(0), frameHeight(0) {}
@@ -568,68 +615,69 @@ class NovaSpritesheet {
     // Recalculate rows and columns based on frame dimensions
     void recalculateRows();
     void recalculateColumns();
+    
+    inline void centerPivotToFrame(){
+        origin = NovaVec2(frameWidth / 2, frameHeight / 2);
+    }
 
     // Render the current frame
     void render();
-
-    void dispose() { image.dispose(); }
 };
 
 // Class representing an animation, derived from NovaSpritesheet
-class NovaAnimation : public NovaSpritesheet {
-    private:
+class NovaAnimation : public NovaSpritesheet
+{
+private:
     bool firstTime;
 
-    protected:
+protected:
     float frameTime; // Time per frame
     float framerate; // Maximum time per frame
-    int fps; // just to know what the fps in integer was
-    
-    public:
+    int fps;         // just to know what the fps in integer was
+
+public:
     bool loop; // Whether the animation loops
 
     // Constructor to initialize animation properties
-    NovaAnimation(std::string path, float x, float y, float frameWidth, float frameHeight):
-    NovaSpritesheet(path, x, y, frameWidth, frameHeight), framerate(1 / 30), loop(false),
-    frameTime(framerate), firstTime(true){
+    NovaAnimation(NovaRawTexture* host, float x, float y, float frameWidth, float frameHeight) : 
+    NovaSpritesheet(host, x, y, frameWidth, frameHeight), framerate(1 / 30), loop(false), frameTime(framerate), firstTime(true)
+    {
         column = 0;
         row = 0;
     }
 
-    inline void setFramerate(float framerate_){ framerate = 1 / framerate_; frameTime = framerate; fps = framerate_; }
+    inline void setFramerate(float framerate_)
+    {
+        framerate = 1 / framerate_;
+        frameTime = framerate;
+        fps = framerate_;
+    }
     inline int getFramerate() { return fps; }
 
     NovaAnimation() {}
 
     // Play the animation
     void play();
-    void dispose() { image.dispose(); }
 };
-
-
-
 
 /********************************/
 /** RENDERING                   */
 /********************************/
 
-
-
-
 // Class for rendering shapes and images
-class NovaRenderDevice {
-    private:
+class NovaRenderDevice
+{
+private:
     static bool useDefaultFont;
     static Font font;
     static NovaVec2 padding;
     static std::string fontName;
     static int spacing;
 
-    public:
-
+public:
     // Fill the screen with a color
     static void fill(Color color);
-    
+
     // Draw rectangles
     static void rect(float left, float top, float width, float height, Color color);
     static void rect(NovaRectangle rect);
@@ -646,7 +694,7 @@ class NovaRenderDevice {
     // Draw images
     static void image(NovaRenderImage image);
     static void texture(NovaRawTexture texture, float x, float y, Color tint = WHITE);
-    
+
     // Check if an image is loaded
     static bool imageLoaded(NovaRenderImage image);
 
@@ -662,52 +710,46 @@ class NovaRenderDevice {
     static bool checkCollision(NovaObject4 obj, NovaObject4 obj2);
     static bool checkCollision(NovaObject4 obj, NovaCircle circ);
 
-
     // Grid
     static void gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color);
     static void gridBoxes(NovaVec2 cellSize, NovaVec2 cells, Color lineColor, Color boxColor);
 
-
     // UI
     static UIEvent uiButton(std::string text, NovaVec2 position, Color background, Color foreground, int fontSize);
-    static void uiTextInput(std::string* target, NovaVec2 position, Color background, Color foreground, int fontSize, bool focused = true);
+    static void uiTextInput(std::string *target, NovaVec2 position, Color background, Color foreground, int fontSize, bool focused = true);
     static NovaVec2 getTextPixelSize(std::string text, int fontSize);
     static NovaVec2 getWidgetSize(std::string text, int fontSize);
     static void uiLabel(std::string text, NovaVec2 pos, int fontSize, Color color);
     // UI Property modifiers
-    inline static NovaVec2 getPadding(){ return padding; }
-    inline static void setPadding(float x, float y){ padding = NovaVec2(x, y); }
-    inline static void setPadding(NovaVec2 padding_){ padding = padding_; }
-    inline static void setSpacing(int spacing_){ spacing = spacing_; }
-    inline static int getSpacing(){ return spacing; }
-    inline static std::string getFontName(){ return fontName; }
+    inline static NovaVec2 getPadding() { return padding; }
+    inline static void setPadding(float x, float y) { padding = NovaVec2(x, y); }
+    inline static void setPadding(NovaVec2 padding_) { padding = padding_; }
+    inline static void setSpacing(int spacing_) { spacing = spacing_; }
+    inline static int getSpacing() { return spacing; }
+    inline static std::string getFontName() { return fontName; }
 
-    inline static void setFont(std::string fontName_){
+    inline static void setFont(std::string fontName_)
+    {
         fontName = fontName_;
         useDefaultFont = false;
         font = LoadFont(fontName_.c_str());
     }
 
-    inline static void unloadFont(){
+    inline static void unloadFont()
+    {
         useDefaultFont = true;
         UnloadFont(font);
     }
 };
 
-
-
-
 /********************************/
 /** INPUT                       */
 /********************************/
 
-
-
-
 // Class for handling input devices
-class NovaInputDevice {
-    public:
-
+class NovaInputDevice
+{
+public:
     // Keyboard input methods
     static bool keyHit(int key);
     static bool keyHeld(int key);
@@ -721,26 +763,21 @@ class NovaInputDevice {
     // Mouse UI methods
     static bool mouseHover(float left, float top, float width, float height);
     static bool mouseClick(float left, float top, float width, float height);
-    
+
     // Mouse scroll methods
     static float getScroll();
     static int getScrollEx();
 };
 
-
-
-
 /********************************/
 /** AUDIO                       */
 /********************************/
 
-
-
-
 // Class for handling sound effects
-class NovaSound {
-    public:
-    Sound sound; // Sound object
+class NovaSound
+{
+public:
+    Sound sound;            // Sound object
     const std::string path; // File path of the sound
 
     // Set volume (0 to 100)
@@ -753,8 +790,7 @@ class NovaSound {
     bool loaded();
 
     // Constructor to load the sound
-    NovaSound(std::string path):
-    path(path), sound(LoadSound(path.c_str())){}
+    NovaSound(std::string path) : path(path), sound(LoadSound(path.c_str())) {}
 
     NovaSound() : path("") {}
 
@@ -763,10 +799,11 @@ class NovaSound {
 };
 
 // Class for handling music
-class NovaMusic {
-    public:
-    Music music; // Music object
-    bool loop; // Whether the music loops
+class NovaMusic
+{
+public:
+    Music music;      // Music object
+    bool loop;        // Whether the music loops
     std::string path; // File path of the music
 
     // Set volume (0 to 100)
@@ -776,8 +813,7 @@ class NovaMusic {
     void volume(float volume);
 
     // Constructor to load the music
-    NovaMusic(std::string path, bool loop = true):
-    path(path), loop(loop), music(LoadMusicStream(path.c_str())){}
+    NovaMusic(std::string path, bool loop = true) : path(path), loop(loop), music(LoadMusicStream(path.c_str())) {}
 
     NovaMusic() {}
 
@@ -788,45 +824,39 @@ class NovaMusic {
     void play();
 
     // Destructor to unload the music stream
-    ~NovaMusic(){
+    ~NovaMusic()
+    {
         UnloadMusicStream(music);
     }
 };
-
-
-
 
 /********************************/
 /** INPUT MANAGER               */
 /********************************/
 
-
-
-
-class NovaBinding {
-    public:
-    static const int KEYBIND   = 0;
+class NovaBinding
+{
+public:
+    static const int KEYBIND = 0;
     static const int MOUSEBIND = 1;
-    
 
     int type;
     int code;
 
-
-    NovaBinding(int type, int code): type(type), code(code){}
-    NovaBinding(){}
+    NovaBinding(int type, int code) : type(type), code(code) {}
+    NovaBinding() {}
 
     bool held();
     bool hit();
     bool up();
 };
 
-
-class NovaInputManager {
-    public:
+class NovaInputManager
+{
+public:
     std::map<std::string, NovaBinding> bindings;
 
-    NovaInputManager(): bindings(){}
+    NovaInputManager() : bindings() {}
 
     void bindKey(std::string name, int code);
     void bindMouse(std::string name, int code);
@@ -836,46 +866,38 @@ class NovaInputManager {
     bool up(std::string name);
 };
 
-
-
-
-
-
 /********************************/
 /** OBJECT CHAIN                */
 /********************************/
 
-
-class NovaObjectChain {
-    public:
-    std::vector<NovaObject4*> children;
-    std::vector<NovaObjectChain*> subchains;
-    NovaObject4* parent;
+class NovaObjectChain
+{
+public:
+    std::vector<NovaObject4 *> children;
+    std::vector<NovaObjectChain *> subchains;
+    NovaObject4 *parent;
     Vector2 lastParentPos;
 
-    NovaObjectChain(){}
-    NovaObjectChain(NovaObject4* parent): parent(parent), children(), lastParentPos({parent->x, parent->y}){}
+    NovaObjectChain() {}
+    NovaObjectChain(NovaObject4 *parent) : parent(parent), children(), lastParentPos({parent->x, parent->y}) {}
 
-    void addChild(NovaObject4* child);
+    void addChild(NovaObject4 *child);
     void removeChild(int index);
 
-    void addSubChain(NovaObjectChain* subchain);
+    void addSubChain(NovaObjectChain *subchain);
     void removeSubChain(int index);
 
     void rechain();
-    void rechainObject(NovaObject4* obj);
+    void rechainObject(NovaObject4 *obj);
 };
-
 
 /********************************/
 /** LOGGER                      */
 /********************************/
 
-
-
-class NovaLogger {
-    public:
-    
+class NovaLogger
+{
+public:
     static std::string getTime();
     static void log(std::string level, std::string text);
     static std::string getLogFormat(std::string level, std::string text);
@@ -885,24 +907,18 @@ class NovaLogger {
     static void warn(std::string text);
 };
 
-
-
-
-
-
-
 /********************************/
 /** SIGNAL                      */
 /********************************/
 
-class NovaSignal {
-    public: 
+class NovaSignal
+{
+public:
     std::function<bool(void)> bindedCondition;
     std::function<void(void)> callback;
-    
-    
+
     NovaSignal() = default;
-    
+
     void emit();
     void bindTo(std::function<bool(void)> condition);
     void emitOnCondition();
@@ -912,114 +928,102 @@ class NovaSignal {
 /** GRID                        */
 /********************************/
 
-
-class NovaGrid {
-    public:
+class NovaGrid
+{
+public:
     NovaVec2 cellSize;
 
     NovaGrid() = default;
-    NovaGrid(NovaVec2 cellSize): cellSize(cellSize){}
-    NovaGrid(float cellWidth, float cellHeight): cellSize(cellWidth, cellHeight){}
-
+    NovaGrid(NovaVec2 cellSize) : cellSize(cellSize) {}
+    NovaGrid(float cellWidth, float cellHeight) : cellSize(cellWidth, cellHeight) {}
 
     NovaVec2 snap(float x, float y);
 };
 
-
-
-
-  /********************************/
- /** GENERATOR                   */
+/********************************/
+/** GENERATOR                   */
 /********************************/
 
-
 template <typename T>
-class NovaGenerator {
-    public:
-    std::vector<T>* targetList;
+class NovaGenerator
+{
+public:
+    std::vector<T> *targetList;
 
     NovaGenerator() = default;
-    NovaGenerator(std::vector<T>* targetList): targetList(targetList){}
-    
-    
-    inline void generate(int amount, auto func){
+    NovaGenerator(std::vector<T> *targetList) : targetList(targetList) {}
+
+    inline void generate(int amount, auto func)
+    {
         // While loops are generally faster
         int i = 0;
-        do {
+        do
+        {
             targetList->push_back(func(i));
             i++;
         } while (i <= amount);
     }
 
-
-
-
-
-    inline void generate(int amount, auto func, int chance){
+    inline void generate(int amount, auto func, int chance)
+    {
         int i = 0;
-        do {
+        do
+        {
             int chanceHit = GetRandomValue(1, chance);
-            
-            if (chanceHit == 1){
+
+            if (chanceHit == 1)
+            {
                 targetList->push_back(func(i));
             }
-            
+
             i++;
         } while (i <= amount);
     }
 };
 
-
-
-
-  /********************************/
- /** POPUPS                      */
+/********************************/
+/** POPUPS                      */
 /********************************/
 
-
-
-class NovaPopup {
-    public:
+class NovaPopup
+{
+public:
     float x, y, width, height;
     std::string title;
     Color background;
     bool visible;
 
-
     NovaPopup() = default;
-    NovaPopup(std::string title, float x, float y, float width, float height, Color background):
-    x(x), y(y), width(width), height(height), title(title), background(background), visible(true){}
-
-
+    NovaPopup(std::string title, float x, float y, float width, float height, Color background) : x(x), y(y), width(width), height(height), title(title), background(background), visible(true) {}
 
     PopupEvent show();
 };
 
-  /********************************/
- /** MENUS                       */
+/********************************/
+/** MENUS                       */
 /********************************/
 
-typedef struct {
+typedef struct
+{
     std::string option;
     bool clicked;
 } MenuResult;
 
-class NovaMenu {
-    public:
+class NovaMenu
+{
+public:
     std::vector<std::string> options;
     NovaVec2 dropdownPosition, position;
     std::string label;
     int fontSize;
     bool opened;
 
-
     NovaMenu() = default;
-    NovaMenu(std::string label, NovaVec2 position, int fontSize):
-    label(label), fontSize(fontSize), position(position),
-    dropdownPosition(position), options(), opened(false){
+    NovaMenu(std::string label, NovaVec2 position, int fontSize) : label(label), fontSize(fontSize), position(position),
+                                                                   dropdownPosition(position), options(), opened(false)
+    {
         dropdownPosition.y += NovaRenderDevice::getWidgetSize("", fontSize).y;
     }
-
 
     inline void addOption(std::string option) { options.push_back(option); }
     inline void removeOption(int index) { options.erase(options.begin() + index); }
@@ -1028,47 +1032,30 @@ class NovaMenu {
     MenuResult drawOptions();
 };
 
-
-
-
-
-
-
-
-
-
 // Nova Scene and stuff
 
+class NovaScene
+{
+protected:
+    NovaWindow *window;
 
-class NovaScene {
-    protected:
-    NovaWindow* window;
+public:
+    NovaScene(NovaWindow *window) : window(window) {}
 
-    public:
-
-    NovaScene(NovaWindow* window): window(window){}
-
-
-
-    virtual void load(){}
-    virtual void draw(){}
-    virtual void update(float deltaTime){}
-    virtual void unload(){}
+    virtual void load() {}
+    virtual void draw() {}
+    virtual void update(float deltaTime) {}
+    virtual void unload() {}
 };
 
-
-
-
-
-
-class NovaScenes {
-    private:
-    static std::map<std::string, NovaScene*> scenes;
+class NovaScenes
+{
+private:
+    static std::map<std::string, NovaScene *> scenes;
     static std::string current;
 
-    public:
-
-    static void add(std::string sceneName, NovaScene* scene);
+public:
+    static void add(std::string sceneName, NovaScene *scene);
     static void go(std::string sceneName);
     static bool has(std::string sceneName);
     static void remove(std::string sceneName);

@@ -151,9 +151,9 @@ void NovaRenderDevice::image(NovaRenderImage image)
 {
     if (!image.visible) return;
     DrawTexturePro(
-        image.texture,
-        Rectangle{0, 0, (float)image.texture.width, (float)image.texture.height},
-        Rectangle{image.x, image.y, (float)image.texture.width * image.scale.x, (float)image.texture.height * image.scale.y},
+        image.host->rTexture,
+        Rectangle{0, 0, (float)image.host->rTexture.width, (float)image.host->rTexture.height},
+        Rectangle{image.x, image.y, (float)image.host->rTexture.width * image.scale.x, (float)image.host->rTexture.height * image.scale.y},
         Vector2{image.origin.x, image.origin.y},
         image.rotation,
         WHITE
@@ -168,7 +168,7 @@ void NovaRenderDevice::texture(NovaRawTexture texture, float x, float y, Color t
 // Check if an image is loaded
 bool NovaRenderDevice::imageLoaded(NovaRenderImage image)
 {
-    return image.texture.id == 0;
+    return image.host->getTextureID() != 0;
 }
 
 // Set the frame rate limit
@@ -385,21 +385,21 @@ void NovaRenderDevice::uiLabel(std::string text, NovaVec2 pos, int fontSize, Col
 // Recalculate the number of rows in the spritesheet
 void NovaSpritesheet::recalculateRows()
 {
-    rows = image.height / frameHeight;
+    rows = height / frameHeight;
 }
 
 // Recalculate the number of columns in the spritesheet
 void NovaSpritesheet::recalculateColumns()
 {
-    columns = image.width / frameWidth;
+    columns = width / frameWidth;
 }
 
 // Render the current frame of the spritesheet
 void NovaSpritesheet::render()
 {
-    if (!image.visible) return;
+    if (!visible) return;
     DrawTexturePro(
-        image.texture,
+        host->rTexture,
         Rectangle{
             frameWidth * column,
             frameHeight * row,
@@ -409,11 +409,11 @@ void NovaSpritesheet::render()
         Rectangle{
             x,
             y,
-            frameWidth * image.scale.x,
-            frameHeight * image.scale.y
+            frameWidth * scale.x,
+            frameHeight * scale.y
         },
-        Vector2{image.origin.x, image.origin.y},
-        image.rotation,
+        Vector2{origin.x, origin.y},
+        rotation,
         WHITE
     );
 }
