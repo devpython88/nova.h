@@ -661,7 +661,7 @@ public:
 };
 
 /********************************/
-/** RENDERING                   */
+/*  RENDERING                   */
 /********************************/
 
 // Class for rendering shapes and images
@@ -720,6 +720,7 @@ public:
     static NovaVec2 getTextPixelSize(std::string text, int fontSize);
     static NovaVec2 getWidgetSize(std::string text, int fontSize);
     static void uiLabel(std::string text, NovaVec2 pos, int fontSize, Color color);
+
     // UI Property modifiers
     inline static NovaVec2 getPadding() { return padding; }
     inline static void setPadding(float x, float y) { padding = NovaVec2(x, y); }

@@ -23,7 +23,7 @@
       "command": "cmd.exe",
       "args": [
         "/c",
-        "cd build && ninja -j2"
+        "cd build && ninja -j4"
       ],
       "problemMatcher": [],
       "presentation": {
