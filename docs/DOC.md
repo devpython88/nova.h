@@ -34,6 +34,12 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
+- [Scene management](#scene-management)
+- [Notifying](#novanotifier-novamisch)
+- [Animated Images](#animated-images)
+    - [Raw Texture](#raw-texture) -- IMPORTANT UPDATE (Mustn't be ignored)
+    - [NovaSpritesheet](#novaspritesheet) -- Update
+    - [NovaAnimation](#novaanimation) -- Update
 
 ------------------------------------------------------------------
 
@@ -43,9 +49,6 @@ Guide on how to compile:
     - [Standalone shapes](#standalone-shapes)
     - [Collision](#collision)
 - [Images](#images)
-- [Animated Images](#animated-images)
-    - [NovaSpritesheet](#novaspritesheet)
-    - [NovaAnimation](#novaanimation)
 - [Built-in Camera](#camera)
 - [Audio](#audio)
     - [Sounds](#sounds)
@@ -74,7 +77,6 @@ Guide on how to compile:
 - [Vehicles](#vehicles-novamisch)
 - [Image Scaling](#image-scaling)
 - [Cool Math Operations](#math-operations-novamisch)
-- [Raw Texture](#raw-texture)
 - [Lists](#lists-novamisch)
 - [Object groups](#novaobjectgroup-novamisch)
 - [Data save and load](#novadatadevice-novamisch)
@@ -158,13 +160,28 @@ NovaRenderDevice has two function, both are checkCollision but one takes two obj
 
 ### Want to draw images, Checkout [Images](#images)
 
+## Raw Texture
+Before diving into [Images](#images), We need to learn about `NovaRawTexture`
+
+NovaRawTexture is basically a Object Oriented `Texture2D`
+It's main purpose is to be provided to images and animations.
+That's so you can reuse a single Raw texture across many and many images/animations
+
+To construct it: `(std::string path)`
+
+To unload it: `.dispose()`
+
+It also allows you to get the raylib texture's id and stuff like that.
+
 ## Images
 In nova.h, Images are drawn using NovaRenderImage
-constructor: NovaRenderImage(float x, float y, std::string imagePath)
+constructor: NovaRenderImage(float x, float y, NovaRawTexture* tx)
 
 After loading a image, You can use `NovaRenderDevice::image(NovaRenderImage)` to draw
 or `::imageLoaded(NovaRenderImage)` to see if it is loaded or not.
-Images are automatically unloaded when game ends.
+
+To unload images, Just don't Since if your image uses a raw texture that is shared across multiple images and you unload this iimage, Then all those images will look corrupted
+So don't But if it is a single texture then just unload the raw texture
 
 For animations, Checkout [Animations](#animated-images)
 
@@ -175,12 +192,11 @@ But most libraries like: Raylib, SDL3, SFML only provide ways to cutout a frame 
 But nova.h has two classes, one for manual animations and one for automatic.
 
 ### NovaSpritesheet
-Constructor: (std::string sheetPath, float x, float y, float frameWidth, float frameHeight)
+Constructor: (NovaRawTexture* tx, float x, float y, float frameWidth, float frameHeight)
 
-The class has a public NovaRenderImage image internally.
-You can use that to get things like if its loaded or not, or the width and height.
+The class used to have a internal NovaRenderImage, But now the class is a subclass of NovaRenderImage
 
-If you changed the image, You can use the NovaSpritesheet's `.recalculateRows` and `.recalculateColumns` function to recalculate the frames.
+If you changed the internal texture (which you probably shoudn't), You can use the NovaSpritesheet's `.recalculateRows` and `.recalculateColumns` function to recalculate the frames.
 
 You can use its .row and .column properties to manage row and column (in 0, 1, 2 not multiples of the frameSize)
 
@@ -195,7 +211,8 @@ Meaning it also has a internal image, and row and column properties
 How to make a valid animation:
 Step 1. Create a instance
 ```cpp
-NovaAnimation anim("Player.png", 20, 20, 8, 8);
+NovaRawTexture tx("Player.png");
+NovaAnimation anim(&tx, 20, 20, 8, 8);
 ```
 
 Step 2. Set frame rate
@@ -788,11 +805,6 @@ Methods:
 To scale a image now, You can just have a `NovaRenderImage` and change its `scale` NovaVec2
 Be sure to call `centerPivot()` afterwards to adjust the pivot for scaling.
 For animations/spritesheets you can change the `scale` vector of their internal `NovaRenderImage`
-
-## Raw Texture
-NovaRawTexture is basically a Object Oriented `Texture2D`
-Its main use is for when you need raylib-level control over textures
-Thats because you can access its mipmaps etc...
 
 
 ## Image Vehicle Fix
