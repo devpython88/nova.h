@@ -15,7 +15,9 @@ int main(int argc, char const *argv[])
 {
     NovaWindow window;
     NovaRenderDevice::framerateLimit(30);
-    NovaAnimation anim("some_anim.png", 200, 200, 16, 16); // (file, x, y, frameWidth, frameHeight)
+
+    NovaRawTexture tx("some_anim.png");
+    NovaAnimation anim(&tx, 200, 200, 16, 16); // (tx*, x, y, frameWidth, frameHeight)
     anim.setFramerate(16);
     anim.looping = true;
     NovaRectangle rectangle(20, 20, 50, 50, RED, 45); // Rotate by 45.(optional)
@@ -36,7 +38,7 @@ int main(int argc, char const *argv[])
         window.end();
     }
 
-    anim.dispose();
+    tx.dispose();
     window.close();
     return 0;
 }
