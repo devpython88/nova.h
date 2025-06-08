@@ -237,3 +237,82 @@ class NovaStateManager {
     template <typename Func>
     void add(std::string name, Func&& callback){ states[name] = std::function<void(void)>(callback); }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class SchedulerTask {
+    public:
+    std::string name;
+    float duration;
+    std::function<void(void)> callback;
+
+    SchedulerTask() = default;
+    SchedulerTask(const std::string& name, float duration, std::function<void(void)> callback)
+        : name(name), duration(duration), callback(callback) {}
+};
+
+
+
+
+
+
+class NovaScheduler {
+    private:
+    static std::vector<SchedulerTask> tasks;
+
+    public:
+
+    static void addTask(const SchedulerTask& task);
+    
+    static void update();
+
+
+    template <typename Func>
+    static void addTask(const std::string& name, float duration, Func&& callback){
+        tasks.push_back(SchedulerTask(name, duration, callback));
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

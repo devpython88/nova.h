@@ -485,7 +485,9 @@ public:
     NovaObject4(float x, float y, float width, float height, float rotation) : 
     x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.1f, 0.1f) {}
+    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.1f, 0.1f) {
+        centerPivot();
+    }
     
     NovaObject4()
     {
@@ -572,9 +574,11 @@ public:
     NovaRawTexture* host;
     const std::string path; // File path of the image
     NovaVec2 scale;
+    bool flipX, flipY;
 
     // Constructor to load the image texture
-    NovaRenderImage(float x, float y, NovaRawTexture* host, float rotation = 0.0f) : NovaObject4(x, y, 0, 0, rotation), host(host), path(host->path), scale(1.0f, 1.0f)
+    NovaRenderImage(float x, float y, NovaRawTexture* host, float rotation = 0.0f) : NovaObject4(x, y, 0, 0, rotation),
+    host(host), path(host->path), scale(1.0f, 1.0f), flipX(false), flipY(false)
     {
         width = host->rTexture.width;
         height = host->rTexture.height;

@@ -275,3 +275,43 @@ int NovaStateManager::exec(){
     states[currentState]();
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+std::vector<SchedulerTask> NovaScheduler::tasks = std::vector<SchedulerTask>();
+
+
+
+void NovaScheduler::addTask(const SchedulerTask& task){
+    tasks.push_back(task);
+}
+
+void NovaScheduler::update(){
+    if (tasks.empty()) return;
+    
+    float frameTime = GetFrameTime();
+    for (int i = tasks.size() - 1; i >= 0; i--){
+        auto& task = tasks[i];
+
+        if (task.duration > 0.0f){
+            task.duration -= frameTime;
+            continue;
+        }
+        
+        task.callback();
+        tasks.erase(tasks.begin() + i);
+    }
+}

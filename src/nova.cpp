@@ -150,11 +150,18 @@ void NovaRenderDevice::poly(float x, float y, float sides, float radius, Color c
 void NovaRenderDevice::image(NovaRenderImage image)
 {
     if (!image.visible) return;
+
+    float calculatedWidth = image.width;
+    float calculatedHeight = image.height;
+
+    if (image.flipX) calculatedWidth *= -1;
+    if (image.flipY) calculatedHeight *= -1;
+
     DrawTexturePro(
         image.host->rTexture,
-        Rectangle{0, 0, (float)image.host->rTexture.width, (float)image.host->rTexture.height},
-        Rectangle{image.x, image.y, (float)image.host->rTexture.width * image.scale.x, (float)image.host->rTexture.height * image.scale.y},
-        Vector2{image.origin.x, image.origin.y},
+        Rectangle{0, 0, calculatedWidth, calculatedHeight},
+        Rectangle{image.x, image.y, image.width * image.scale.x, image.height * image.scale.y},
+        Vector2{image.origin.x, image.origin.y,},
         image.rotation,
         WHITE
     );
@@ -398,13 +405,20 @@ void NovaSpritesheet::recalculateColumns()
 void NovaSpritesheet::render()
 {
     if (!visible) return;
+
+    float calculatedWidth = frameWidth;
+    float calculatedHeight = frameHeight;
+
+    if (flipX) calculatedWidth *= -1;
+    if (flipY) calculatedHeight *= -1;
+
     DrawTexturePro(
         host->rTexture,
         Rectangle{
             frameWidth * column,
             frameHeight * row,
-            frameWidth,
-            frameHeight
+            calculatedWidth,
+            calculatedHeight
         },
         Rectangle{
             x,
