@@ -45,6 +45,7 @@ fi
 
 # copy the files
 cp ../src/*.h ./dist/include
+cp ../src/*.hpp ./dist/include
 cp ./libnova.a ./dist/lib
 
 echo "Package the files into TAR? (y/n)"

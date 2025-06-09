@@ -34,6 +34,7 @@ if not "%build_system_exe%"=="*" (
 
 @rem copy files
 copy ..\src\*.h %dist_directory%\include
+copy ..\src\*.hpp %dist_directory%\include
 copy .\libnova.a %dist_directory%\lib
 
 
