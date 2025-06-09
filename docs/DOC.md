@@ -34,12 +34,9 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Scene management](#scene-management)
-- [Notifying](#novanotifier-novamisch)
-- [Animated Images](#animated-images)
-    - [Raw Texture](#raw-texture) -- IMPORTANT UPDATE (Mustn't be ignored)
-    - [NovaSpritesheet](#novaspritesheet) -- Update
-    - [NovaAnimation](#novaanimation) -- Update
+- [State management](#state-management-novamisch)
+- [Task scheduling](#task-scheduling-novamisch)
+- [Images](#images) -- Flipping update
 
 ------------------------------------------------------------------
 
@@ -48,7 +45,10 @@ Guide on how to compile:
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
     - [Collision](#collision)
-- [Images](#images)
+- [Animated Images](#animated-images)
+    - [Raw Texture](#raw-texture)
+    - [NovaSpritesheet](#novaspritesheet)
+    - [NovaAnimation](#novaanimation)
 - [Built-in Camera](#camera)
 - [Audio](#audio)
     - [Sounds](#sounds)
@@ -81,6 +81,8 @@ Guide on how to compile:
 - [Object groups](#novaobjectgroup-novamisch)
 - [Data save and load](#novadatadevice-novamisch)
 - [External camera](#camera-novah)
+- [Scene management](#scene-management)
+- [Notifying](#novanotifier-novamisch)
 
 ## [UI](#ui)
 
@@ -182,6 +184,8 @@ or `::imageLoaded(NovaRenderImage)` to see if it is loaded or not.
 
 To unload images, Just don't Since if your image uses a raw texture that is shared across multiple images and you unload this iimage, Then all those images will look corrupted
 So don't But if it is a single texture then just unload the raw texture
+
+You can use the `flipX` and `flipY` properties to control whether flip or not (On spritesheets/animations, it flips the current frame instead of the image)
 
 For animations, Checkout [Animations](#animated-images)
 
@@ -882,10 +886,9 @@ Fields:
 `NovaVec2 globalVelocity`: The global velocity for all objects
 `NovaVec2 globalAcceleration`: The global acceleration for all objects.
 
-# Hot (new) 🔥
-
 
 ## Scene management
+
 Whenever you're making a game, You might run into the problem of scene management.
 To fix it normally, You would have to build a scene manager.
 But in nova.h, You can use the global scene manager
@@ -932,3 +935,42 @@ Methods:
 `draw()`: Draw the message and hide it if 2.5s has passed
 `clear()`: Clear the current message and reset the timer
 
+
+# Hot (new) 🔥
+
+
+## State management (novamisc.h)
+
+This class is called `NovaStateManager`
+
+It's used to map states to certain functions or lambdas
+
+Constructor: `()`
+
+Fields:
+`currentState`: Current state
+
+Methods:
+`unset()`: Set current state to ""
+`set(std::string)`: Set current state to `x`
+`int exec()`: Execute current state, returns 0 if succeeded
+`void add(std::string, Func&&)`: Map the `y` function to `x` string name
+
+
+
+## Task scheduling (novamisc.h)
+
+When you want to run tasks with a delay, You'd normally make a timer. But in nova you can use the `NovaScheduler` class to schedule tasks
+
+class `SchedulerTask`:
+This class is what a scheduler's task is, You can make a single task instance and reuse it if you don't want the code to be messy
+Constructor: `(std::string name, float dur, std::function<void(void)> callback)`
+
+----------------------------------
+
+This class is a global class meaning it doesn't require construction. It only has static functions
+
+
+`addTask(std::string, float, Func&&)`: Add a task directly
+`addTask(SchedulerTask)`: Add a task using an existing task
+`update()`: Update task's timers, auto-remove, call, etc..
