@@ -12,10 +12,11 @@ int main(int argc, char const *argv[])
 
     
     NovaRectangle rec(200, 200, 50, 50, RED);
-    NovaRawTexture tx("glob.png");
+    NovaResourceManager::loadTexture("sheet", "glob.png");
 
-    NovaSpritesheet im(&tx, 400, 400, 32, 64);
-    im.flipY = true;
+    NovaSpritesheet im(NovaResourceManager::getTexture("sheet"), 400, 400, 32, 64);
+    // im.flipY = true;
+    std::cout << im.column << std::endl << im.row;
 
     while (window.open()){
         window.start();
@@ -25,7 +26,7 @@ int main(int argc, char const *argv[])
         window.end();
     }
 
-    tx.dispose();
+    NovaResourceManager::disposeAll();
     window.close();
 
     return 0;

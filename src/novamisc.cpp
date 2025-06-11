@@ -315,3 +315,57 @@ void NovaScheduler::update(){
         tasks.erase(tasks.begin() + i);
     }
 }
+
+
+
+
+
+
+std::map<std::string, NovaSound> NovaResourceManager::sounds = std::map<std::string, NovaSound>();
+std::map<std::string, NovaRawTexture> NovaResourceManager::rawTextures = std::map<std::string, NovaRawTexture>();
+
+
+void NovaResourceManager::loadSound(std::string name, std::string path){
+    if (sounds.find(name) == sounds.end()){
+        sounds.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(name),
+            std::forward_as_tuple(path)
+        );
+    }
+}
+
+void NovaResourceManager::playSound(std::string name, int volume){
+    if (sounds.find(name) != sounds.end()){
+        sounds[name].volume(volume);
+        sounds[name].play();
+    }
+}
+
+void NovaResourceManager::loadTexture(std::string name, std::string path){
+    if (rawTextures.find(name) == rawTextures.end()){
+        rawTextures.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(name),
+            std::forward_as_tuple(path)  
+        );
+    }
+}
+
+NovaRawTexture* NovaResourceManager::getTexture(std::string name){
+    if (rawTextures.find(name) != rawTextures.end()){
+        return &rawTextures[name];
+    }
+
+    return nullptr;
+}
+
+void NovaResourceManager::disposeAll(){
+    for (auto pair : sounds){
+        if (pair.second.loaded()) UnloadSound(pair.second.sound);
+    }
+
+    for (auto pair : rawTextures){
+        if (pair.second.getTextureID() != 0) pair.second.dispose();
+    }
+}

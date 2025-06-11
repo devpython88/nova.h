@@ -316,3 +316,20 @@ class NovaScheduler {
 
 
 
+
+
+class NovaResourceManager {
+    private:
+    static std::map<std::string, NovaSound> sounds;
+    static std::map<std::string, NovaRawTexture> rawTextures;
+
+    public:
+
+    static void loadSound(std::string name, std::string path);
+    static void playSound(std::string name, int volume);
+
+    static void loadTexture(std::string name, std::string path);
+    static NovaRawTexture* getTexture(std::string name);
+    
+    static void disposeAll();
+};

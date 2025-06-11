@@ -607,7 +607,7 @@ public:
 
     // Constructor to initialize spritesheet properties
     NovaSpritesheet(NovaRawTexture* host, float x, float y, float frameWidth, float frameHeight) :
-    NovaRenderImage(x, y, host), frameWidth(frameWidth), frameHeight(frameHeight)
+    NovaRenderImage(x, y, host), frameWidth(frameWidth), frameHeight(frameHeight), row(0), column(0)
     {
         recalculateRows();
         recalculateColumns();
