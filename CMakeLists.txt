@@ -12,6 +12,13 @@ endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
+# MacOS
+if(APPLE)
+    message(STATUS "Detected macOS platform")
+    include_directories(/usr/local/include /opt/homebrew/include)
+    link_directories(/usr/local/lib /opt/homebrew/lib)
+endif()
+
 # Core Nova
 set(NOVA_H src/nova.h)
 set(NOVA_SRC src/nova.cpp)
