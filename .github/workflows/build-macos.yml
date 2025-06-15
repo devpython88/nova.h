@@ -15,8 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: brew install cmake raylib make
+      - name: Install Cmake
+        run: brew install cmake
+
+        name: Install Raylib
+        run: brew install raylib
 
       - name: Prepare build directories
         run: |
