@@ -5,7 +5,6 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
-    
 
 jobs:
   build-macos:
@@ -15,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Cmake
+      - name: Install CMake
         run: brew install cmake
 
       - name: Install Raylib
@@ -28,8 +27,8 @@ jobs:
 
       - name: Copy headers
         run: |
-          cp ../src/*.h build/dist/include/ || true
-          cp ../src/*.hpp build/dist/include/ || true
+          cp src/*.h build/dist/include/ || true
+          cp src/*.hpp build/dist/include/ || true
 
       - name: Configure with CMake
         working-directory: build
@@ -40,7 +39,7 @@ jobs:
         run: make
 
       - name: Copy output to dist
-        run: cp build/libnova.h build/dist/lib/
+        run: cp build/libnova.a build/dist/lib/
 
       - name: Create tarball
         working-directory: build
