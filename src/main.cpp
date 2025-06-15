@@ -19,8 +19,9 @@ int main(int argc, char const *argv[])
 
     NovaCamera cam;
     cam.shaking = true;
+    cam.setShakePower(5.0f);
 
-    NovaScheduler::addTask("whatever man", 3.5f, [&](){
+    NovaScheduler::addTask("whatever", 3.5f, [&](){
         cam.shaking = false;
     });
 
