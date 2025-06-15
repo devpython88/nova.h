@@ -1,0 +1,65 @@
+name: Build and Release macOS Binary
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: brew install cmake raylib make
+
+      - name: Prepare build directories
+        run: |
+          mkdir -p build/dist/include
+          mkdir -p build/dist/lib
+
+      - name: Copy headers
+        run: |
+          cp ../src/*.h build/dist/include/ || true
+          cp ../src/*.hpp build/dist/include/ || true
+
+      - name: Configure with CMake
+        working-directory: build
+        run: cmake ..
+
+      - name: Build with make
+        working-directory: build
+        run: make
+
+      - name: Copy output to dist
+        run: cp build/libnova.h build/dist/lib/
+
+      - name: Create tarball
+        working-directory: build
+        run: tar -czvf dist-mac.tar.gz dist
+
+      - name: Get latest release info
+        id: get_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const latestRelease = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const baseName = latestRelease.data.name.replace(/\s*\(macOS\)$/, '');
+            const macName = `${baseName} (macOS)`;
+            core.setOutput('release_name', macName);
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.get_release.outputs.release_name }}
+          files: build/dist-mac.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
