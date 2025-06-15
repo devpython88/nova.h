@@ -108,6 +108,8 @@ NovaVec4 NovaMath::normalize4(NovaVec4 vec){
 
 
 void NovaDataDevice::saveData(std::string file, NovaJSON json){
+    auto previous = std::chrono::steady_clock::now();
+    NovaLogger::info("Opening file to save data [" + file + "].");
     std::ofstream fs(file, std::ios::binary);
 
     if (!fs.is_open()){
@@ -115,15 +117,30 @@ void NovaDataDevice::saveData(std::string file, NovaJSON json){
     }
     
     // Get string json
+
+    NovaLogger::info("Parsing json data... [" + file + "].");
     std::string data = json._nlJsonData.dump();
 
     uint32_t size = data.size();
 
     // Write binary
+    NovaLogger::info("Writing binary data... [" + file + "].");
     fs.write(reinterpret_cast<char*>(&size), sizeof(size));
     fs.write(data.data(), size);
 
     fs.close();
+
+    auto now = std::chrono::steady_clock::now();
+    std::chrono::duration<float> elapsed = now - previous;
+    
+    std::stringstream text;
+    text << "Wrote binary data in "
+        << std::fixed << std::setprecision(2) 
+        << elapsed.count() 
+        << " [" << file << "].";
+
+    NovaLogger::info(text.str());
+
 }
 
 void NovaDataDevice::saveData(std::string file, std::vector<NovaJSON> jsons){
@@ -141,6 +158,8 @@ void NovaDataDevice::saveData(std::string file, std::vector<NovaJSON> jsons){
 }
 
 NovaJSON NovaDataDevice::loadData(std::string file){
+    auto previous = std::chrono::steady_clock::now();
+    NovaLogger::info("Opening file to load data [" + file + "].");
     std::ifstream in(file, std::ios::binary);
     
     if (!in.is_open()){
@@ -149,6 +168,7 @@ NovaJSON NovaDataDevice::loadData(std::string file){
 
     uint32_t size; // size holder
 
+    NovaLogger::info("Reading binary data... [" + file + "].");
     // Read size
     in.read(reinterpret_cast<char*>(&size), sizeof(size));
 
@@ -157,8 +177,22 @@ NovaJSON NovaDataDevice::loadData(std::string file){
     in.read(&data[0], size);
 
     // convert to json
+
+    NovaLogger::info("Converting to json data... [" + file + "].");
     NovaJSON json;
     json._nlJsonData = nlohmann::json::parse(data);
+
+    auto now = std::chrono::steady_clock::now();
+    std::chrono::duration<float> elapsed = now - previous;
+    
+    std::stringstream text;
+    text << "Wrote binary data in "
+        << std::fixed << std::setprecision(2) 
+        << elapsed.count() 
+        << " [" << file << "].";
+
+    NovaLogger::info(text.str());
+
     return json;
 }
 

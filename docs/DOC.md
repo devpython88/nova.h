@@ -34,9 +34,8 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [State management](#state-management-novamisch)
-- [Task scheduling](#task-scheduling-novamisch)
-- [Images](#images) -- Flipping update
+- [Resource management](#novaresourcemanager)
+- [External camera](#camera-novah) -- (UPDATE)
 
 ------------------------------------------------------------------
 
@@ -45,6 +44,7 @@ Guide on how to compile:
 - [Rendering and Game loop](#rendering-and-game-loop)
     - [Standalone shapes](#standalone-shapes)
     - [Collision](#collision)
+- [Images](#images)
 - [Animated Images](#animated-images)
     - [Raw Texture](#raw-texture)
     - [NovaSpritesheet](#novaspritesheet)
@@ -80,9 +80,10 @@ Guide on how to compile:
 - [Lists](#lists-novamisch)
 - [Object groups](#novaobjectgroup-novamisch)
 - [Data save and load](#novadatadevice-novamisch)
-- [External camera](#camera-novah)
 - [Scene management](#scene-management)
 - [Notifying](#novanotifier-novamisch)
+- [State management](#state-management-novamisch)
+- [Task scheduling](#task-scheduling-novamisch)
 
 ## [UI](#ui)
 
@@ -843,6 +844,7 @@ Fields:
 `float zoom`: The amount of zoom
 `float rotation`: How much the camera is rotated
 `NovaVec2 target`: The point where the camera's top-left is.
+`bool shaking`: Whether to shake or not
 
 
 Methods:
@@ -853,6 +855,7 @@ Methods:
 `void end()`: End the camera mode, You can draw your GUI after calling this since after ending the camera mode, The items will no longer be affected by the camera
 `NovaVec2 getViewportRelativePosition(float x, float y)`: Make `x` and `y` relative to the camera view.
 `void refresh()`: Update the internal raylib camera's properties to be the properties of the actual `NovaCamera`
+`void setShakePower(float)`: Set the power of the shake, 10.0f by default
 
 
 ## NovaDataDevice (novamisc.h)
@@ -936,7 +939,6 @@ Methods:
 `clear()`: Clear the current message and reset the timer
 
 
-# Hot (new) 🔥
 
 
 ## State management (novamisc.h)
@@ -974,3 +976,25 @@ This class is a global class meaning it doesn't require construction. It only ha
 `addTask(std::string, float, Func&&)`: Add a task directly
 `addTask(SchedulerTask)`: Add a task using an existing task
 `update()`: Update task's timers, auto-remove, call, etc..
+
+
+
+
+
+
+
+# Hot (new) 🔥
+
+
+## NovaResourceManager 
+This class is used for managing resources.
+It can be used to store sounds and textures in a map
+
+Its global meanign you do not need any constructor. All functions are static
+
+Functions:
+`loadSound(name, path)`: Load sound `path` as `name`
+`playSound(name, int volume)`: Play sound `name` with volume `volume`
+`loadTexture(name, path)`: Load a `NovaRawTexture` as `name`
+`NovaRawTexture* getTexture(name)`: Get a pointer to a texture to use when creating images or animations
+`void unloadAll()`: Dispose of all the sounds and textures

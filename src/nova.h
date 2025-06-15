@@ -61,6 +61,23 @@ const Color NOVA_MODAL_WINDOW_COLOR_NIGHT = Color{20, 50, 20, 255};
 class NovaWindow;
 class NovaResourceManager;
 
+
+/********************************/
+/** LOGGER                      */
+/********************************/
+
+class NovaLogger
+{
+public:
+    static std::string getTime();
+    static void log(std::string level, std::string text);
+    static std::string getLogFormat(std::string level, std::string text);
+    static void info(std::string text);
+    static void fatal(std::string text);
+    static void error(std::string text);
+    static void warn(std::string text);
+};
+
 /********************************/
 /** EXTRAS                      */
 /********************************/
@@ -385,19 +402,24 @@ public:
     NovaWindow(int w = DEFAULT_WIDTH, int h = DEFAULT_HEIGHT, const std::string &c = DEFAULT_CAPTION)
         : width(w), height(h), caption(c), integratedCamera(true)
     {
+        SetTraceLogLevel(LOG_NONE);
         InitWindow(width, height, caption.c_str());
         InitAudioDevice();
+
+        NovaLogger::info("Created window and audio device");
 
         camera = {0};
         camera.zoom = 1.0f;
         camera.target = {0, 0};
         camera.rotation = 0;
         camera.offset = {0, 0};
+        NovaLogger::info("Created Integrated camera");
     }
 
     // Destructor to clean up resources
     void close()
     {
+        NovaLogger::info("Closing window and audio device");
         CloseAudioDevice();
         CloseWindow();
     }
@@ -422,10 +444,15 @@ public:
 
 // Nova Camera
 
+typedef std::chrono::steady_clock::time_point TimePoint;
+
 class NovaCamera
 {
 private:
+    TimePoint timeWhenShake;
     Camera2D camera;
+    float currentShakePower;
+    float shakePower;   
 
     inline void refreshCamera()
     {
@@ -435,14 +462,18 @@ private:
         camera.offset = {0, 0};
     }
 
+    void shakeCamera();
+
 public:
     NovaVec2 target;
     float zoom;
     float rotation;
+    bool shaking;
 
-    NovaCamera() : target(0, 0), zoom(1.0f), rotation(.0f)
+    NovaCamera() : target(0, 0), zoom(1.0f), rotation(.0f), timeWhenShake(std::chrono::steady_clock::now())
     {
         refreshCamera();
+        setShakePower(10.0f);
     }
 
     NovaVec2 getViewportSize();
@@ -457,6 +488,8 @@ public:
 
     void start();
     void end();
+
+    inline void setShakePower(float shakePower_){ shakePower = shakePower_; currentShakePower = shakePower_; }
     NovaVec2 getViewportRelativePosition(float x, float y);
 };
 
@@ -485,7 +518,7 @@ public:
     NovaObject4(float x, float y, float width, float height, float rotation) : 
     x(x), y(y),
     width(width), height(height), rotation(rotation),
-    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.1f, 0.1f) {
+    visible(true), canCollide(true), zIndex(0), velocity(0.0f, 0.0f), acceleration(0.1f, 0.1f){
         centerPivot();
     }
     
@@ -558,13 +591,20 @@ public:
     std::string path;
 
     NovaRawTexture() = default;
-    NovaRawTexture(std::string path) : rTexture(LoadTexture(path.c_str())), path(path) {}
+    NovaRawTexture(std::string path) : rTexture(LoadTexture(path.c_str())), path(path) {
+        NovaLogger::info("Loaded raw texture [" + path + "].");
+    }
 
     NovaVec2 getSize();
     int getTextureID();
     int getMipmaps();
 
-    void dispose(){ if (rTexture.id != 0) UnloadTexture(rTexture); }
+    void dispose(){ 
+        if (rTexture.id != 0){
+            UnloadTexture(rTexture);
+            NovaLogger::info("Unloaded texture [" + path + "].");
+        }
+    }
 };
 
 // Class representing a renderable image
@@ -795,12 +835,20 @@ public:
     bool loaded();
 
     // Constructor to load the sound
-    NovaSound(std::string path) : path(path), sound(LoadSound(path.c_str())) {}
+    NovaSound(std::string path) : path(path), sound(LoadSound(path.c_str())) {
+        NovaLogger::info("Loaded sound [" + path + "].");
+    }
 
     NovaSound() : path("") {}
 
     // Play the sound
     void play();
+    void dispose(){ 
+        if (loaded()){
+            NovaLogger::info("Unloaded sound [" + path + "].");
+            UnloadSound(sound);
+        }
+    }
 };
 
 // Class for handling music
@@ -818,7 +866,9 @@ public:
     void volume(float volume);
 
     // Constructor to load the music
-    NovaMusic(std::string path, bool loop = true) : path(path), loop(loop), music(LoadMusicStream(path.c_str())) {}
+    NovaMusic(std::string path, bool loop = true) : path(path), loop(loop), music(LoadMusicStream(path.c_str())) {
+        NovaLogger::info("Loaded music stream [" + path + "]");
+    }
 
     NovaMusic() {}
 
@@ -828,10 +878,13 @@ public:
     // Play the music
     void play();
 
-    // Destructor to unload the music stream
-    ~NovaMusic()
-    {
-        UnloadMusicStream(music);
+    bool loaded() { return IsMusicValid(music); }
+
+    void dispose(){ 
+        if (loaded()){
+            NovaLogger::info("Unloaded music [" + path + "].");
+            UnloadMusicStream(music);
+        }
     }
 };
 
@@ -894,22 +947,6 @@ public:
 
     void rechain();
     void rechainObject(NovaObject4 *obj);
-};
-
-/********************************/
-/** LOGGER                      */
-/********************************/
-
-class NovaLogger
-{
-public:
-    static std::string getTime();
-    static void log(std::string level, std::string text);
-    static std::string getLogFormat(std::string level, std::string text);
-    static void info(std::string text);
-    static void fatal(std::string text);
-    static void error(std::string text);
-    static void warn(std::string text);
 };
 
 /********************************/

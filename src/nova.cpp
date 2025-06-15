@@ -82,7 +82,37 @@ NovaVec2 NovaCamera::getViewportSize(){
 
 void NovaCamera::start(){
     refreshCamera();
+
+    shakeCamera();
+
     BeginMode2D(camera);
+}
+
+void NovaCamera::shakeCamera(){
+    // Shake
+    
+    auto now = std::chrono::steady_clock::now();
+    std::chrono::duration<float> elapsed = now - timeWhenShake;
+    if (elapsed.count() < .05f) return;
+
+    if (!shaking && currentShakePower > 0.0f){
+        currentShakePower *= 0.9f;
+    }
+
+
+    timeWhenShake = now;
+
+    // Which axis to shake on
+    int axis = GetRandomValue(1, 2);
+    if (axis == 1){
+        int position = GetRandomValue(1, 2);
+        if (position == 1) camera.target.x -= currentShakePower;
+        if (position == 2) camera.target.x += currentShakePower;
+    } else {
+        int position = GetRandomValue(1, 2);
+        if (position == 1) camera.target.y -= currentShakePower;
+        if (position == 2) camera.target.y += currentShakePower;
+    }
 }
 
 void NovaCamera::end(){
