@@ -19,16 +19,18 @@ int main(int argc, char const *argv[])
 
     NovaCamera cam;
     cam.shaking = true;
-    cam.setShakePower(5.0f);
 
-    NovaScheduler::addTask("whatever", 3.5f, [&](){
-        cam.shaking = false;
-    });
+    NovaRealworldTimer timer;
+    timer.addTimer("stop shake", 2.5f);
 
     while (window.open()){
         event.fetch(); // get event
         rec.updateMovement(); 
         NovaScheduler::update();
+        
+        if (timer.finished("stop shake")){
+            cam.shaking = false;
+        }
 
         window.start();
         cam.start();

@@ -334,3 +334,15 @@ class NovaResourceManager {
     
     static void disposeAll();
 };
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,6 +4,7 @@
 
 #pragma once
 #include <raylib.h>
+#include "nova.h"
 
 class NovaTimer {
 private:
@@ -66,6 +67,8 @@ class minutes_t : public timescale_t {
 
 // Stopwatch
 
+
+
 class NovaStopwatch {
     private:
     float timer;
@@ -84,4 +87,45 @@ class NovaStopwatch {
 
     void pause();
     void unpause();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// irl timer
+
+typedef struct {
+    float duration;
+    std::chrono::steady_clock::time_point time;
+} RealworldTimer;
+
+class NovaRealworldTimer {
+    private:
+    std::map<std::string, RealworldTimer> timers;
+
+    public:
+
+    NovaRealworldTimer(): timers(){}
+
+    void addTimer(std::string name, float durationInSeconds);
+    bool finished(std::string name);
+    void removeTimer(std::string name);
+    void clearTimers();
 };

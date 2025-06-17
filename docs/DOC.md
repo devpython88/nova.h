@@ -34,8 +34,7 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Resource management](#novaresourcemanager)
-- [External camera](#camera-novah) -- (UPDATE)
+- [Realworld timers](#irl-timers-novatimeh)
 
 ------------------------------------------------------------------
 
@@ -50,6 +49,7 @@ Guide on how to compile:
     - [NovaSpritesheet](#novaspritesheet)
     - [NovaAnimation](#novaanimation)
 - [Built-in Camera](#camera)
+- [External camera](#camera-novah)
 - [Audio](#audio)
     - [Sounds](#sounds)
     - [Music](#music)
@@ -84,6 +84,7 @@ Guide on how to compile:
 - [Notifying](#novanotifier-novamisch)
 - [State management](#state-management-novamisch)
 - [Task scheduling](#task-scheduling-novamisch)
+- [Resource management](#novaresourcemanager)
 
 ## [UI](#ui)
 
@@ -983,7 +984,6 @@ This class is a global class meaning it doesn't require construction. It only ha
 
 
 
-# Hot (new) 🔥
 
 
 ## NovaResourceManager 
@@ -998,3 +998,27 @@ Functions:
 `loadTexture(name, path)`: Load a `NovaRawTexture` as `name`
 `NovaRawTexture* getTexture(name)`: Get a pointer to a texture to use when creating images or animations
 `void unloadAll()`: Dispose of all the sounds and textures
+
+
+# Hot (new) 🔥
+
+
+
+## IRL Timers (novatime.h)
+When you make timers in nova, They depend on deltaTime.
+but if you want to use realworld time (Not system time), Then you can use `NovaRealworldTimer`
+
+Constructor: `()`
+
+Methods:
+`addTimer(std::string name, float duration)`:
+- No, This is not another global class, This function appends a timer to the map with `name` and `duration` as the durations in seconds
+
+`finished(std::string name)`:
+- Returns if a timer has finished (Since it uses real world time, No updating is needed)
+
+`removeTimer(std::string name)`:
+- Removes a timer
+
+`clearTimers()`:
+- Removes all timers
