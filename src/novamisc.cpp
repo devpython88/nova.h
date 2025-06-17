@@ -403,3 +403,73 @@ void NovaResourceManager::disposeAll(){
         if (pair.second.getTextureID() != 0) pair.second.dispose();
     }
 }
+
+
+
+
+
+
+std::vector<TaggedObject> NovaTagDevice::objects = std::vector<TaggedObject>();
+
+
+
+void NovaTagDevice::addObject(std::string tag, NovaObject4* object){
+    objects.push_back({ object, tag });
+}
+
+NovaObject4* NovaTagDevice::getFirst(std::string tag){
+    for (TaggedObject& obj : objects){
+        if (obj.tag == tag) return obj.object;
+    }
+
+    return nullptr;
+}
+
+NovaList<NovaObject4*> NovaTagDevice::getAll(std::string tag){
+    NovaList<NovaObject4*> objectsMatched;
+
+    for (TaggedObject& obj : objects){
+        if (obj.tag == tag) objectsMatched.push_back(obj.object);
+    }
+
+    return objectsMatched;
+}
+
+NovaList<NovaObject4*> NovaTagDevice::getMax(std::string tag, int maxCount){
+    NovaList<NovaObject4*> objectsMatched;
+
+    for (TaggedObject& obj : objects){
+        if (obj.tag == tag && objectsMatched.size() < maxCount) objectsMatched.push_back(obj.object);
+    }
+
+    return objectsMatched;
+}
+
+void NovaTagDevice::removeFirst(std::string tag) {
+    for (int i = 0; i < objects.size(); ++i) {
+        if (objects[i].tag == tag) {
+            objects.erase(objects.begin() + i);
+            break;  // stop after the first match
+        }
+    }
+}
+
+void NovaTagDevice::removeAll(std::string tag){
+    for (int i = objects.size(); i >= 0; --i) {
+        if (objects[i].tag == tag) {
+            objects.erase(objects.begin() + i);
+        }
+    }
+}
+
+void NovaTagDevice::removeMax(std::string tag, int maxCount){
+    int count = 0;
+
+    for (int i = objects.size(); i >= 0; --i) {
+        if (objects[i].tag == tag && count < maxCount) {
+            objects.erase(objects.begin() + i);
+            count++;
+        }
+    }
+}
+

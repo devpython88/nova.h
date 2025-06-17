@@ -35,6 +35,7 @@ Guide on how to compile:
 ## Hot (new) 🔥
 
 - [Realworld timers](#irl-timers-novatimeh)
+- [Object tagging](#tagged-objects-novamisch)
 
 ------------------------------------------------------------------
 
@@ -1022,3 +1023,28 @@ Methods:
 
 `clearTimers()`:
 - Removes all timers
+
+
+
+
+
+
+## Tagged objects (novamisc.h)
+Object tagging can be a pain when not using a game engine.
+To fix this nova obviously provides a tag device.
+`NovaTagDevice`.
+
+Its global by the way.
+
+Methods:
+`addObject(tag, object*)`: Add a object pointer with name tag
+`getFirst(tag)`: Get first tagged object, Use with care as this returns nullptr if no object has the tag
+`getAll(tag)`: Get all tagged objects, Returns empty `NovaList` if none found
+`getMax(tag, maxCount)`: Get all tagged objects upto `maxCount`, Returns empty `NovaList` if none found
+
+`removeFirst(tag)`: Remove first tagged
+`removeAll(tag)`: Remove all tagged
+`removeMax(tag, count)`: Continue removing tagged upto `count`
+
+
+Overall this is a great class for quick tagging and stuff, But you can always make your own tagging system!

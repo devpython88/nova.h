@@ -346,3 +346,26 @@ class NovaResourceManager {
 
 
 
+
+typedef struct {
+    NovaObject4* object;
+    std::string tag;
+} TaggedObject;
+
+
+class NovaTagDevice {
+    private:
+    static std::vector<TaggedObject> objects;
+
+    public:
+
+    static void addObject(std::string tag, NovaObject4* object);
+    static NovaObject4* getFirst(std::string tag);
+    static NovaList<NovaObject4*> getAll(std::string tag);
+    static NovaList<NovaObject4*> getMax(std::string tag, int maxCount);
+
+    static void removeFirst(std::string tag);
+    static void removeAll(std::string tag);
+    static void removeMax(std::string tag, int maxCount);
+    
+};
