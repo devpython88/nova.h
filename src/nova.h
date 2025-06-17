@@ -753,6 +753,8 @@ public:
 
     static bool checkCollision(NovaObject4 obj, NovaObject4 obj2);
     static bool checkCollision(NovaObject4 obj, NovaCircle circ);
+    static bool checkCollisionEx(NovaSpritesheet obj, NovaObject4 circ);
+    static bool checkCollisionEx(NovaSpritesheet obj, NovaSpritesheet circ);
 
     // Grid
     static void gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color);

@@ -240,6 +240,31 @@ bool NovaRenderDevice::checkCollision(NovaObject4 obj, NovaCircle circ)
     return CheckCollisionCircleRec(Vector2{circ.x, circ.y}, circ.radius, Rectangle{obj.x, obj.y, obj.width, obj.height});
 }
 
+
+bool NovaRenderDevice::checkCollisionEx(NovaSpritesheet sheet, NovaObject4 obj)
+{
+    NovaObject4 sheetToObj = sheet;
+    sheetToObj.width = sheet.frameWidth;
+    sheetToObj.height = sheet.frameHeight;
+
+    return checkCollision(
+        sheetToObj,
+        obj    
+    );
+}
+
+bool NovaRenderDevice::checkCollisionEx(NovaSpritesheet sheet, NovaSpritesheet sheet2)
+{
+    NovaObject4 sheetToObj = sheet2;
+    sheetToObj.width = sheet.frameWidth;
+    sheetToObj.height = sheet.frameHeight;
+
+    return checkCollisionEx(
+        sheet,
+        sheetToObj
+    );
+}
+
 void NovaRenderDevice::gridLines(NovaVec2 cellSize, NovaVec2 cells, Color color)
 {
     float lineWidth = cellSize.x * cells.x; // This way, 16 * 3 = 48
