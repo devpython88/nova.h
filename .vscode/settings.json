@@ -71,5 +71,6 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp"
-    }
+    },
+    "C_Cpp.default.compilerPath": "C:/msys64/mingw64/bin/g++.exe"
 }

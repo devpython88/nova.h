@@ -369,3 +369,78 @@ class NovaTagDevice {
     static void removeMax(std::string tag, int maxCount);
     
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Shaders
+
+typedef int ShaderLoc;
+typedef int ShaderUniformType;
+
+
+
+class NovaShader {
+    private:
+    RenderTexture2D shaderTex;
+    RenderTexture2D drawTex;
+
+    public:
+    Shader rShader;
+    Color background;
+
+
+
+    NovaShader(std::string fragmentShader, std::string vertexShader): rShader(LoadShader(vertexShader.c_str(), fragmentShader.c_str())),
+    shaderTex(LoadRenderTexture(GetScreenWidth(), GetScreenHeight())),
+    drawTex(LoadRenderTexture(GetScreenWidth(), GetScreenHeight())),
+    background(BLANK){}
+    NovaShader() = default;
+
+
+
+    ShaderLoc getLocation(std::string uniformName);
+
+    template <typename T>
+    void setValue(ShaderLoc loc, T* value, ShaderUniformType uniformType){
+        SetShaderValue(rShader, loc, value, uniformType);
+    }
+
+
+    void startShader();
+    void endShaderAndApply(float x = 0.0f, float y = 0.0f);
+
+    bool loaded(){ return rShader.id != 0; }
+    void dispose(){ if (loaded()) UnloadShader(rShader); }
+};

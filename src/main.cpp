@@ -9,7 +9,7 @@ using nrd = NovaRenderDevice;
 
 int main(int argc, char const *argv[])
 {
-    NovaWindow window(800, 600, "Button Smasher");
+    NovaWindow window(800, 600, "test");
     window.integratedCamera = false;
 
     nrd::framerateLimit(60);
@@ -22,19 +22,20 @@ int main(int argc, char const *argv[])
     NovaRectangle rec5(100, 320, 50, 50, PINK);
     NovaRectangle rec6(100, 380, 50, 50, ORANGE);
 
-    NovaTagDevice::addObject("zombie", &rec1);
-    NovaTagDevice::addObject("zombie", &rec2);
-    NovaTagDevice::addObject("zombie", &rec3);
-
-    NovaTagDevice::getFirst("zombie"); // returns first tagged, nullptr if not found
-    NovaTagDevice::getAll("zombie"); // returns all tagged
-    NovaTagDevice::getMax("zombie", 2); // returns all tagged but maxed on `count`
-
-    // NovaTagDevice::removeFirst("zombie");
-    // NovaTagDevice::removeAll("zombie");
-    // NovaTagDevice::removeMax("zombie", 2);
+    NovaShader shader("blur.fs", "blur.vs");
 
     NovaCamera cam;
+
+
+    ShaderLoc resLoc = shader.getLocation("resolution");
+    ShaderLoc dirLoc = shader.getLocation("direction");
+
+    Vector2 resolution = { (float) GetScreenWidth(), (float) GetScreenHeight() };
+    shader.setValue<Vector2>(resLoc, &resolution, SHADER_UNIFORM_VEC2);
+
+    Vector2 dirH = { 1.0f, 1.0f };
+    shader.setValue<Vector2>(dirLoc, &dirH, SHADER_UNIFORM_VEC2);
+    shader.background = BLUE;
 
     while (window.open()){
         event.fetch(); // get event
@@ -46,6 +47,8 @@ int main(int argc, char const *argv[])
 
         nrd::fill(BLUE);
 
+        shader.startShader();
+
         nrd::rect(rec1);
         nrd::rect(rec2);
         nrd::rect(rec3);
@@ -53,10 +56,13 @@ int main(int argc, char const *argv[])
         nrd::rect(rec5);
         nrd::rect(rec6);
 
+        shader.endShaderAndApply();
+
         cam.end();
         window.end();
     }
 
+    shader.dispose();
     window.close();
 
     return 0;

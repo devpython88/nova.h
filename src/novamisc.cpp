@@ -473,3 +473,34 @@ void NovaTagDevice::removeMax(std::string tag, int maxCount){
     }
 }
 
+
+
+
+
+// shaders
+
+ShaderLoc NovaShader::getLocation(std::string uniformName)
+{
+    return GetShaderLocation(rShader, uniformName.c_str());
+}
+
+void NovaShader::startShader()
+{
+    BeginTextureMode(drawTex); // not statrt shader but start the draw tex
+    ClearBackground(background);
+}
+
+void NovaShader::endShaderAndApply(float x, float y)
+{
+    EndTextureMode(); // end draw tex
+    
+    // start shader and draw
+    BeginTextureMode(shaderTex);
+    ClearBackground(background);
+    BeginShaderMode(rShader);
+    DrawTexture(drawTex.texture, x, y, WHITE);
+    EndShaderMode();
+    EndTextureMode();
+
+    DrawTexture(shaderTex.texture, x, y, WHITE);
+}

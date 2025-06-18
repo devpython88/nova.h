@@ -34,16 +34,17 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
+- [Shaders](#shaders-novamisch)
 - [Realworld timers](#irl-timers-novatimeh)
 - [Object tagging](#tagged-objects-novamisch)
+- [Rendering and Game loop](#rendering-and-game-loop)
+    - [Standalone shapes](#standalone-shapes)
+    - [Collision](#collision) -- really good collision update
 
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
 - [Object Base Class](#novaobject4)
-- [Rendering and Game loop](#rendering-and-game-loop)
-    - [Standalone shapes](#standalone-shapes)
-    - [Collision](#collision)
 - [Images](#images)
 - [Animated Images](#animated-images)
     - [Raw Texture](#raw-texture)
@@ -162,6 +163,9 @@ Here are the current shapes:
 ### Collision
 All previous object collision functions were deprecated in v1.2 and now removed in v1.5
 NovaRenderDevice has two function, both are checkCollision but one takes two objects, and the other takes a object and a circle
+
+For spritesheet to object4 collision and spritesheet to spritesheet collision, use `checkCollisionEx`
+Works for animations aswell
 
 ### Want to draw images, Checkout [Images](#images)
 
@@ -1048,3 +1052,32 @@ Methods:
 
 
 Overall this is a great class for quick tagging and stuff, But you can always make your own tagging system!
+
+
+
+
+
+
+
+
+## Shaders (novamisc.h)
+Shaders are a crucial part of game development as they are the core feature used for blurring, post processing, lighting, etc...
+
+Nova provides a easy-to-use shader class called `NovaShader`
+> Note: I am really bad at explaining so if you are new to shaders, please watch a tutorial on how to script glsl and stuff beforehand
+
+Constructor:
+`(fragmentShader, vertexShader)`: Both are file paths to two shader files
+
+Fields:
+`Color background`: Change this as needed since by default its `BLANK`
+
+Methods:
+`ShaderLoc getLocation(uniformName)`: Get the location (int) of `uniformName`
+`void setValue<T>(ShaderLoc loc, T* value, ShaderUniformType uniformType)`: Set a uniform's value to a new one
+
+`void startShader()`: Start the shader
+`void endShaderAndApply(x = 0.0f, y = 0.0f)`: End the shader and apply at `x`, `y`
+
+`bool loaded()`: Is loaded
+`void dispose()`: Unload
