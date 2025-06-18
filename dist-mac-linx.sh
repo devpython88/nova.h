@@ -31,13 +31,24 @@ echo "[MSYS Makefiles             - make        ]"
 echo "[MinGW Makefiles            - mingw32-make]"
 echo "[-----------------------------------------]"
 
-echo "enter cmake generator name (case sensitive):"
-read P_BS
+P_BS=""
+P_EXE=""
+
+if [ -z "$1" ]; then
+    echo "enter cmake generator name (case sensitive):"
+    read P_BS
+else
+    P_BS="$1"
+fi
 
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G "$P_BS" ..
 
-echo "enter cmake generator exe (* to ignore, for systems like Visual studio):"
-read P_EXE
+if [ -z "$2" ]; then
+    echo "enter cmake generator exe (*=ignore for systems like msvc):"
+    read P_EXE
+else
+    P_EXE="$2"
+fi
 
 if [ "$P_EXE" != "*" ]; then
     $P_EXE

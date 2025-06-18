@@ -5,7 +5,11 @@ if not exist ".\build" mkdir build
 
 @rem `dist`
 
-set /p dist_directory=Enter dist directory name:
+if "%1"=="" (
+    set /p dist_directory=Enter dist directory name:
+) else (
+    set dist_directory=%1
+)
 
 if not exist ".\build\%dist_directory%" mkdir "build\%dist_directory%"
 if not exist ".\build\%dist_directory%\include" mkdir "build\%dist_directory%\include"
@@ -24,9 +28,19 @@ echo [MSYS Makefiles             - make]
 echo [MinGW Makefiles            - mingw32-make]
 echo [-----------------------------------]
 
-set /p build_system=Enter cmake generator name (case sensitive): 
+if "%2"=="" (
+    set /p build_system=Enter cmake generator name (case sensitive) 
+) else (
+    set build_system=%2
+)
+
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G "%build_system%" ..
-set /p build_system_exe=Enter cmake generator exe (*=ignore for systems like msvc): 
+
+if "%3"=="" (
+    set /p build_system_exe=Enter cmake generator exe (*=ignore for systems like msvc) 
+) else (
+    set build_system_exe=%3
+)
 
 if not "%build_system_exe%"=="*" (
     %build_system_exe%
