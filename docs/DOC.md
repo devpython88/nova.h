@@ -34,17 +34,16 @@ Guide on how to compile:
 
 ## Hot (new) 🔥
 
-- [Shaders](#shaders-novamisch)
-- [Realworld timers](#irl-timers-novatimeh)
-- [Object tagging](#tagged-objects-novamisch)
-- [Rendering and Game loop](#rendering-and-game-loop)
-    - [Standalone shapes](#standalone-shapes)
-    - [Collision](#collision) -- really good collision update
+- [Shaders](#shaders-novamisch) -- Update
+- [Lists](#lists-novamisch) -- Update
 
 ------------------------------------------------------------------
 
 - [Window initialization](#window-initialization)
 - [Object Base Class](#novaobject4)
+- [Rendering and Game loop](#rendering-and-game-loop)
+    - [Standalone shapes](#standalone-shapes)
+    - [Collision](#collision)
 - [Images](#images)
 - [Animated Images](#animated-images)
     - [Raw Texture](#raw-texture)
@@ -79,7 +78,6 @@ Guide on how to compile:
 - [Vehicles](#vehicles-novamisch)
 - [Image Scaling](#image-scaling)
 - [Cool Math Operations](#math-operations-novamisch)
-- [Lists](#lists-novamisch)
 - [Object groups](#novaobjectgroup-novamisch)
 - [Data save and load](#novadatadevice-novamisch)
 - [Scene management](#scene-management)
@@ -87,6 +85,8 @@ Guide on how to compile:
 - [State management](#state-management-novamisch)
 - [Task scheduling](#task-scheduling-novamisch)
 - [Resource management](#novaresourcemanager)
+- [Realworld timers](#irl-timers-novatimeh)
+- [Object tagging](#tagged-objects-novamisch)
 
 ## [UI](#ui)
 
@@ -834,6 +834,7 @@ It is a subclass of std::vector meaning even if you replace your normal vectors 
 Constructor: `NovaList<T>()`
 
 Methods:
+`forEach(itFunc(int i, T elem))`:  Use when you need to iterate over a list with both the index and element
 `has_item(auto it)`: Checks if the `it` valued item is in the list, If your list consists of custom classes and those classes have a `==` operator overload, It will use that overload instead of the default `==` operator.
 `pop_index(int index)`: Removes item at that index
 `fill(int amount, auto genFunc)`: Takes a amount and a lambda/function, The function should take a `int i` parameter for the index, All it does it add the return value of the function to the array `amount` amount of times.
@@ -1071,6 +1072,7 @@ Constructor:
 
 Fields:
 `Color background`: Change this as needed since by default its `BLANK`
+`bool autoClear`: Whether to automatically clear the screen when starting or not, useful if you want to apply shader to only some things
 
 Methods:
 `ShaderLoc getLocation(uniformName)`: Get the location (int) of `uniformName`

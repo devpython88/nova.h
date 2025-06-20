@@ -77,6 +77,7 @@ class NovaList : public std::vector<T> {
 
 
     NovaList(): std::vector<T>(){}
+    NovaList(std::vector<T> v): std::vector<T>(v){}
 
     void pop_index(int index){
         this->erase(this->begin() + index);
@@ -96,6 +97,14 @@ class NovaList : public std::vector<T> {
             this->push_back(genFunc(i));
         }
     }
+
+
+    void forEach(auto itFunc){
+        for (int i = this->size() - 1; i >= 0; i--){
+            itFunc(i, *this[i]);
+        }
+    }
+
 };
 
 
@@ -419,13 +428,14 @@ class NovaShader {
     public:
     Shader rShader;
     Color background;
+    bool autoClear;
 
 
 
     NovaShader(std::string fragmentShader, std::string vertexShader): rShader(LoadShader(vertexShader.c_str(), fragmentShader.c_str())),
     shaderTex(LoadRenderTexture(GetScreenWidth(), GetScreenHeight())),
     drawTex(LoadRenderTexture(GetScreenWidth(), GetScreenHeight())),
-    background(BLANK){}
+    background(BLANK), autoClear(true){}
     NovaShader() = default;
 
 
@@ -444,3 +454,15 @@ class NovaShader {
     bool loaded(){ return rShader.id != 0; }
     void dispose(){ if (loaded()) UnloadShader(rShader); }
 };
+
+
+
+
+
+
+
+
+
+
+
+

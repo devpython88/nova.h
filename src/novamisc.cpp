@@ -487,7 +487,7 @@ ShaderLoc NovaShader::getLocation(std::string uniformName)
 void NovaShader::startShader()
 {
     BeginTextureMode(drawTex); // not statrt shader but start the draw tex
-    ClearBackground(background);
+    if (autoClear) ClearBackground(background);
 }
 
 void NovaShader::endShaderAndApply(float x, float y)
@@ -496,7 +496,7 @@ void NovaShader::endShaderAndApply(float x, float y)
     
     // start shader and draw
     BeginTextureMode(shaderTex);
-    ClearBackground(background);
+    if (autoClear) ClearBackground(background);
     BeginShaderMode(rShader);
     DrawTexture(drawTex.texture, x, y, WHITE);
     EndShaderMode();
@@ -504,3 +504,4 @@ void NovaShader::endShaderAndApply(float x, float y)
 
     DrawTexture(shaderTex.texture, x, y, WHITE);
 }
+

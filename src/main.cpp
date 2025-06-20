@@ -22,20 +22,7 @@ int main(int argc, char const *argv[])
     NovaRectangle rec5(100, 320, 50, 50, PINK);
     NovaRectangle rec6(100, 380, 50, 50, ORANGE);
 
-    NovaShader shader("blur.fs", "blur.vs");
-
     NovaCamera cam;
-
-
-    ShaderLoc resLoc = shader.getLocation("resolution");
-    ShaderLoc dirLoc = shader.getLocation("direction");
-
-    Vector2 resolution = { (float) GetScreenWidth(), (float) GetScreenHeight() };
-    shader.setValue<Vector2>(resLoc, &resolution, SHADER_UNIFORM_VEC2);
-
-    Vector2 dirH = { 1.0f, 1.0f };
-    shader.setValue<Vector2>(dirLoc, &dirH, SHADER_UNIFORM_VEC2);
-    shader.background = BLUE;
 
     while (window.open()){
         event.fetch(); // get event
@@ -47,8 +34,6 @@ int main(int argc, char const *argv[])
 
         nrd::fill(BLUE);
 
-        shader.startShader();
-
         nrd::rect(rec1);
         nrd::rect(rec2);
         nrd::rect(rec3);
@@ -56,13 +41,10 @@ int main(int argc, char const *argv[])
         nrd::rect(rec5);
         nrd::rect(rec6);
 
-        shader.endShaderAndApply();
-
         cam.end();
         window.end();
     }
 
-    shader.dispose();
     window.close();
 
     return 0;
