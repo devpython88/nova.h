@@ -1,6 +1,8 @@
 
 <img src="/novaIcon.png" width="300"/>
 
+### This library is actually really buggy so i switched to C and SDL2, You should check out core.2d (My new game library)
+
 Nova.h is a simple library that is designed to user friendly and is built on top of raylib.
 
 It aims to provide built-in features that other game development libraries don't tend to.
