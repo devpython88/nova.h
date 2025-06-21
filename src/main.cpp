@@ -42,6 +42,7 @@ int main(int argc, char const *argv[])
         nrd::rect(rec6);
 
         cam.end();
+
         window.end();
     }
 

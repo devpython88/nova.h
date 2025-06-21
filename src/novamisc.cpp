@@ -504,4 +504,3 @@ void NovaShader::endShaderAndApply(float x, float y)
 
     DrawTexture(shaderTex.texture, x, y, WHITE);
 }
-

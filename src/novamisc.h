@@ -1,5 +1,6 @@
 #pragma
 #include "nova.h"
+#include "novastr.h"
 #include <string>
 #include <iomanip>
 #include "novajson.h"
